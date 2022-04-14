@@ -1,0 +1,36 @@
+site_name: dongse
+
+nav:
+  - 主页:
+    - "index.md"
+
+theme:
+  name: material
+  language: zh
+  features:
+    # reference: https://squidfunk.github.io/mkdocs-material/setup/setting-up-navigation
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.expand
+    - toc.follow
+    - toc.integrate
+    - navigation.top
+    # reference: https://squidfunk.github.io/mkdocs-material/setup/setting-up-site-search
+    - search.suggest
+    - search.highlight
+    - search.share
+  icon:
+    repo: fontawesome/brands/git-alt
+  # reference: https://squidfunk.github.io/mkdocs-material/setup/adding-a-comment-system
+  custom_dir: overrides
+
+# https://squidfunk.github.io/mkdocs-material/setup/adding-a-git-repository
+repo_url: https://github.com/cnlinxi/blog
+repo_name: cnlinxi/blog
+edit_uri: edit/main/docs/
+
+plugins:
+  - search:
+      separator: '[\s\-\.]'
+  - tags
+  - git-revision-date
