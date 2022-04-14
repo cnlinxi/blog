@@ -32,5 +32,4 @@ edit_uri: edit/main/docs/
 plugins:
   - search:
       separator: '[\s\-\.]'
-  - tags
   - git-revision-date
