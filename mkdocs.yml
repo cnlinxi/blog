@@ -56,7 +56,6 @@ plugins:
   - search:
       separator: '[\s\-\.]'
   - git-revision-date
-  - roamlinks
 
 # reference: https://squidfunk.github.io/mkdocs-material/setup/extensions/python-markdown-extensions
 markdown_extensions:
@@ -84,9 +83,6 @@ markdown_extensions:
   - pymdownx.tasklist:
       custom_checkbox: true
   - pymdownx.smartsymbols
-  # - toc:
-  #     permalink: "#"
-  #     slugify: !!python/name:pymdownx.slugs.uslugify
   - pymdownx.arithmatex:
       generic: true
   - tables
