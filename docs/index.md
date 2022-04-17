@@ -2,6 +2,8 @@
 
 分享关于语音和语言处理相关的技术。
 
+??? warning classes "本站所有内容遵循Apache-2.0 License，使用时需注明来源和作者。"
+
 ## 微信公众号
 
 ![微信公众号二维码](image/qrcode_wechat_public_258.jpeg)
