@@ -1,9 +1,34 @@
-site_name: dongse
+site_name: 语音与语言处理
 
 nav:
   - 主页:
     - "index.md"
-
+  - 最新论文:
+    - 主页: "paper_index.md"
+  - 信号处理:
+    - 主页:
+        - "dsp/参考资料.md"
+        - "dsp/语音基本概念.md"
+        - "dsp/语音特征提取.md"
+  - 语音合成:
+    - 主页:
+        - "tts/语音合成概述.md"
+        - "tts/语音合成的评价标准和方法.md"
+        - "tts/语言学.md"
+        - "tts/音库制作和文本前端.md"
+        - "tts/声学模型.md"
+        - "tts/声码器.md"
+        - "tts/语音合成的总体知识体系.md"
+  - 语音识别:
+    - 主页: "asr_index.md"
+  - 开源数据和工具:
+    - 主页: "open_source_index.md"
+  - 运维:
+    - 主页: "om_index.md"
+  - 数据结构:
+    - 主页: "leetcode_index.md"
+  
+# reference: https://squidfunk.github.io/mkdocs-material/reference/
 theme:
   name: material
   language: zh
@@ -33,3 +58,42 @@ plugins:
   - search:
       separator: '[\s\-\.]'
   - git-revision-date
+  - roamlinks
+
+# reference: https://squidfunk.github.io/mkdocs-material/setup/extensions/python-markdown-extensions
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.betterem
+  - pymdownx.caret
+  - pymdownx.mark
+  - pymdownx.tilde
+  - pymdownx.critic
+  - attr_list
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji 
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+  - pymdownx.highlight:
+      anchor_linenums: true
+      linenums: true
+  - pymdownx.snippets
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - def_list
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.smartsymbols
+  # - toc:
+  #     permalink: "#"
+  #     slugify: !!python/name:pymdownx.slugs.uslugify
+  - pymdownx.arithmatex:
+      generic: true
+  - tables
+
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js

@@ -1,17 +1,21 @@
-# Welcome to MkDocs
+# 语音与语言处理
 
-For full documentation visit [mkdocs.org](https://www.mkdocs.org).
+分享关于语音和语言处理相关的技术。
 
-## Commands
+## 微信公众号
 
-* `mkdocs new [dir-name]` - Create a new project.
-* `mkdocs serve` - Start the live-reloading docs server.
-* `mkdocs build` - Build the documentation site.
-* `mkdocs -h` - Print help message and exit.
+![微信公众号二维码](image/qrcode_wechat_public_258.jpeg)
 
-## Project layout
+## 知乎
 
-    mkdocs.yml    # The configuration file.
-    docs/
-        index.md  # The documentation homepage.
-        ...       # Other markdown pages, images and other files.
+![知乎二维码](image/qrcode_zhihu.jpeg)
+
+??? success "一键直达：🔗[知乎/冬色](https://www.zhihu.com/people/chen-meng-nan-76)"
+
+## 博客园
+
+??? success "一键直达：🔗[博客园/冬色](https://www.cnblogs.com/mengnan)"
+
+## GitHub
+
+??? success "一键直达：🔗[GitHub/冬色](https://github.com/cnlinxi)"
