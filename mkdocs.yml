@@ -4,7 +4,7 @@ nav:
   - 主页:
     - "index.md"
   - 最新论文:
-    - 主页: "paper_index.md"
+    - "paper/本周值得读_2022_04_23.md"
   - 信号处理:
     - "dsp/参考资料.md"
     - "dsp/语音基本概念.md"
