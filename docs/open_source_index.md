@@ -175,6 +175,8 @@
 
 13. [RyanSpeech](https://github.com/roholazandie/ryan-tts): 10小时，单说话人，采样率44.1kHz。交互式语音合成语料。
 
+14. [People Speech](https://arxiv.org/pdf/2111.09344.pdf): 30k小时，多说话人，多种采样率，有背景噪音，适合场景偏向于多场景语音识别，数据集主页：[MLCommons/People's Speech](https://mlcommons.org/en/peoples-speech/)。
+
 ### 情感数据集
 
 1. [ESD](https://github.com/HLTSingapore/Emotional-Speech-Data): 用于语音合成和语音转换的情感数据集。
