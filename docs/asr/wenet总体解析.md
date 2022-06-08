@@ -4,7 +4,7 @@
 
 - GMM-HMM（上世纪90年代）
 - 深度学习爆发初期： DNN，CTC（2006）
-- RNN流行，Attention提出初期：RNN-T（2013）, DeepSpeech（2014）， DeepSpeech2 (2016)， LAS（2016）
+- RNN流行，Attention提出初期：RNN-T（2013），DeepSpeech（2014）， DeepSpeech2 (2016)， LAS（2016）
 - Attetion is all you need提出开始：Transformer（2017），Transformer-transducer（2020），Conformer（2020）
 
 ![](attachments/Pasted%20image%2020220529180233.png)
