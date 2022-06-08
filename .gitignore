@@ -1,2 +1,6 @@
 # mkdocs files
 site
+
+# MacOS
+.DS_Store
+docs/.DS_Store

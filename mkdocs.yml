@@ -18,10 +18,19 @@ nav:
     - "tts/声码器.md"
     - "tts/语音合成的总体知识体系.md"
   - 语音识别:
-    - 主页: "asr_index.md"
+    - "asr/wenet总体解析.md"
+    - "asr/加权有限状态机.md"
+    - "asr/arpa2fst将语言模型转为WFST.md"
+    - "asr/kaldi中的解码过程.md"
+    - "asr/kaldi中的Simple-Decoder.md"
+    - "asr/OpenFST基本操作.md"
+    - "asr/wenet的ctc_alignment.md"
+    - "asr/wenet的ctc_prefix_beam_search.md"
+    - "asr/wenet对onnx的支持.md"
+    - "asr/wenet中endpoint检测.md"
   - 开源数据和工具:
     - 主页: "open_source_index.md"
-  - 运维:
+  - 开发:
     - 主页: "om_index.md"
   - 数据结构:
     - 主页: "leetcode_index.md"
