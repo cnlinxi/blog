@@ -33,9 +33,52 @@ nav:
   - 开源数据和工具:
     - 主页: "open_source_index.md"
   - 开发:
-    - 主页: "om_index.md"
+    - docker:
+      - "develop/docker/docker常用命令.md"
+    - python:
+      - "develop/python/python的取反运算符.md"
+      - "develop/python/正则表达式.md"
+      - "develop/python/conda和pip.md"
+      - "develop/python/numpy存取数据.md"
+      - "develop/python/__future__用法.md"
+    - shell:
+      - "develop/shell/Linux操作基础备忘录.md"
+      - "develop/shell/vim.md"
+      - "develop/shell/top_linux下的任务管理器.md"
+      - "develop/shell/shell调试.md"
+      - "develop/shell/cat和EOF.md"
+      - "develop/shell/tailf.md"
+      - "develop/shell/shell语法速查手册.md"
+    - cpp:
+      - "develop/cpp/stl的map.md"
+      - "develop/cpp/cpp调试.md"
+      - "develop/cpp/cpp的类访问修饰符.md"
+      - "develop/cpp/cpp关键字const修饰函数.md"
+      - "develop/cpp/cpp宽字符wchar.md"
+      - "develop/cpp/gcc的常用编译选项.md"
+      - "develop/cpp/c或cpp软件编译.md"
+      - "develop/cpp/stl的vector.md"
+      - "develop/cpp/cpp中的int_t.md"
+      - "develop/cpp/stl的string.md"
+      - "develop/cpp/cpp右值引用.md"
+      - "develop/cpp/cpp并发编程.md"
+      - "develop/cpp/c及cpp的文件读写.md"
+      - "develop/cpp/cpp常用库gflags_glog_gtest.md"
+    - git:
+      - "develop/git/git中的HEAD.md"
+      - "develop/git/git常用回退操作.md"
+      - "develop/git/git的指针ref和reflog.md"
+      - "develop/git/git转移部分代码cherry-pick.md"
+      - "develop/git/git日志.md"
+      - "develop/git/git分支合并.md"
+      - "develop/git/git的fast_forward.md"
+      - "develop/git/git修改提交信息.md"
+      - "develop/git/git学习资源.md"
   - 数据结构:
-    - 主页: "leetcode_index.md"
+    - "leetcode/滑动窗口专题.md"
+    - "leetcode/DFS回溯算法专题.md"
+    - "leetcode/一般二叉树专题.md"
+    - "leetcode/二叉搜索树专题.md"
   
 # reference: https://squidfunk.github.io/mkdocs-material/reference/
 theme:
