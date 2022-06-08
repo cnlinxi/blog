@@ -1,0 +1,2494 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.3.3">
+    
+    
+      
+        <title>OpenFST基本操作 - 语音与语言处理</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.4a0965b7.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.cbb835fc.min.css">
+        
+      
+      
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#openfst" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../.." title="语音与语言处理" class="md-header__button md-logo" aria-label="语音与语言处理" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            语音与语言处理
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              OpenFST基本操作
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" aria-label="分享" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7 0-.24-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91 1.61 0 2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08Z"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="清空当前内容" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/cnlinxi/blog" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    cnlinxi/blog
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-tabs__inner md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        主页
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../paper/%E6%9C%AC%E5%91%A8%E5%80%BC%E5%BE%97%E8%AF%BB_2022_04_23/" class="md-tabs__link">
+        最新论文
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../dsp/%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99/" class="md-tabs__link">
+        信号处理
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../tts/%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E6%A6%82%E8%BF%B0/" class="md-tabs__link">
+        语音合成
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../%E5%8A%A0%E6%9D%83%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/" class="md-tabs__link md-tabs__link--active">
+        语音识别
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../open_source_index/" class="md-tabs__link">
+        开源数据和工具
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../develop/docker/docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" class="md-tabs__link">
+        开发
+      </a>
+    </li>
+  
+
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../leetcode/滑动窗口专题.md" class="md-tabs__link">
+        数据结构
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="语音与语言处理" class="md-nav__button md-logo" aria-label="语音与语言处理" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    语音与语言处理
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/cnlinxi/blog" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    cnlinxi/blog
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_1" type="checkbox" id="__nav_1" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_1">
+          主页
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="主页" data-md-level="1">
+        <label class="md-nav__title" for="__nav_1">
+          <span class="md-nav__icon md-icon"></span>
+          主页
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        语音与语言处理
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          最新论文
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="最新论文" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          最新论文
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../paper/%E6%9C%AC%E5%91%A8%E5%80%BC%E5%BE%97%E8%AF%BB_2022_04_23/" class="md-nav__link">
+        本周值得读-2022_04_23
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          信号处理
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="信号处理" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          信号处理
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dsp/%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99/" class="md-nav__link">
+        参考资料
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dsp/%E8%AF%AD%E9%9F%B3%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/" class="md-nav__link">
+        语音基本概念
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dsp/%E8%AF%AD%E9%9F%B3%E7%89%B9%E5%BE%81%E6%8F%90%E5%8F%96/" class="md-nav__link">
+        语音特征提取
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4">
+          语音合成
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="语音合成" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          语音合成
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tts/%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E6%A6%82%E8%BF%B0/" class="md-nav__link">
+        语音合成概述
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tts/%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E7%9A%84%E8%AF%84%E4%BB%B7%E6%A0%87%E5%87%86%E5%92%8C%E6%96%B9%E6%B3%95/" class="md-nav__link">
+        语音合成的评价标准和方法
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tts/%E8%AF%AD%E8%A8%80%E5%AD%A6/" class="md-nav__link">
+        语言学
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tts/%E9%9F%B3%E5%BA%93%E5%88%B6%E4%BD%9C%E5%92%8C%E6%96%87%E6%9C%AC%E5%89%8D%E7%AB%AF/" class="md-nav__link">
+        音库制作和文本前端
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tts/%E5%A3%B0%E5%AD%A6%E6%A8%A1%E5%9E%8B/" class="md-nav__link">
+        声学模型
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tts/%E5%A3%B0%E7%A0%81%E5%99%A8/" class="md-nav__link">
+        声码器
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tts/%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E7%9A%84%E6%80%BB%E4%BD%93%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB/" class="md-nav__link">
+        语音合成的总体知识体系
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5">
+          语音识别
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="语音识别" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          语音识别
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E5%8A%A0%E6%9D%83%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/" class="md-nav__link">
+        加权有限状态机
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../arpa2fst%E5%B0%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E8%BD%AC%E4%B8%BAWFST/" class="md-nav__link">
+        arpa2fst将语言模型转为WFST
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kaldi%E4%B8%AD%E7%9A%84%E8%A7%A3%E7%A0%81%E8%BF%87%E7%A8%8B/" class="md-nav__link">
+        kaldi中的解码过程
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kaldi%E4%B8%AD%E7%9A%84Simple-Decoder/" class="md-nav__link">
+        kaldi中的Simple-Decoder
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          OpenFST基本操作
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        OpenFST基本操作
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    概述
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fst" class="md-nav__link">
+    FST示例
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fst_1" class="md-nav__link">
+    创建FST
+  </a>
+  
+    <nav class="md-nav" aria-label="创建FST">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cppfst" class="md-nav__link">
+    cpp创建FST
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#shellfst" class="md-nav__link">
+    shell创建FST
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fst_2" class="md-nav__link">
+    读取FST
+  </a>
+  
+    <nav class="md-nav" aria-label="读取FST">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cppfst_1" class="md-nav__link">
+    使用cpp读取FST
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#shellfst_1" class="md-nav__link">
+    通过shell打印、绘制、查看FST
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fst_3" class="md-nav__link">
+    操作FST
+  </a>
+  
+    <nav class="md-nav" aria-label="操作FST">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cppfst_2" class="md-nav__link">
+    cpp操作FST
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#shellfst_2" class="md-nav__link">
+    shell操作FST
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    应用示例
+  </a>
+  
+    <nav class="md-nav" aria-label="应用示例">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cpp" class="md-nav__link">
+    使用cpp复合
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#shell" class="md-nav__link">
+    使用shell复合
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#compose" class="md-nav__link">
+    Compose
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#determine" class="md-nav__link">
+    Determine
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#minimize" class="md-nav__link">
+    Minimize
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#arcsort" class="md-nav__link">
+    ArcSort
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#replace" class="md-nav__link">
+    Replace
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    示例
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../wenet%E6%80%BB%E4%BD%93%E8%A7%A3%E6%9E%90/" class="md-nav__link">
+        wenet总体解析
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../wenet_runtime%E7%9F%A5%E8%AF%86%E7%82%B9/" class="md-nav__link">
+        WeNet runtime知识点
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../wenet_kaitang-ssl-train%E7%9F%A5%E8%AF%86%E7%82%B9/" class="md-nav__link">
+        wenet_kaitang-ssl-train知识点
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../wenet%E7%9A%84ctc_alignment/" class="md-nav__link">
+        wenet的ctc_alignment
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../wenet%E7%9A%84ctc_prefix_beam_search/" class="md-nav__link">
+        wenet的ctc_prefix_beam_search
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../wenet%E5%AF%B9onnx%E7%9A%84%E6%94%AF%E6%8C%81/" class="md-nav__link">
+        wenet对onnx的支持
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../wenet%E4%B8%ADendpoint%E6%A3%80%E6%B5%8B/" class="md-nav__link">
+        wenet中endpoint检测
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6">
+          开源数据和工具
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="开源数据和工具" data-md-level="1">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          开源数据和工具
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../open_source_index/" class="md-nav__link">
+        主页
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_7" type="checkbox" id="__nav_7" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_7">
+          开发
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="开发" data-md-level="1">
+        <label class="md-nav__title" for="__nav_7">
+          <span class="md-nav__icon md-icon"></span>
+          开发
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_7_1" type="checkbox" id="__nav_7_1" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_7_1">
+          docker
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="docker" data-md-level="2">
+        <label class="md-nav__title" for="__nav_7_1">
+          <span class="md-nav__icon md-icon"></span>
+          docker
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/docker/docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" class="md-nav__link">
+        docker常用命令
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_7_2" type="checkbox" id="__nav_7_2" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_7_2">
+          python
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="python" data-md-level="2">
+        <label class="md-nav__title" for="__nav_7_2">
+          <span class="md-nav__icon md-icon"></span>
+          python
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/python/python%E7%9A%84%E5%8F%96%E5%8F%8D%E8%BF%90%E7%AE%97%E7%AC%A6/" class="md-nav__link">
+        python的取反运算符
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/python/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/" class="md-nav__link">
+        正则表达式
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/python/conda%E5%92%8Cpip/" class="md-nav__link">
+        conda和pip
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/python/numpy%E5%AD%98%E5%8F%96%E6%95%B0%E6%8D%AE/" class="md-nav__link">
+        numpy存取数据
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/python/__future__%E7%94%A8%E6%B3%95/" class="md-nav__link">
+        __future__用法
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_7_3" type="checkbox" id="__nav_7_3" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_7_3">
+          shell
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="shell" data-md-level="2">
+        <label class="md-nav__title" for="__nav_7_3">
+          <span class="md-nav__icon md-icon"></span>
+          shell
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/shell/Linux%E6%93%8D%E4%BD%9C%E5%9F%BA%E7%A1%80%E5%A4%87%E5%BF%98%E5%BD%95/" class="md-nav__link">
+        Linux操作基础备忘录
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/shell/vim/" class="md-nav__link">
+        vim
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/shell/top_linux%E4%B8%8B%E7%9A%84%E4%BB%BB%E5%8A%A1%E7%AE%A1%E7%90%86%E5%99%A8/" class="md-nav__link">
+        top_linux下的任务管理器
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/shell/shell%E8%B0%83%E8%AF%95/" class="md-nav__link">
+        shell调试
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/shell/cat%E5%92%8CEOF/" class="md-nav__link">
+        cat和EOF
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/shell/tailf/" class="md-nav__link">
+        tailf
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/shell/shell%E8%AF%AD%E6%B3%95%E9%80%9F%E6%9F%A5%E6%89%8B%E5%86%8C/" class="md-nav__link">
+        shell语法速查手册
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_7_4" type="checkbox" id="__nav_7_4" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_7_4">
+          cpp
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="cpp" data-md-level="2">
+        <label class="md-nav__title" for="__nav_7_4">
+          <span class="md-nav__icon md-icon"></span>
+          cpp
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/cpp/stl%E7%9A%84map/" class="md-nav__link">
+        STL的map
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/cpp/cpp%E8%B0%83%E8%AF%95/" class="md-nav__link">
+        cpp调试技巧
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/cpp/cpp%E7%9A%84%E7%B1%BB%E8%AE%BF%E9%97%AE%E4%BF%AE%E9%A5%B0%E7%AC%A6/" class="md-nav__link">
+        cpp的类访问修饰符
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/cpp/cpp%E5%85%B3%E9%94%AE%E5%AD%97const%E4%BF%AE%E9%A5%B0%E5%87%BD%E6%95%B0/" class="md-nav__link">
+        cpp关键字const修饰函数
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/cpp/cpp%E5%AE%BD%E5%AD%97%E7%AC%A6wchar/" class="md-nav__link">
+        cpp宽字符wchar
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/cpp/gcc%E7%9A%84%E5%B8%B8%E7%94%A8%E7%BC%96%E8%AF%91%E9%80%89%E9%A1%B9/" class="md-nav__link">
+        GCC的常用编译选项
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/cpp/c%E6%88%96cpp%E8%BD%AF%E4%BB%B6%E7%BC%96%E8%AF%91/" class="md-nav__link">
+        c或cpp软件编译
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/cpp/stl%E7%9A%84vector/" class="md-nav__link">
+        STL的vector
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/cpp/cpp%E4%B8%AD%E7%9A%84int_t/" class="md-nav__link">
+        cpp中的int_t
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/cpp/stl%E7%9A%84string/" class="md-nav__link">
+        string操作
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/cpp/cpp%E5%8F%B3%E5%80%BC%E5%BC%95%E7%94%A8/" class="md-nav__link">
+        cpp右值引用和std::move
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/cpp/cpp%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" class="md-nav__link">
+        cpp并发编程
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/cpp/c%E5%8F%8Acpp%E7%9A%84%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99/" class="md-nav__link">
+        c及cpp的文件读写
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/cpp/cpp%E5%B8%B8%E7%94%A8%E5%BA%93gflags_glog_gtest/" class="md-nav__link">
+        cpp常用库gflags/glog/gtest
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_7_5" type="checkbox" id="__nav_7_5" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_7_5">
+          git
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="git" data-md-level="2">
+        <label class="md-nav__title" for="__nav_7_5">
+          <span class="md-nav__icon md-icon"></span>
+          git
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/git/git%E4%B8%AD%E7%9A%84HEAD/" class="md-nav__link">
+        git中的HEAD
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/git/git%E5%B8%B8%E7%94%A8%E5%9B%9E%E9%80%80%E6%93%8D%E4%BD%9C/" class="md-nav__link">
+        git常用回退操作
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/git/git%E7%9A%84%E6%8C%87%E9%92%88ref%E5%92%8Creflog/" class="md-nav__link">
+        git的指针ref和reflog
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/git/git%E8%BD%AC%E7%A7%BB%E9%83%A8%E5%88%86%E4%BB%A3%E7%A0%81cherry-pick/" class="md-nav__link">
+        git转移部分代码cherry-pick
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/git/git%E6%97%A5%E5%BF%97/" class="md-nav__link">
+        git日志
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/git/git%E5%88%86%E6%94%AF%E5%90%88%E5%B9%B6/" class="md-nav__link">
+        git分支合并
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/git/git%E7%9A%84fast_forward/" class="md-nav__link">
+        Git的Fast Forward
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/git/git%E4%BF%AE%E6%94%B9%E6%8F%90%E4%BA%A4%E4%BF%A1%E6%81%AF/" class="md-nav__link">
+        git修改提交信息
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/git/git%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%BA%90/" class="md-nav__link">
+        git学习资源
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_8" type="checkbox" id="__nav_8" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_8">
+          数据结构
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="数据结构" data-md-level="1">
+        <label class="md-nav__title" for="__nav_8">
+          <span class="md-nav__icon md-icon"></span>
+          数据结构
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../leetcode/滑动窗口专题.md" class="md-nav__link">
+        None
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../leetcode/DFS回溯算法专题.md" class="md-nav__link">
+        None
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../leetcode/一般二叉树专题.md" class="md-nav__link">
+        None
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../leetcode/二叉搜索树专题.md" class="md-nav__link">
+        None
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+  
+                
+  <a href="https://github.com/cnlinxi/blog/edit/main/docs/asr/OpenFST基本操作.md" title="编辑此页" class="md-content__button md-icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25Z"/></svg>
+  </a>
+
+
+
+<h1 id="openfst">OpenFST基本操作</h1>
+<h2 id="_1">概述</h2>
+<p>OpenFST是C++模板库，需要包含头文件<code>&lt;fst/fstlib.h&gt;</code>，动态链接库<code>libfst.so</code>位于安装库目录（installation library directory），所有类和函数位于命名空间<code>fst</code>。</p>
+<p>OpenFST同样提供了shell接口，位于安装<code>bin</code>目录下，可对FST文件进行操作。</p>
+<h2 id="fst">FST示例</h2>
+<p>下图定义了一个有限状态机（Finite State Transducer，FST）：</p>
+<p><img alt="" src="../attachments/Pasted%20image%2020220530101444.png" /></p>
+<p>上图中，仅有一个初始状态，初始状态为标签0；结束状态为标签2，权重为3.5，任意具有非无穷大权重的状态就是最终状态。上图中状态0到1的弧（<code>arc</code>/<code>transition</code>）输入标签为<code>a</code>，输出标签为<code>x</code>，权重为0.5。该FST可以将字符序列“ac”映射为“xz”，对应的权重为<span class="arithmatex">\(0.5+2.5+3.5=6.5\)</span>。</p>
+<h2 id="fst_1">创建FST</h2>
+<p>可以用C++或shell命令创建上述FST示例。如果将标签表示为非负整数，则可以省略符号表文件（symbol table files），这也是该示例FST的内部表示：</p>
+<p><img alt="" src="../attachments/Pasted%20image%2020220530102634.png" /></p>
+<h3 id="cppfst">cpp创建FST</h3>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-0-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-0-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-0-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-0-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-0-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-0-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-0-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-0-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-0-10">10</a></span>
+<span class="normal"><a href="#__codelineno-0-11">11</a></span>
+<span class="normal"><a href="#__codelineno-0-12">12</a></span>
+<span class="normal"><a href="#__codelineno-0-13">13</a></span>
+<span class="normal"><a href="#__codelineno-0-14">14</a></span>
+<span class="normal"><a href="#__codelineno-0-15">15</a></span>
+<span class="normal"><a href="#__codelineno-0-16">16</a></span>
+<span class="normal"><a href="#__codelineno-0-17">17</a></span>
+<span class="normal"><a href="#__codelineno-0-18">18</a></span>
+<span class="normal"><a href="#__codelineno-0-19">19</a></span>
+<span class="normal"><a href="#__codelineno-0-20">20</a></span>
+<span class="normal"><a href="#__codelineno-0-21">21</a></span>
+<span class="normal"><a href="#__codelineno-0-22">22</a></span>
+<span class="normal"><a href="#__codelineno-0-23">23</a></span>
+<span class="normal"><a href="#__codelineno-0-24">24</a></span>
+<span class="normal"><a href="#__codelineno-0-25">25</a></span>
+<span class="normal"><a href="#__codelineno-0-26">26</a></span>
+<span class="normal"><a href="#__codelineno-0-27">27</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="c1">// 通用可变FST</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2"></a><span class="c1">// A vector FST is a general mutable FST </span>
+<a id="__codelineno-0-3" name="__codelineno-0-3"></a><span class="n">StdVectorFst</span><span class="w"> </span><span class="n">fst</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-0-4" name="__codelineno-0-4"></a>
+<a id="__codelineno-0-5" name="__codelineno-0-5"></a><span class="c1">// 将状态0添加到最初为空的FST，使其成为初始状态</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6"></a><span class="c1">// Adds state 0 to the initially empty FST and make it the start state. </span>
+<a id="__codelineno-0-7" name="__codelineno-0-7"></a><span class="n">fst</span><span class="p">.</span><span class="n">AddState</span><span class="p">();</span><span class="w">   </span><span class="c1">// 1st state will be state 0 (returned by AddState) </span>
+<a id="__codelineno-0-8" name="__codelineno-0-8"></a><span class="n">fst</span><span class="p">.</span><span class="n">SetStart</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span><span class="w">  </span><span class="c1">// arg is state ID</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9"></a>
+<a id="__codelineno-0-10" name="__codelineno-0-10"></a><span class="c1">// 添加状态0的两条弧</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11"></a><span class="c1">// Adds two arcs exiting state 0.</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12"></a><span class="c1">// Arc constructor args: ilabel, olabel, weight, dest state ID. </span>
+<a id="__codelineno-0-13" name="__codelineno-0-13"></a><span class="n">fst</span><span class="p">.</span><span class="n">AddArc</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">StdArc</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mf">0.5</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">));</span><span class="w">  </span><span class="c1">// 1st arg is src state ID </span>
+<a id="__codelineno-0-14" name="__codelineno-0-14"></a><span class="n">fst</span><span class="p">.</span><span class="n">AddArc</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">StdArc</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mf">1.5</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">));</span><span class="w"> </span>
+<a id="__codelineno-0-15" name="__codelineno-0-15"></a>
+<a id="__codelineno-0-16" name="__codelineno-0-16"></a><span class="c1">// 添加状态1和它的一条弧</span>
+<a id="__codelineno-0-17" name="__codelineno-0-17"></a><span class="c1">// Adds state 1 and its arc. </span>
+<a id="__codelineno-0-18" name="__codelineno-0-18"></a><span class="n">fst</span><span class="p">.</span><span class="n">AddState</span><span class="p">();</span><span class="w"></span>
+<a id="__codelineno-0-19" name="__codelineno-0-19"></a><span class="n">fst</span><span class="p">.</span><span class="n">AddArc</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">StdArc</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mf">2.5</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">));</span><span class="w"></span>
+<a id="__codelineno-0-20" name="__codelineno-0-20"></a>
+<a id="__codelineno-0-21" name="__codelineno-0-21"></a><span class="c1">// 添加状态2并设置最终权重</span>
+<a id="__codelineno-0-22" name="__codelineno-0-22"></a><span class="c1">// Adds state 2 and set its final weight. </span>
+<a id="__codelineno-0-23" name="__codelineno-0-23"></a><span class="n">fst</span><span class="p">.</span><span class="n">AddState</span><span class="p">();</span><span class="w"></span>
+<a id="__codelineno-0-24" name="__codelineno-0-24"></a><span class="n">fst</span><span class="p">.</span><span class="n">SetFinal</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mf">3.5</span><span class="p">);</span><span class="w">  </span><span class="c1">// 1st arg is state ID, 2nd arg weight</span>
+<a id="__codelineno-0-25" name="__codelineno-0-25"></a>
+<a id="__codelineno-0-26" name="__codelineno-0-26"></a><span class="c1">// save this FST to a file</span>
+<a id="__codelineno-0-27" name="__codelineno-0-27"></a><span class="n">fst</span><span class="p">.</span><span class="n">Write</span><span class="p">(</span><span class="s">&quot;binary.fst&quot;</span><span class="p">);</span><span class="w"></span>
+</code></pre></div></td></tr></table></div>
+<h3 id="shellfst">shell创建FST</h3>
+<p>为示例FST创建文本文件：</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-1-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-1-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-1-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-1-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-1-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-1-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-1-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-1-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-1-10">10</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="c1"># arc format: src dest ilabel olabel [weight]</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2"></a><span class="c1"># final state format: state [weight]</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3"></a><span class="c1"># lines may occur in any order except initial state must be first line</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4"></a><span class="c1"># unspecified weights default to 0.0 (for the library-default Weight type) </span>
+<a id="__codelineno-1-5" name="__codelineno-1-5"></a>$ cat &gt;text.fst <span class="s">&lt;&lt;EOF</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6"></a><span class="s">0 1 a x .5</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7"></a><span class="s">0 1 b y 1.5</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8"></a><span class="s">1 2 c z 2.5</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9"></a><span class="s">2 3.5</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10"></a><span class="s">EOF</span>
+</code></pre></div></td></tr></table></div>
+<p>FST的内部表示为整数，因此必须提供符号到整数的映射文件：</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-2-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-2-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-2-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-2-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-2-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-2-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-2-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-2-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-2-10">10</a></span>
+<span class="normal"><a href="#__codelineno-2-11">11</a></span>
+<span class="normal"><a href="#__codelineno-2-12">12</a></span>
+<span class="normal"><a href="#__codelineno-2-13">13</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1"></a>$ cat &gt;isyms.txt <span class="s">&lt;&lt;EOF</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2"></a><span class="s">&lt;eps&gt; 0</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3"></a><span class="s">a 1</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4"></a><span class="s">b 2</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5"></a><span class="s">c 3</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6"></a><span class="s">EOF</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7"></a>
+<a id="__codelineno-2-8" name="__codelineno-2-8"></a>$ cat &gt;osyms.txt <span class="s">&lt;&lt;EOF</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9"></a><span class="s">&lt;eps&gt; 0</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10"></a><span class="s">x 1</span>
+<a id="__codelineno-2-11" name="__codelineno-2-11"></a><span class="s">y 2</span>
+<a id="__codelineno-2-12" name="__codelineno-2-12"></a><span class="s">z 3</span>
+<a id="__codelineno-2-13" name="__codelineno-2-13"></a><span class="s">EOF</span>
+</code></pre></div></td></tr></table></div>
+<p>可以使用任意字符串作为标签，也可以使用任意非负整数作为标签ID。输出符号表中<code>&lt;eps&gt; 0</code>表示标签<span class="arithmatex">\(\epsilon\)</span>的标签ID为0，在示例FST中并未用到。</p>
+<p>将文本文件转换为FST文件，以便OpenFST的使用：</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-3-1">1</a></span>
+<span class="normal"><a href="#__codelineno-3-2">2</a></span>
+<span class="normal"><a href="#__codelineno-3-3">3</a></span>
+<span class="normal"><a href="#__codelineno-3-4">4</a></span>
+<span class="normal"><a href="#__codelineno-3-5">5</a></span>
+<span class="normal"><a href="#__codelineno-3-6">6</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1"></a><span class="c1"># Creates binary Fst from text file. </span>
+<a id="__codelineno-3-2" name="__codelineno-3-2"></a><span class="c1"># The symbolic labels will be converted into integers using the symbol table files. </span>
+<a id="__codelineno-3-3" name="__codelineno-3-3"></a>$ fstcompile --isymbols<span class="o">=</span>isyms.txt --osymbols<span class="o">=</span>osyms.txt text.fst binary.fst
+<a id="__codelineno-3-4" name="__codelineno-3-4"></a>
+<a id="__codelineno-3-5" name="__codelineno-3-5"></a><span class="c1"># As above but the symbol tables are stored with the FST. </span>
+<a id="__codelineno-3-6" name="__codelineno-3-6"></a>$ fstcompile --isymbols<span class="o">=</span>isyms.txt --osymbols<span class="o">=</span>osyms.txt --keep_isymbols --keep_osymbols text.fst binary.fst
+</code></pre></div></td></tr></table></div>
+<blockquote>
+<p>关于FST I/O的详细信息参见<a href="https://www.openfst.org/twiki/bin/view/FST/FstAdvancedUsage#FstInputOutput">FstInputOutput</a></p>
+</blockquote>
+<h2 id="fst_2">读取FST</h2>
+<h3 id="cppfst_1">使用cpp读取FST</h3>
+<p>一条弧的标准表示：</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-4-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-4-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-4-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-4-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-4-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-4-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-4-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-4-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-4-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-4-10">10</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="k">struct</span><span class="w"> </span><span class="nc">StdArc</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<a id="__codelineno-4-2" name="__codelineno-4-2"></a><span class="w"> </span><span class="k">typedef</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">Label</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-4-3" name="__codelineno-4-3"></a><span class="w"> </span><span class="k">typedef</span><span class="w"> </span><span class="n">TropicalWeight</span><span class="w"> </span><span class="n">Weight</span><span class="p">;</span><span class="w">  </span><span class="c1">// see &quot;FST Weights&quot; below </span>
+<a id="__codelineno-4-4" name="__codelineno-4-4"></a><span class="w"> </span><span class="k">typedef</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">StateId</span><span class="p">;</span><span class="w"> </span>
+<a id="__codelineno-4-5" name="__codelineno-4-5"></a>
+<a id="__codelineno-4-6" name="__codelineno-4-6"></a><span class="w"> </span><span class="n">Label</span><span class="w"> </span><span class="n">ilabel</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-4-7" name="__codelineno-4-7"></a><span class="w"> </span><span class="n">Label</span><span class="w"> </span><span class="n">olabel</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-4-8" name="__codelineno-4-8"></a><span class="w"> </span><span class="n">Weight</span><span class="w"> </span><span class="n">weight</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-4-9" name="__codelineno-4-9"></a><span class="w"> </span><span class="n">StateId</span><span class="w"> </span><span class="n">nextstate</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-4-10" name="__codelineno-4-10"></a><span class="p">};</span><span class="w"></span>
+</code></pre></div></td></tr></table></div>
+<p>读取示例：</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-5-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-5-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-5-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-5-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-5-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-5-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-5-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-5-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-5-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-5-10">10</a></span>
+<span class="normal"><a href="#__codelineno-5-11">11</a></span>
+<span class="normal"><a href="#__codelineno-5-12">12</a></span>
+<span class="normal"><a href="#__codelineno-5-13">13</a></span>
+<span class="normal"><a href="#__codelineno-5-14">14</a></span>
+<span class="normal"><a href="#__codelineno-5-15">15</a></span>
+<span class="normal"><a href="#__codelineno-5-16">16</a></span>
+<span class="normal"><a href="#__codelineno-5-17">17</a></span>
+<span class="normal"><a href="#__codelineno-5-18">18</a></span>
+<span class="normal"><a href="#__codelineno-5-19">19</a></span>
+<span class="normal"><a href="#__codelineno-5-20">20</a></span>
+<span class="normal"><a href="#__codelineno-5-21">21</a></span>
+<span class="normal"><a href="#__codelineno-5-22">22</a></span>
+<span class="normal"><a href="#__codelineno-5-23">23</a></span>
+<span class="normal"><a href="#__codelineno-5-24">24</a></span>
+<span class="normal"><a href="#__codelineno-5-25">25</a></span>
+<span class="normal"><a href="#__codelineno-5-26">26</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1"></a><span class="k">typedef</span><span class="w"> </span><span class="n">StdArc</span><span class="o">::</span><span class="n">StateId</span><span class="w"> </span><span class="n">StateId</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-5-2" name="__codelineno-5-2"></a>
+<a id="__codelineno-5-3" name="__codelineno-5-3"></a><span class="cp"># Gets the initial state; if == kNoState =&gt; empty FST. </span>
+<a id="__codelineno-5-4" name="__codelineno-5-4"></a><span class="n">StateId</span><span class="w"> </span><span class="n">initial_state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fst</span><span class="p">.</span><span class="n">Start</span><span class="p">();</span><span class="w"></span>
+<a id="__codelineno-5-5" name="__codelineno-5-5"></a>
+<a id="__codelineno-5-6" name="__codelineno-5-6"></a><span class="cp"># Get state i&#39;s final weight; if == Weight::Zero() =&gt; non-final. </span>
+<a id="__codelineno-5-7" name="__codelineno-5-7"></a><span class="n">Weight</span><span class="w"> </span><span class="n">weight</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fst</span><span class="p">.</span><span class="n">Final</span><span class="p">(</span><span class="n">i</span><span class="p">);</span><span class="w"></span>
+<a id="__codelineno-5-8" name="__codelineno-5-8"></a>
+<a id="__codelineno-5-9" name="__codelineno-5-9"></a><span class="cp"># 迭代FST状态</span>
+<a id="__codelineno-5-10" name="__codelineno-5-10"></a><span class="cp"># Iterates over the FSTs states. </span>
+<a id="__codelineno-5-11" name="__codelineno-5-11"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">StateIterator</span><span class="o">&lt;</span><span class="n">StdFst</span><span class="o">&gt;</span><span class="w"> </span><span class="n">siter</span><span class="p">(</span><span class="n">fst</span><span class="p">);</span><span class="w"> </span><span class="o">!</span><span class="n">siter</span><span class="p">.</span><span class="n">Done</span><span class="p">();</span><span class="w"> </span><span class="n">siter</span><span class="p">.</span><span class="n">Next</span><span class="p">())</span><span class="w"> </span>
+<a id="__codelineno-5-12" name="__codelineno-5-12"></a><span class="w">  </span><span class="n">StateId</span><span class="w"> </span><span class="n">state_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">siter</span><span class="p">.</span><span class="n">Value</span><span class="p">();</span><span class="w"></span>
+<a id="__codelineno-5-13" name="__codelineno-5-13"></a>
+<a id="__codelineno-5-14" name="__codelineno-5-14"></a><span class="cp"># 迭代状态i的弧</span>
+<a id="__codelineno-5-15" name="__codelineno-5-15"></a><span class="cp"># Iterates over state i&#39;s arcs. </span>
+<a id="__codelineno-5-16" name="__codelineno-5-16"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">ArcIterator</span><span class="o">&lt;</span><span class="n">StdFst</span><span class="o">&gt;</span><span class="w"> </span><span class="n">aiter</span><span class="p">(</span><span class="n">fst</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">);</span><span class="w"> </span><span class="o">!</span><span class="n">aiter</span><span class="p">.</span><span class="n">Done</span><span class="p">();</span><span class="w"> </span><span class="n">aiter</span><span class="p">.</span><span class="n">Next</span><span class="p">())</span><span class="w"></span>
+<a id="__codelineno-5-17" name="__codelineno-5-17"></a><span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="n">StdArc</span><span class="w"> </span><span class="o">&amp;</span><span class="n">arc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">aiter</span><span class="p">.</span><span class="n">Value</span><span class="p">();</span><span class="w"></span>
+<a id="__codelineno-5-18" name="__codelineno-5-18"></a>
+<a id="__codelineno-5-19" name="__codelineno-5-19"></a><span class="cp"># 迭代状态i中输入标签为l的弧</span>
+<a id="__codelineno-5-20" name="__codelineno-5-20"></a><span class="cp"># Iterates over state i&#39;s arcs that have input label l (FST must support this</span>
+<a id="__codelineno-5-21" name="__codelineno-5-21"></a><span class="cp"># in the simplest cases,  true when the input labels are sorted). </span>
+<a id="__codelineno-5-22" name="__codelineno-5-22"></a><span class="n">Matcher</span><span class="o">&lt;</span><span class="n">StdFst</span><span class="o">&gt;</span><span class="w"> </span><span class="n">matcher</span><span class="p">(</span><span class="n">fst</span><span class="p">,</span><span class="w"> </span><span class="n">MATCH_INPUT</span><span class="p">);</span><span class="w"></span>
+<a id="__codelineno-5-23" name="__codelineno-5-23"></a><span class="n">matcher</span><span class="p">.</span><span class="n">SetState</span><span class="p">(</span><span class="n">i</span><span class="p">);</span><span class="w"></span>
+<a id="__codelineno-5-24" name="__codelineno-5-24"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">matcher</span><span class="p">.</span><span class="n">Find</span><span class="p">(</span><span class="n">l</span><span class="p">))</span><span class="w"> </span>
+<a id="__codelineno-5-25" name="__codelineno-5-25"></a><span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(;</span><span class="w"> </span><span class="o">!</span><span class="n">matcher</span><span class="p">.</span><span class="n">Done</span><span class="p">();</span><span class="w"> </span><span class="n">matcher</span><span class="p">.</span><span class="n">Next</span><span class="p">())</span><span class="w"></span>
+<a id="__codelineno-5-26" name="__codelineno-5-26"></a><span class="w">     </span><span class="k">const</span><span class="w"> </span><span class="n">StdArc</span><span class="w"> </span><span class="o">&amp;</span><span class="n">arc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">matcher</span><span class="p">.</span><span class="n">Value</span><span class="p">();</span><span class="w"></span>
+</code></pre></div></td></tr></table></div>
+<h3 id="shellfst_1">通过shell打印、绘制、查看FST</h3>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-6-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-6-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-6-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-6-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-6-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-6-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-6-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-6-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-6-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-6-10">10</a></span>
+<span class="normal"><a href="#__codelineno-6-11">11</a></span>
+<span class="normal"><a href="#__codelineno-6-12">12</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1"></a><span class="c1"># 打印FST</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2"></a><span class="c1"># Print FST using symbol table files.</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3"></a><span class="c1"># 如果没有指定符号表，且符号表没有存储到FST，则FST将打印数字标签</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4"></a>$ fstprint --isymbols<span class="o">=</span>isyms.txt --osymbols<span class="o">=</span>osyms.txt binary.fst text.fst
+<a id="__codelineno-6-5" name="__codelineno-6-5"></a>
+<a id="__codelineno-6-6" name="__codelineno-6-6"></a><span class="c1"># 绘制FST</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7"></a><span class="c1"># Draw FST using symbol table files and Graphviz dot: </span>
+<a id="__codelineno-6-8" name="__codelineno-6-8"></a>$ fstdraw --isymbols<span class="o">=</span>isyms.txt --osymbols<span class="o">=</span>osyms.txt binary.fst binary.dot
+<a id="__codelineno-6-9" name="__codelineno-6-9"></a>$ dot -Tps binary.dot &gt;binary.ps
+<a id="__codelineno-6-10" name="__codelineno-6-10"></a>
+<a id="__codelineno-6-11" name="__codelineno-6-11"></a><span class="c1"># 查看FST的详细信息</span>
+<a id="__codelineno-6-12" name="__codelineno-6-12"></a>$ fstinfo binary.fst
+</code></pre></div></td></tr></table></div>
+<h2 id="fst_3">操作FST</h2>
+<h3 id="cppfst_2">cpp操作FST</h3>
+<p>以下抽象类模板构成FST接口：</p>
+<ul>
+<li><a href="https://www.openfst.org/twiki/bin/view/FST/FstAdvancedUsage#BaseFsts"><code>Fst&lt;Arc&gt;</code></a>：支持上述读取操作。</li>
+<li><a href="https://www.openfst.org/twiki/bin/view/FST/FstAdvancedUsage#ExpandedFsts"><code>ExpandedFst&lt;Arc&gt;</code></a>：额外支持<code>NumStates()</code>的<code>Fst</code>。</li>
+<li><a href="https://www.openfst.org/twiki/bin/view/FST/FstAdvancedUsage#MutableFsts"><code>MutableFst&lt;Arc&gt;</code></a>：支持各种修改操作比如<code>AddStates()</code>和<code>SetStart()</code>的<code>ExpandedFst</code>。</li>
+</ul>
+<p>特别地，非抽象FST包括以下类模板：</p>
+<ul>
+<li><code>VectorFst&lt;Arc&gt;</code>：通用可变FST。</li>
+<li><code>ConstFst&lt;Arc&gt;</code>：通用扩展不可变FST。</li>
+<li><code>ComposeFst&lt;Arc&gt;</code>：两个FST的非扩展、延迟复合（delayed composition）。</li>
+</ul>
+<p>在OpenFST中，<code>StdFst</code>是<code>Fst&lt;StdArc&gt;</code>的typedef，上述类模板均存在类似的typedef。在迭代时，指定具体的FST类作为迭代器模板参数，可以获得更好的性能，比如迭代时优先使用<code>ArcIterator&lt;StdVectorFst&gt;</code>，而不是<code>ArcIterator&lt;StdFst&gt;</code>。</p>
+<h3 id="shellfst_2">shell操作FST</h3>
+<p>shell操作FST时，通常读取一个或多个FST文件，调用内部cpp操作，最后写入FST文件。如果省略输出文件，将使用标准输出；如果输入文件也省略或者是<code>-</code>，将使用标准输入：</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-7-1">1</a></span>
+<span class="normal"><a href="#__codelineno-7-2">2</a></span>
+<span class="normal"><a href="#__codelineno-7-3">3</a></span>
+<span class="normal"><a href="#__codelineno-7-4">4</a></span>
+<span class="normal"><a href="#__codelineno-7-5">5</a></span>
+<span class="normal"><a href="#__codelineno-7-6">6</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1"></a><span class="c1"># 一元操作</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2"></a>fstunaryop <span class="k">in</span>.fst out.fst
+<a id="__codelineno-7-3" name="__codelineno-7-3"></a>fstunaryop &lt;<span class="k">in</span>.fst &gt;out.fst
+<a id="__codelineno-7-4" name="__codelineno-7-4"></a><span class="c1"># 二元操作</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5"></a>fstbinaryop in1.fst in2.fst out.fst
+<a id="__codelineno-7-6" name="__codelineno-7-6"></a>fstbinaryop - in2.fst &lt;in1.fst &gt;out.fst
+</code></pre></div></td></tr></table></div>
+<h2 id="_2">应用示例</h2>
+<p>以两个FST复合（Composition）操作为例。</p>
+<h3 id="cpp">使用cpp复合</h3>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-8-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-8-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-8-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-8-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-8-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-8-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-8-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-8-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-8-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-8-10">10</a></span>
+<span class="normal"><a href="#__codelineno-8-11">11</a></span>
+<span class="normal"><a href="#__codelineno-8-12">12</a></span>
+<span class="normal"><a href="#__codelineno-8-13">13</a></span>
+<span class="normal"><a href="#__codelineno-8-14">14</a></span>
+<span class="normal"><a href="#__codelineno-8-15">15</a></span>
+<span class="normal"><a href="#__codelineno-8-16">16</a></span>
+<span class="normal"><a href="#__codelineno-8-17">17</a></span>
+<span class="normal"><a href="#__codelineno-8-18">18</a></span>
+<span class="normal"><a href="#__codelineno-8-19">19</a></span>
+<span class="normal"><a href="#__codelineno-8-20">20</a></span>
+<span class="normal"><a href="#__codelineno-8-21">21</a></span>
+<span class="normal"><a href="#__codelineno-8-22">22</a></span>
+<span class="normal"><a href="#__codelineno-8-23">23</a></span>
+<span class="normal"><a href="#__codelineno-8-24">24</a></span>
+<span class="normal"><a href="#__codelineno-8-25">25</a></span>
+<span class="normal"><a href="#__codelineno-8-26">26</a></span>
+<span class="normal"><a href="#__codelineno-8-27">27</a></span>
+<span class="normal"><a href="#__codelineno-8-28">28</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;fst/fstlib.h&gt;</span><span class="cp"></span>
+<a id="__codelineno-8-2" name="__codelineno-8-2"></a>
+<a id="__codelineno-8-3" name="__codelineno-8-3"></a><span class="k">namespace</span><span class="w"> </span><span class="nn">fst</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<a id="__codelineno-8-4" name="__codelineno-8-4"></a><span class="w">  </span><span class="c1">// Reads in an input FST. </span>
+<a id="__codelineno-8-5" name="__codelineno-8-5"></a><span class="w">  </span><span class="n">StdVectorFst</span><span class="w"> </span><span class="o">*</span><span class="n">input</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">StdVectorFst</span><span class="o">::</span><span class="n">Read</span><span class="p">(</span><span class="s">&quot;input.fst&quot;</span><span class="p">);</span><span class="w"></span>
+<a id="__codelineno-8-6" name="__codelineno-8-6"></a>
+<a id="__codelineno-8-7" name="__codelineno-8-7"></a><span class="w">  </span><span class="c1">// Reads in the transduction model. </span>
+<a id="__codelineno-8-8" name="__codelineno-8-8"></a><span class="w">  </span><span class="n">StdVectorFst</span><span class="w"> </span><span class="o">*</span><span class="n">model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">StdVectorFst</span><span class="o">::</span><span class="n">Read</span><span class="p">(</span><span class="s">&quot;model.fst&quot;</span><span class="p">);</span><span class="w"></span>
+<a id="__codelineno-8-9" name="__codelineno-8-9"></a>
+<a id="__codelineno-8-10" name="__codelineno-8-10"></a><span class="w">  </span><span class="c1">// FST需要按照复合的维度进行排序</span>
+<a id="__codelineno-8-11" name="__codelineno-8-11"></a><span class="w">  </span><span class="c1">// The FSTs must be sorted along the dimensions they will be joined.</span>
+<a id="__codelineno-8-12" name="__codelineno-8-12"></a><span class="w">  </span><span class="c1">// In fact, only one needs to be so sorted.</span>
+<a id="__codelineno-8-13" name="__codelineno-8-13"></a><span class="w">  </span><span class="c1">// This could have instead been done for &quot;model.fst&quot; when it was created. </span>
+<a id="__codelineno-8-14" name="__codelineno-8-14"></a><span class="w">  </span><span class="n">ArcSort</span><span class="p">(</span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="n">StdOLabelCompare</span><span class="p">());</span><span class="w"></span>
+<a id="__codelineno-8-15" name="__codelineno-8-15"></a><span class="w">  </span><span class="n">ArcSort</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="n">StdILabelCompare</span><span class="p">());</span><span class="w"></span>
+<a id="__codelineno-8-16" name="__codelineno-8-16"></a>
+<a id="__codelineno-8-17" name="__codelineno-8-17"></a><span class="w">  </span><span class="c1">// Container for composition result. </span>
+<a id="__codelineno-8-18" name="__codelineno-8-18"></a><span class="w">  </span><span class="n">StdVectorFst</span><span class="w"> </span><span class="n">result</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-8-19" name="__codelineno-8-19"></a>
+<a id="__codelineno-8-20" name="__codelineno-8-20"></a><span class="w">  </span><span class="c1">// Creates the composed FST. </span>
+<a id="__codelineno-8-21" name="__codelineno-8-21"></a><span class="w">  </span><span class="n">Compose</span><span class="p">(</span><span class="o">*</span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">result</span><span class="p">);</span><span class="w"></span>
+<a id="__codelineno-8-22" name="__codelineno-8-22"></a>
+<a id="__codelineno-8-23" name="__codelineno-8-23"></a><span class="w">  </span><span class="c1">// Just keeps the output labels. </span>
+<a id="__codelineno-8-24" name="__codelineno-8-24"></a><span class="w">  </span><span class="n">Project</span><span class="p">(</span><span class="o">&amp;</span><span class="n">result</span><span class="p">,</span><span class="w"> </span><span class="n">PROJECT_OUTPUT</span><span class="p">);</span><span class="w"></span>
+<a id="__codelineno-8-25" name="__codelineno-8-25"></a>
+<a id="__codelineno-8-26" name="__codelineno-8-26"></a><span class="w">  </span><span class="c1">// Writes the result FST to a file.</span>
+<a id="__codelineno-8-27" name="__codelineno-8-27"></a><span class="w">  </span><span class="n">result</span><span class="p">.</span><span class="n">Write</span><span class="p">(</span><span class="s">&quot;result.fst&quot;</span><span class="p">);</span><span class="w"></span>
+<a id="__codelineno-8-28" name="__codelineno-8-28"></a><span class="p">}</span><span class="w"></span>
+</code></pre></div></td></tr></table></div>
+<h3 id="shell">使用shell复合</h3>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-9-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-9-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-9-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-9-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-9-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-9-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-9-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-9-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-9-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-9-10">10</a></span>
+<span class="normal"><a href="#__codelineno-9-11">11</a></span>
+<span class="normal"><a href="#__codelineno-9-12">12</a></span>
+<span class="normal"><a href="#__codelineno-9-13">13</a></span>
+<span class="normal"><a href="#__codelineno-9-14">14</a></span>
+<span class="normal"><a href="#__codelineno-9-15">15</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1"></a><span class="c1"># FST需要按照复合的维度进行排序</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2"></a><span class="c1"># The FSTs must be sorted along the dimensions they will be joined.</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3"></a><span class="c1"># In fact, only one needs to be so sorted.</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4"></a><span class="c1"># This could have instead been done for &quot;model.fst&quot; when it was created. </span>
+<a id="__codelineno-9-5" name="__codelineno-9-5"></a>$ fstarcsort --sort_type<span class="o">=</span>olabel input.fst input_sorted.fst
+<a id="__codelineno-9-6" name="__codelineno-9-6"></a>$ fstarcsort --sort_type<span class="o">=</span>ilabel model.fst model_sorted.fst
+<a id="__codelineno-9-7" name="__codelineno-9-7"></a>
+<a id="__codelineno-9-8" name="__codelineno-9-8"></a><span class="c1"># Creates the composed FST. </span>
+<a id="__codelineno-9-9" name="__codelineno-9-9"></a>$ fstcompose input_sorted.fst model_sorted.fst comp.fst
+<a id="__codelineno-9-10" name="__codelineno-9-10"></a>
+<a id="__codelineno-9-11" name="__codelineno-9-11"></a><span class="c1"># Just keeps the output label </span>
+<a id="__codelineno-9-12" name="__codelineno-9-12"></a>$ fstproject --project_output comp.fst result.fst
+<a id="__codelineno-9-13" name="__codelineno-9-13"></a>
+<a id="__codelineno-9-14" name="__codelineno-9-14"></a><span class="c1"># Do it all in a single command line. </span>
+<a id="__codelineno-9-15" name="__codelineno-9-15"></a>$ fstarcsort --sort_type<span class="o">=</span>ilabel model.fst <span class="p">|</span> fstcompose input.fst - <span class="p">|</span> fstproject --project_output result.fst
+</code></pre></div></td></tr></table></div>
+<h2 id="compose">Compose</h2>
+<p>复合（Composition）操作将不同的有限状态机合并成一个。</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-10-1">1</a></span>
+<span class="normal"><a href="#__codelineno-10-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1"></a>fstcompose <span class="o">[</span>--opts<span class="o">]</span> a.fst b.fst out.fst
+<a id="__codelineno-10-2" name="__codelineno-10-2"></a>  --connect: Trim output <span class="o">(</span>def: <span class="nb">true</span><span class="o">)</span>
+</code></pre></div></td></tr></table></div>
+<p><code>fsttablecompose</code>与<code>fstcompose</code>类似，但是前者速度更快。</p>
+<blockquote>
+<p><a href="https://www.openfst.org/twiki/bin/view/FST/ComposeDoc">ComposeDoc &lt; FST &lt; TWiki</a></p>
+</blockquote>
+<h2 id="determine">Determine</h2>
+<p>确定化（Determinization）操作确保每个状态对应每个输入有唯一输出。</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-11-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1"></a>fstdeterminize a.fst out.fst
+</code></pre></div></td></tr></table></div>
+<p><code>stdeterminizestar</code>与<code>fstdeterminize</code>类似，但前者包含去除空转移处理。</p>
+<blockquote>
+<p><a href="https://www.openfst.org/twiki/bin/view/FST/DeterminizeDoc">DeterminizeDoc &lt; FST &lt; TWiki</a></p>
+</blockquote>
+<h2 id="minimize">Minimize</h2>
+<p>最小化（Minimization）操作对有限状态机进行精简以得到最少的状态和转移弧。</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-12-1">1</a></span>
+<span class="normal"><a href="#__codelineno-12-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1"></a><span class="c1"># 如果有两个输出参数，第二个参数表示新输出标签到旧输出标签的映射，也即是in=out1\circ out2</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2"></a>fstminimize  <span class="k">in</span>.fst <span class="o">[</span>out1.fst <span class="o">[</span>out2.fst<span class="o">]]</span>
+</code></pre></div></td></tr></table></div>
+<p><code>fstminimizeencoded</code>与<code>fstminimize</code>类似，但前者没有进行权重推移。</p>
+<blockquote>
+<p><a href="https://www.openfst.org/twiki/bin/view/FST/MinimizeDoc">MinimizeDoc &lt; FST &lt; TWiki</a></p>
+</blockquote>
+<h2 id="arcsort">ArcSort</h2>
+<p>按状态对FST中的弧进行排序。</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-13-1">1</a></span>
+<span class="normal"><a href="#__codelineno-13-2">2</a></span>
+<span class="normal"><a href="#__codelineno-13-3">3</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1"></a><span class="c1"># 可以选择按照弧的输入标签或输出标签进行排序</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2"></a>fstarcsort <span class="o">[</span>--opts<span class="o">]</span> a.fst out.fst
+<a id="__codelineno-13-3" name="__codelineno-13-3"></a>  --sort_type: ilabel <span class="o">(</span>def<span class="o">)</span> <span class="p">|</span> olabel
+</code></pre></div></td></tr></table></div>
+<h2 id="replace">Replace</h2>
+<p>若干子有限状态机（SubFST）替换根有限状态机（Root FST）中的槽位。</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-14-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1"></a>fstreplace <span class="o">[</span>--epsilon_on_replace<span class="o">]</span> root.fst rootlabel <span class="o">[</span>subfst1.fst label1 ....<span class="o">]</span> <span class="o">[</span>out.fst<span class="o">]</span>
+</code></pre></div></td></tr></table></div>
+<p>实际不指定<code>rootlabel</code>功能也可以实现的，但在<code>fstreplace</code>源码中，操作对象是label id与对应fst的 pair，因此为了便于处理，需要指定<code>rootlabel</code>，便于拓展的root fst。</p>
+<blockquote>
+<p><a href="https://www.openfst.org/twiki/bin/view/FST/ReplaceDoc">ReplaceDoc &lt; FST &lt; TWiki</a></p>
+</blockquote>
+<h2 id="_3">示例</h2>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-15-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-15-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-15-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-15-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-15-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-15-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-15-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-15-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-15-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-15-10">10</a></span>
+<span class="normal"><a href="#__codelineno-15-11">11</a></span>
+<span class="normal"><a href="#__codelineno-15-12">12</a></span>
+<span class="normal"><a href="#__codelineno-15-13">13</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1"></a><span class="c1"># 从文本文件中创建FST，输出$lang/address_slot.fst</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2"></a>fstcompile --isymbols<span class="o">=</span><span class="nv">$lang</span>/words.txt --osymbols<span class="o">=</span><span class="nv">$lang</span>/words.txt <span class="se">\</span>
+<a id="__codelineno-15-3" name="__codelineno-15-3"></a>    <span class="nv">$lang</span>/address_slot.txt <span class="nv">$lang</span>/address_slot.fst
+<a id="__codelineno-15-4" name="__codelineno-15-4"></a>
+<a id="__codelineno-15-5" name="__codelineno-15-5"></a><span class="c1"># 替换操作，使用$lang/address_slot.fst替换$lang/g_with_slot.fst中的槽位</span>
+<a id="__codelineno-15-6" name="__codelineno-15-6"></a><span class="c1"># 输出$lang/g.fst</span>
+<a id="__codelineno-15-7" name="__codelineno-15-7"></a>fstreplace --epsilon_on_replace <span class="nv">$lang</span>/g_with_slot.fst <span class="nv">$root_label</span> <span class="se">\</span>
+<a id="__codelineno-15-8" name="__codelineno-15-8"></a>  <span class="nv">$lang</span>/address_slot.fst  <span class="nv">$address_slot_label</span> <span class="nv">$lang</span>/g.fst
+<a id="__codelineno-15-9" name="__codelineno-15-9"></a>
+<a id="__codelineno-15-10" name="__codelineno-15-10"></a><span class="c1"># 复合-&gt;确定化-&gt;最小化-&gt;弧排序，输出$lang/lg.fst</span>
+<a id="__codelineno-15-11" name="__codelineno-15-11"></a>fsttablecompose <span class="nv">$lang</span>/L.fst <span class="nv">$lang</span>/g.fst <span class="p">|</span> fstdeterminizestar --use-log<span class="o">=</span><span class="nb">true</span> <span class="p">|</span> fstminimizeencoded <span class="p">|</span> fstarcsort --sort_type<span class="o">=</span>ilabel &gt; <span class="nv">$lang</span>/lg.fst <span class="o">||</span> <span class="nb">exit</span> <span class="m">1</span><span class="p">;</span>
+<a id="__codelineno-15-12" name="__codelineno-15-12"></a><span class="c1"># 复合操作，输出$lang/tlg.fst</span>
+<a id="__codelineno-15-13" name="__codelineno-15-13"></a>fsttablecompose <span class="nv">$lang</span>/T.fst <span class="nv">$lang</span>/lg.fst &gt; <span class="nv">$lang</span>/tlg.fst <span class="o">||</span> <span class="nb">exit</span> <span class="m">1</span><span class="p">;</span>
+</code></pre></div></td></tr></table></div>
+<blockquote>
+<p><a href="https://www.openfst.org/twiki/bin/view/FST/FstQuickTour">FstQuickTour &lt; FST &lt; TWiki</a>
+<a href="https://www.openfst.org/twiki/bin/view/FST/FstQuickTour#Available%20FST%20Operations">Available FST Operations</a>
+<a href="https://zhuanlan.zhihu.com/p/340140838">AIBigKaldi（七）| Kaldi的解码图构造（上）（源码解析） - 知乎</a>
+<a href="https://www.openfst.org/twiki/bin/view/FST/FstAdvancedUsage">FstAdvancedUsage &lt; FST &lt; TWiki</a>
+<a href="https://aistudio.baidu.com/aistudio/projectdetail/4123501">飞桨AI Studio - 个性化语音识别</a></p>
+</blockquote>
+
+  <hr>
+<div class="md-source-file">
+  <small>
+    
+      最后更新:
+      2022-06-08
+    
+  </small>
+</div>
+
+              
+
+  <!-- Giscus -->
+  <h2 id="__comments">评论</h2>
+  <!-- Replace with generated snippet -->
+  <script src="https://giscus.app/client.js"
+        data-repo="cnlinxi/blog"
+        data-repo-id="R_kgDOHLI9Jw"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOHLI9J84COkTs"
+        data-mapping="pathname"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="bottom"
+        data-theme="light"
+        data-lang="zh-CN"
+        crossorigin="anonymous"
+        async>
+  </script>
+
+  <!-- Reload on palette change -->
+  <script>
+    var palette = __md_get("__palette")
+    if (palette && typeof palette.color === "object")
+      if (palette.color.scheme === "slate") {
+        var giscus = document.querySelector("script[src*=giscus]")
+        giscus.setAttribute("data-theme", "dark") 
+      }
+
+    /* Register event handlers after documented loaded */
+    document.addEventListener("DOMContentLoaded", function() {
+      var ref = document.querySelector("[data-md-component=palette]")
+      ref.addEventListener("change", function() {
+        var palette = __md_get("__palette")
+        if (palette && typeof palette.color === "object") {
+          var theme = palette.color.scheme === "slate" ? "dark" : "light"
+
+          /* Instruct Giscus to change theme */
+          var frame = document.querySelector(".giscus-frame")
+          frame.contentWindow.postMessage(
+            { giscus: { setConfig: { theme } } },
+            "https://giscus.app"
+          )
+        }
+      })
+    })
+  </script>
+
+            </article>
+            
+          </div>
+        </div>
+        
+          <a href="#" class="md-top md-icon" data-md-component="top" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            回到页面顶部
+          </a>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+    <nav class="md-footer__inner md-grid" aria-label="页脚" >
+      
+        
+        <a href="../kaldi%E4%B8%AD%E7%9A%84Simple-Decoder/" class="md-footer__link md-footer__link--prev" aria-label="上一页: kaldi中的Simple-Decoder" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                上一页
+              </span>
+              kaldi中的Simple-Decoder
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../wenet%E6%80%BB%E4%BD%93%E8%A7%A3%E6%9E%90/" class="md-footer__link md-footer__link--next" aria-label="下一页: wenet总体解析" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                下一页
+              </span>
+              wenet总体解析
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.expand", "toc.follow", "toc.integrate", "navigation.top", "search.suggest", "search.highlight", "search.share"], "search": "../../assets/javascripts/workers/search.b028fd86.min.js", "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.config.lang": "ja", "search.config.pipeline": "trimmer, stemmer", "search.config.separator": "[\\s\\-\uff0c\u3002]+", "search.placeholder": "\u641c\u7d22", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version.title": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.f758a944.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

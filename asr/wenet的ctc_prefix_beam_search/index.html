@@ -1,0 +1,2676 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.3.3">
+    
+    
+      
+        <title>wenet的ctc_prefix_beam_search - 语音与语言处理</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.4a0965b7.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.cbb835fc.min.css">
+        
+      
+      
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#wenetctc_prefix_beam_search" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../.." title="语音与语言处理" class="md-header__button md-logo" aria-label="语音与语言处理" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            语音与语言处理
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              wenet的ctc_prefix_beam_search
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" aria-label="分享" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7 0-.24-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91 1.61 0 2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08Z"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="清空当前内容" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/cnlinxi/blog" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    cnlinxi/blog
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-tabs__inner md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        主页
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../paper/%E6%9C%AC%E5%91%A8%E5%80%BC%E5%BE%97%E8%AF%BB_2022_04_23/" class="md-tabs__link">
+        最新论文
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../dsp/%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99/" class="md-tabs__link">
+        信号处理
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../tts/%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E6%A6%82%E8%BF%B0/" class="md-tabs__link">
+        语音合成
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../%E5%8A%A0%E6%9D%83%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/" class="md-tabs__link md-tabs__link--active">
+        语音识别
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../open_source_index/" class="md-tabs__link">
+        开源数据和工具
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../develop/docker/docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" class="md-tabs__link">
+        开发
+      </a>
+    </li>
+  
+
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../leetcode/滑动窗口专题.md" class="md-tabs__link">
+        数据结构
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="语音与语言处理" class="md-nav__button md-logo" aria-label="语音与语言处理" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    语音与语言处理
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/cnlinxi/blog" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    cnlinxi/blog
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_1" type="checkbox" id="__nav_1" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_1">
+          主页
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="主页" data-md-level="1">
+        <label class="md-nav__title" for="__nav_1">
+          <span class="md-nav__icon md-icon"></span>
+          主页
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        语音与语言处理
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          最新论文
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="最新论文" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          最新论文
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../paper/%E6%9C%AC%E5%91%A8%E5%80%BC%E5%BE%97%E8%AF%BB_2022_04_23/" class="md-nav__link">
+        本周值得读-2022_04_23
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          信号处理
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="信号处理" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          信号处理
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dsp/%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99/" class="md-nav__link">
+        参考资料
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dsp/%E8%AF%AD%E9%9F%B3%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/" class="md-nav__link">
+        语音基本概念
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dsp/%E8%AF%AD%E9%9F%B3%E7%89%B9%E5%BE%81%E6%8F%90%E5%8F%96/" class="md-nav__link">
+        语音特征提取
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4">
+          语音合成
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="语音合成" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          语音合成
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tts/%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E6%A6%82%E8%BF%B0/" class="md-nav__link">
+        语音合成概述
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tts/%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E7%9A%84%E8%AF%84%E4%BB%B7%E6%A0%87%E5%87%86%E5%92%8C%E6%96%B9%E6%B3%95/" class="md-nav__link">
+        语音合成的评价标准和方法
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tts/%E8%AF%AD%E8%A8%80%E5%AD%A6/" class="md-nav__link">
+        语言学
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tts/%E9%9F%B3%E5%BA%93%E5%88%B6%E4%BD%9C%E5%92%8C%E6%96%87%E6%9C%AC%E5%89%8D%E7%AB%AF/" class="md-nav__link">
+        音库制作和文本前端
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tts/%E5%A3%B0%E5%AD%A6%E6%A8%A1%E5%9E%8B/" class="md-nav__link">
+        声学模型
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tts/%E5%A3%B0%E7%A0%81%E5%99%A8/" class="md-nav__link">
+        声码器
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tts/%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E7%9A%84%E6%80%BB%E4%BD%93%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB/" class="md-nav__link">
+        语音合成的总体知识体系
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5">
+          语音识别
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="语音识别" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          语音识别
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E5%8A%A0%E6%9D%83%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/" class="md-nav__link">
+        加权有限状态机
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../arpa2fst%E5%B0%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E8%BD%AC%E4%B8%BAWFST/" class="md-nav__link">
+        arpa2fst将语言模型转为WFST
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kaldi%E4%B8%AD%E7%9A%84%E8%A7%A3%E7%A0%81%E8%BF%87%E7%A8%8B/" class="md-nav__link">
+        kaldi中的解码过程
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kaldi%E4%B8%AD%E7%9A%84Simple-Decoder/" class="md-nav__link">
+        kaldi中的Simple-Decoder
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../OpenFST%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" class="md-nav__link">
+        OpenFST基本操作
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../wenet%E6%80%BB%E4%BD%93%E8%A7%A3%E6%9E%90/" class="md-nav__link">
+        wenet总体解析
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../wenet_runtime%E7%9F%A5%E8%AF%86%E7%82%B9/" class="md-nav__link">
+        WeNet runtime知识点
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../wenet_kaitang-ssl-train%E7%9F%A5%E8%AF%86%E7%82%B9/" class="md-nav__link">
+        wenet_kaitang-ssl-train知识点
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../wenet%E7%9A%84ctc_alignment/" class="md-nav__link">
+        wenet的ctc_alignment
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          wenet的ctc_prefix_beam_search
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        wenet的ctc_prefix_beam_search
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#ctc" class="md-nav__link">
+    CTC字符串和规整字符串
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ctc_1" class="md-nav__link">
+    CTC常见的解码方式
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ctc-prefix-beam-search" class="md-nav__link">
+    CTC Prefix Beam Search原理
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#python" class="md-nav__link">
+    具体步骤和Python实现
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#wenet" class="md-nav__link">
+    WeNet中获取字级别的时间戳
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    代码实现
+  </a>
+  
+    <nav class="md-nav" aria-label="代码实现">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    第一次剪枝
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    令牌传播
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    第二次剪枝
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    更新规整字符串
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../wenet%E5%AF%B9onnx%E7%9A%84%E6%94%AF%E6%8C%81/" class="md-nav__link">
+        wenet对onnx的支持
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../wenet%E4%B8%ADendpoint%E6%A3%80%E6%B5%8B/" class="md-nav__link">
+        wenet中endpoint检测
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6">
+          开源数据和工具
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="开源数据和工具" data-md-level="1">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          开源数据和工具
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../open_source_index/" class="md-nav__link">
+        主页
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_7" type="checkbox" id="__nav_7" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_7">
+          开发
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="开发" data-md-level="1">
+        <label class="md-nav__title" for="__nav_7">
+          <span class="md-nav__icon md-icon"></span>
+          开发
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_7_1" type="checkbox" id="__nav_7_1" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_7_1">
+          docker
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="docker" data-md-level="2">
+        <label class="md-nav__title" for="__nav_7_1">
+          <span class="md-nav__icon md-icon"></span>
+          docker
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/docker/docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" class="md-nav__link">
+        docker常用命令
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_7_2" type="checkbox" id="__nav_7_2" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_7_2">
+          python
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="python" data-md-level="2">
+        <label class="md-nav__title" for="__nav_7_2">
+          <span class="md-nav__icon md-icon"></span>
+          python
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/python/python%E7%9A%84%E5%8F%96%E5%8F%8D%E8%BF%90%E7%AE%97%E7%AC%A6/" class="md-nav__link">
+        python的取反运算符
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/python/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/" class="md-nav__link">
+        正则表达式
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/python/conda%E5%92%8Cpip/" class="md-nav__link">
+        conda和pip
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/python/numpy%E5%AD%98%E5%8F%96%E6%95%B0%E6%8D%AE/" class="md-nav__link">
+        numpy存取数据
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/python/__future__%E7%94%A8%E6%B3%95/" class="md-nav__link">
+        __future__用法
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_7_3" type="checkbox" id="__nav_7_3" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_7_3">
+          shell
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="shell" data-md-level="2">
+        <label class="md-nav__title" for="__nav_7_3">
+          <span class="md-nav__icon md-icon"></span>
+          shell
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/shell/Linux%E6%93%8D%E4%BD%9C%E5%9F%BA%E7%A1%80%E5%A4%87%E5%BF%98%E5%BD%95/" class="md-nav__link">
+        Linux操作基础备忘录
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/shell/vim/" class="md-nav__link">
+        vim
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/shell/top_linux%E4%B8%8B%E7%9A%84%E4%BB%BB%E5%8A%A1%E7%AE%A1%E7%90%86%E5%99%A8/" class="md-nav__link">
+        top_linux下的任务管理器
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/shell/shell%E8%B0%83%E8%AF%95/" class="md-nav__link">
+        shell调试
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/shell/cat%E5%92%8CEOF/" class="md-nav__link">
+        cat和EOF
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/shell/tailf/" class="md-nav__link">
+        tailf
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/shell/shell%E8%AF%AD%E6%B3%95%E9%80%9F%E6%9F%A5%E6%89%8B%E5%86%8C/" class="md-nav__link">
+        shell语法速查手册
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_7_4" type="checkbox" id="__nav_7_4" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_7_4">
+          cpp
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="cpp" data-md-level="2">
+        <label class="md-nav__title" for="__nav_7_4">
+          <span class="md-nav__icon md-icon"></span>
+          cpp
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/cpp/stl%E7%9A%84map/" class="md-nav__link">
+        STL的map
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/cpp/cpp%E8%B0%83%E8%AF%95/" class="md-nav__link">
+        cpp调试技巧
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/cpp/cpp%E7%9A%84%E7%B1%BB%E8%AE%BF%E9%97%AE%E4%BF%AE%E9%A5%B0%E7%AC%A6/" class="md-nav__link">
+        cpp的类访问修饰符
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/cpp/cpp%E5%85%B3%E9%94%AE%E5%AD%97const%E4%BF%AE%E9%A5%B0%E5%87%BD%E6%95%B0/" class="md-nav__link">
+        cpp关键字const修饰函数
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/cpp/cpp%E5%AE%BD%E5%AD%97%E7%AC%A6wchar/" class="md-nav__link">
+        cpp宽字符wchar
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/cpp/gcc%E7%9A%84%E5%B8%B8%E7%94%A8%E7%BC%96%E8%AF%91%E9%80%89%E9%A1%B9/" class="md-nav__link">
+        GCC的常用编译选项
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/cpp/c%E6%88%96cpp%E8%BD%AF%E4%BB%B6%E7%BC%96%E8%AF%91/" class="md-nav__link">
+        c或cpp软件编译
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/cpp/stl%E7%9A%84vector/" class="md-nav__link">
+        STL的vector
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/cpp/cpp%E4%B8%AD%E7%9A%84int_t/" class="md-nav__link">
+        cpp中的int_t
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/cpp/stl%E7%9A%84string/" class="md-nav__link">
+        string操作
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/cpp/cpp%E5%8F%B3%E5%80%BC%E5%BC%95%E7%94%A8/" class="md-nav__link">
+        cpp右值引用和std::move
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/cpp/cpp%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" class="md-nav__link">
+        cpp并发编程
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/cpp/c%E5%8F%8Acpp%E7%9A%84%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99/" class="md-nav__link">
+        c及cpp的文件读写
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/cpp/cpp%E5%B8%B8%E7%94%A8%E5%BA%93gflags_glog_gtest/" class="md-nav__link">
+        cpp常用库gflags/glog/gtest
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_7_5" type="checkbox" id="__nav_7_5" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_7_5">
+          git
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="git" data-md-level="2">
+        <label class="md-nav__title" for="__nav_7_5">
+          <span class="md-nav__icon md-icon"></span>
+          git
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/git/git%E4%B8%AD%E7%9A%84HEAD/" class="md-nav__link">
+        git中的HEAD
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/git/git%E5%B8%B8%E7%94%A8%E5%9B%9E%E9%80%80%E6%93%8D%E4%BD%9C/" class="md-nav__link">
+        git常用回退操作
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/git/git%E7%9A%84%E6%8C%87%E9%92%88ref%E5%92%8Creflog/" class="md-nav__link">
+        git的指针ref和reflog
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/git/git%E8%BD%AC%E7%A7%BB%E9%83%A8%E5%88%86%E4%BB%A3%E7%A0%81cherry-pick/" class="md-nav__link">
+        git转移部分代码cherry-pick
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/git/git%E6%97%A5%E5%BF%97/" class="md-nav__link">
+        git日志
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/git/git%E5%88%86%E6%94%AF%E5%90%88%E5%B9%B6/" class="md-nav__link">
+        git分支合并
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/git/git%E7%9A%84fast_forward/" class="md-nav__link">
+        Git的Fast Forward
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/git/git%E4%BF%AE%E6%94%B9%E6%8F%90%E4%BA%A4%E4%BF%A1%E6%81%AF/" class="md-nav__link">
+        git修改提交信息
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/git/git%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%BA%90/" class="md-nav__link">
+        git学习资源
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_8" type="checkbox" id="__nav_8" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_8">
+          数据结构
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="数据结构" data-md-level="1">
+        <label class="md-nav__title" for="__nav_8">
+          <span class="md-nav__icon md-icon"></span>
+          数据结构
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../leetcode/滑动窗口专题.md" class="md-nav__link">
+        None
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../leetcode/DFS回溯算法专题.md" class="md-nav__link">
+        None
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../leetcode/一般二叉树专题.md" class="md-nav__link">
+        None
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../leetcode/二叉搜索树专题.md" class="md-nav__link">
+        None
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+  
+                
+  <a href="https://github.com/cnlinxi/blog/edit/main/docs/asr/wenet的ctc_prefix_beam_search.md" title="编辑此页" class="md-content__button md-icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25Z"/></svg>
+  </a>
+
+
+
+<h1 id="wenetctc_prefix_beam_search">wenet的ctc_prefix_beam_search</h1>
+<h2 id="ctc">CTC字符串和规整字符串</h2>
+<ul>
+<li>CTC字符串：模型在每个时刻输出字符组成的字符串。</li>
+<li>规整字符串：<code>CTC字符串</code>去除连续重复和blank之后的字符串。</li>
+</ul>
+<h2 id="ctc_1">CTC常见的解码方式</h2>
+<ol>
+<li>
+<p>greedy decode。每帧输出最大值，然后规整。
+<img alt="" src="../attachments/Pasted%20image%2020220529214340.png" /></p>
+</li>
+<li>
+<p>在<code>CTC字符串</code>上做beam search（也称<code>CTC Beam Search</code>），输出n个结果之后规整，合并相同序列，然后再应用语言模型，也即SecondPass LM。</p>
+</li>
+<li>在<code>规整字符串</code>上做beam search（也称<code>CTC Prefix Beam Search</code>），可额外应用语言模型。可以在解码过程中直接应用语言模型，也即FirstPass LM。</li>
+<li>使用FST静态解码，可引入语言模型和字典模型。</li>
+</ol>
+<p><code>CTC字符串</code>上beam search（<code>CTC Beam Search</code>）和<code>规整字符串</code>上beam search（<code>CTC Prefix Beam Search</code>）的主要区别在于，同样的beam size下，前者丢弃的CTC路径更多，因此效果更差一些：</p>
+<ol>
+<li><code>CTC Beam Search</code>在解码过程中产生的CTC候选路径有可能产生重复项，而这些重复项在<code>CTC Beam Search</code>的计算过程中是各自独立的，占用了beam数。</li>
+<li><code>CTC Prefix Beam Search</code>在解码过程中合并重复项的概率，从而提升了解码的多样性和鲁棒性。</li>
+</ol>
+<p>如下图，直接在<code>CTC字符串</code>上做beam search，当beam size=3时，每个时刻只有三条路径：</p>
+<p><img alt="" src="../attachments/Pasted%20image%2020220515223121.png" /></p>
+<p>在<code>规整字符串</code>上做beam search，当beam size=3时，每个时刻则可以保留更多的路径：</p>
+<p><img alt="" src="../attachments/Pasted%20image%2020220515223409.png" /></p>
+<p>CTC Prefix Beam Search仍然会丢失一些CTC序列的概率，比如上例中，当时刻<span class="arithmatex">\(t\)</span>的beam中只有a而没有ab时，在<span class="arithmatex">\(t+1\)</span>时刻计算ab，只使用了<span class="arithmatex">\(t\)</span>时刻a的扩展，此时会丢失来自<span class="arithmatex">\(t\)</span>时刻ab的得分。</p>
+<h2 id="ctc-prefix-beam-search">CTC Prefix Beam Search原理</h2>
+<p>利用神经网络和CTC建模序列问题时，神经网络输出一个<span class="arithmatex">\(T\times M\)</span>的矩阵，其中<span class="arithmatex">\(T\)</span>表示音频帧数，<span class="arithmatex">\(M\)</span>表示词典的大小。CTC Prefix Beam Search算法则在该矩阵的基础上，找出概率最高的N条路径。</p>
+<p>CTC Prefix Beam Search的过程中，每个时刻均执行：</p>
+<ol>
+<li>扩展。根据前缀串和当前时刻的输出，计算所有当前可能输出的<code>规整字符串</code>概率。</li>
+<li>规约。将规约得到的相同串对应的候选概率相加。</li>
+<li>裁剪。仅保留top k个最优的序列做下一步扩展。上图中<span class="arithmatex">\(k=3\)</span>，绿色表示保留，红色表示裁剪。</li>
+</ol>
+<p>对于<span class="arithmatex">\(t\)</span>时刻处在beam中的每个规整字符串，更新其对应的<span class="arithmatex">\(t+1\)</span>时刻规整字符串的概率值，此时并不能直接使用<span class="arithmatex">\(t\)</span>时刻规整字符串的概率乘上<span class="arithmatex">\(t+1\)</span>时刻输出字符的概率以得到<span class="arithmatex">\(t+1\)</span>时刻规整字符串的概率，主要原因是根据CTC规则，使用相同的<span class="arithmatex">\(t\)</span>时刻规整字符串，相同的<span class="arithmatex">\(t+1\)</span>时刻输出字符能够得到不同的<span class="arithmatex">\(t+1\)</span>时刻规整字符串。比如<span class="arithmatex">\(t\)</span>时刻CTC字符串为aa和a-（“-”表示blank），对应的规整字符串均为a，当<span class="arithmatex">\(t+1\)</span>时刻输出字符a时，得到的<span class="arithmatex">\(t+1\)</span>时刻规整字符串分别为a和aa。因此需要区分对待blank和非blank结尾的CTC字符串规整概率：</p>
+<ul>
+<li><span class="arithmatex">\(p_b(L)\)</span>表示所有以blank结尾且规整后字符串是L的各个CTC字符串概率之和。</li>
+<li><span class="arithmatex">\(p_{nb}(L)\)</span>表示所有以非blank结尾且规整后字符串是L的各个CTC字符串概率之和。</li>
+</ul>
+<p>假设<span class="arithmatex">\(t=3\)</span>时规整字符串为a，则：</p>
+<div class="arithmatex">\[
+p_b(a)=p(aa-)+p(-a-)+p(a--)
+\]</div>
+<div class="arithmatex">\[
+p_{nb}(a)=p(aaa)+p(-aa)+p(--a)
+\]</div>
+<p>若<span class="arithmatex">\(t=4\)</span>时输出字符a，产生规整字符串有如下四种情况：</p>
+<ol>
+<li>当<span class="arithmatex">\(t+1\)</span>输出是blank时，产生规整字符串a。</li>
+<li>当<span class="arithmatex">\(t+1\)</span>输出是a时，可以产生规整字符串a（<span class="arithmatex">\(t\)</span>时刻输出为非blank）。</li>
+<li>当<span class="arithmatex">\(t+1\)</span>输出是a时，也可以产生规整字符串aa（<span class="arithmatex">\(t\)</span>时刻输出为blank）。</li>
+<li>当<span class="arithmatex">\(t+1\)</span>输出为b时，产生规整字符串ab。</li>
+</ol>
+<p>四种情况需要更新的统计量如下：</p>
+<div class="arithmatex">\[
+p_b^{t+1}(a)+=[p_b^t(a)+p_{nb}^t(a)]p_{ctc}^{t+1}(-)
+\]</div>
+<div class="arithmatex">\[
+p_{nb}^{t+1}(a)+=p_{nb}^t(a)p_{ctc}^{t+1}(a)
+\]</div>
+<div class="arithmatex">\[
+p_{nb}^{t+1}(aa)+=p_{b}^t(a)p_{ctc}^{t+1}(a)
+\]</div>
+<div class="arithmatex">\[
+p_{nb}^{t+1}(ab)+=[p_b^t(a)+p_{nb}^t(a)]p_{ctc}^{t+1}(b)
+\]</div>
+<p>如上式，在情况1和4中，可以通过2种途径获得所需要的<span class="arithmatex">\(t\)</span>时刻规整字符串a，因此需要遵循概率论中的加法原理，将两个概率值加起来；然后遵循乘法原理，乘第<span class="arithmatex">\(t+1\)</span>时刻的概率值。</p>
+<p>总之，如果当前时刻输出字符（不含blank）和规整字符串最后一个字符不同，则不需要区分blank和非blank规整概率，两者加起来之后乘当前字符概率即可；如果当前时刻输出字符（不含blank）和规整字符串最后一个字符相同，此时有可能出现相同规整字符串和当前输出字符，产生当前时刻不同规整字符串的情况，因此需要区分blank和非blank规整概率。</p>
+<p><img alt="" src="../attachments/Pasted%20image%2020220513005416.png" /></p>
+<p>如上图所示，假设左上角为神经网络输出的<span class="arithmatex">\(T\times M\)</span>矩阵，其中<span class="arithmatex">\(T=3,M=3\)</span>。以上图<span class="arithmatex">\(T=2\)</span>，绿框<span class="arithmatex">\(a\)</span>扩展到<span class="arithmatex">\(T=3\)</span>的过程为例。</p>
+<p>在步骤1中：</p>
+<ul>
+<li>假设<span class="arithmatex">\(a\)</span>扩展到<span class="arithmatex">\(\epsilon\)</span>，查阅表格可知，该过程的概率为0.10，因此计算得到的概率为<span class="arithmatex">\(0.3875\times 0.10=0.03875\)</span>，注意到乘数为0.3875，而非0.2275或者0.16，这是因为下一个字符为<span class="arithmatex">\(\epsilon\)</span>，与当前字符a不同，应该使用候选概率的加和值。</li>
+<li>假设<span class="arithmatex">\(a\)</span>扩展到<span class="arithmatex">\(a\)</span>，查阅表格可知，该过程的概率为0.50，由于当前字符和下一个字符相同，因此乘数应采用各自的候选概率，分别是<span class="arithmatex">\(0.2275\times 0.50=0.11375\)</span>和<span class="arithmatex">\(0.16\times 0.50=0.08000\)</span>。</li>
+<li>假设<span class="arithmatex">\(a\)</span>扩展到<span class="arithmatex">\(b\)</span>，查阅表格可知，该过程的概率为0.40，并且当前字符和下一个字符不同，乘数应采用候选概率的加和值，因此计算得到的概率为<span class="arithmatex">\(0.3875\times 0.40=0.1150\)</span>。</li>
+</ul>
+<p>以此类推，计算出其它的概率值。注意到，通过不同的路径规约之后可以得到相同串，比如<span class="arithmatex">\(a\to a,a\epsilon \to a\)</span>，因此根据步骤2将规约得到的相同串对应的候选概率相加，得到a对应的概率加和值为<span class="arithmatex">\(0.11375+0.03875=0.1525\)</span>。</p>
+<p>在步骤3中，由于<span class="arithmatex">\(k=3\)</span>，则保留概率最高的3组最优序列，上图中以绿色标注。</p>
+<h2 id="python">具体步骤和Python实现</h2>
+<p>在<a href="https://arxiv.org/abs/1408.2873">First-Pass Large Vocabulary Continuous Speech Recognition using Bi-Directional Recurrent DNNs</a>中给出CTC Prefix Beam Search的具体步骤如下：</p>
+<p><img alt="" src="../attachments/Pasted%20image%2020220515224208.png" /></p>
+<p>如上算法流程图中，除了<code>else if c = space then</code>，分别对应上述情况1~4。</p>
+<p>对应的Python实现：</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1">  1</a></span>
+<span class="normal"><a href="#__codelineno-0-2">  2</a></span>
+<span class="normal"><a href="#__codelineno-0-3">  3</a></span>
+<span class="normal"><a href="#__codelineno-0-4">  4</a></span>
+<span class="normal"><a href="#__codelineno-0-5">  5</a></span>
+<span class="normal"><a href="#__codelineno-0-6">  6</a></span>
+<span class="normal"><a href="#__codelineno-0-7">  7</a></span>
+<span class="normal"><a href="#__codelineno-0-8">  8</a></span>
+<span class="normal"><a href="#__codelineno-0-9">  9</a></span>
+<span class="normal"><a href="#__codelineno-0-10"> 10</a></span>
+<span class="normal"><a href="#__codelineno-0-11"> 11</a></span>
+<span class="normal"><a href="#__codelineno-0-12"> 12</a></span>
+<span class="normal"><a href="#__codelineno-0-13"> 13</a></span>
+<span class="normal"><a href="#__codelineno-0-14"> 14</a></span>
+<span class="normal"><a href="#__codelineno-0-15"> 15</a></span>
+<span class="normal"><a href="#__codelineno-0-16"> 16</a></span>
+<span class="normal"><a href="#__codelineno-0-17"> 17</a></span>
+<span class="normal"><a href="#__codelineno-0-18"> 18</a></span>
+<span class="normal"><a href="#__codelineno-0-19"> 19</a></span>
+<span class="normal"><a href="#__codelineno-0-20"> 20</a></span>
+<span class="normal"><a href="#__codelineno-0-21"> 21</a></span>
+<span class="normal"><a href="#__codelineno-0-22"> 22</a></span>
+<span class="normal"><a href="#__codelineno-0-23"> 23</a></span>
+<span class="normal"><a href="#__codelineno-0-24"> 24</a></span>
+<span class="normal"><a href="#__codelineno-0-25"> 25</a></span>
+<span class="normal"><a href="#__codelineno-0-26"> 26</a></span>
+<span class="normal"><a href="#__codelineno-0-27"> 27</a></span>
+<span class="normal"><a href="#__codelineno-0-28"> 28</a></span>
+<span class="normal"><a href="#__codelineno-0-29"> 29</a></span>
+<span class="normal"><a href="#__codelineno-0-30"> 30</a></span>
+<span class="normal"><a href="#__codelineno-0-31"> 31</a></span>
+<span class="normal"><a href="#__codelineno-0-32"> 32</a></span>
+<span class="normal"><a href="#__codelineno-0-33"> 33</a></span>
+<span class="normal"><a href="#__codelineno-0-34"> 34</a></span>
+<span class="normal"><a href="#__codelineno-0-35"> 35</a></span>
+<span class="normal"><a href="#__codelineno-0-36"> 36</a></span>
+<span class="normal"><a href="#__codelineno-0-37"> 37</a></span>
+<span class="normal"><a href="#__codelineno-0-38"> 38</a></span>
+<span class="normal"><a href="#__codelineno-0-39"> 39</a></span>
+<span class="normal"><a href="#__codelineno-0-40"> 40</a></span>
+<span class="normal"><a href="#__codelineno-0-41"> 41</a></span>
+<span class="normal"><a href="#__codelineno-0-42"> 42</a></span>
+<span class="normal"><a href="#__codelineno-0-43"> 43</a></span>
+<span class="normal"><a href="#__codelineno-0-44"> 44</a></span>
+<span class="normal"><a href="#__codelineno-0-45"> 45</a></span>
+<span class="normal"><a href="#__codelineno-0-46"> 46</a></span>
+<span class="normal"><a href="#__codelineno-0-47"> 47</a></span>
+<span class="normal"><a href="#__codelineno-0-48"> 48</a></span>
+<span class="normal"><a href="#__codelineno-0-49"> 49</a></span>
+<span class="normal"><a href="#__codelineno-0-50"> 50</a></span>
+<span class="normal"><a href="#__codelineno-0-51"> 51</a></span>
+<span class="normal"><a href="#__codelineno-0-52"> 52</a></span>
+<span class="normal"><a href="#__codelineno-0-53"> 53</a></span>
+<span class="normal"><a href="#__codelineno-0-54"> 54</a></span>
+<span class="normal"><a href="#__codelineno-0-55"> 55</a></span>
+<span class="normal"><a href="#__codelineno-0-56"> 56</a></span>
+<span class="normal"><a href="#__codelineno-0-57"> 57</a></span>
+<span class="normal"><a href="#__codelineno-0-58"> 58</a></span>
+<span class="normal"><a href="#__codelineno-0-59"> 59</a></span>
+<span class="normal"><a href="#__codelineno-0-60"> 60</a></span>
+<span class="normal"><a href="#__codelineno-0-61"> 61</a></span>
+<span class="normal"><a href="#__codelineno-0-62"> 62</a></span>
+<span class="normal"><a href="#__codelineno-0-63"> 63</a></span>
+<span class="normal"><a href="#__codelineno-0-64"> 64</a></span>
+<span class="normal"><a href="#__codelineno-0-65"> 65</a></span>
+<span class="normal"><a href="#__codelineno-0-66"> 66</a></span>
+<span class="normal"><a href="#__codelineno-0-67"> 67</a></span>
+<span class="normal"><a href="#__codelineno-0-68"> 68</a></span>
+<span class="normal"><a href="#__codelineno-0-69"> 69</a></span>
+<span class="normal"><a href="#__codelineno-0-70"> 70</a></span>
+<span class="normal"><a href="#__codelineno-0-71"> 71</a></span>
+<span class="normal"><a href="#__codelineno-0-72"> 72</a></span>
+<span class="normal"><a href="#__codelineno-0-73"> 73</a></span>
+<span class="normal"><a href="#__codelineno-0-74"> 74</a></span>
+<span class="normal"><a href="#__codelineno-0-75"> 75</a></span>
+<span class="normal"><a href="#__codelineno-0-76"> 76</a></span>
+<span class="normal"><a href="#__codelineno-0-77"> 77</a></span>
+<span class="normal"><a href="#__codelineno-0-78"> 78</a></span>
+<span class="normal"><a href="#__codelineno-0-79"> 79</a></span>
+<span class="normal"><a href="#__codelineno-0-80"> 80</a></span>
+<span class="normal"><a href="#__codelineno-0-81"> 81</a></span>
+<span class="normal"><a href="#__codelineno-0-82"> 82</a></span>
+<span class="normal"><a href="#__codelineno-0-83"> 83</a></span>
+<span class="normal"><a href="#__codelineno-0-84"> 84</a></span>
+<span class="normal"><a href="#__codelineno-0-85"> 85</a></span>
+<span class="normal"><a href="#__codelineno-0-86"> 86</a></span>
+<span class="normal"><a href="#__codelineno-0-87"> 87</a></span>
+<span class="normal"><a href="#__codelineno-0-88"> 88</a></span>
+<span class="normal"><a href="#__codelineno-0-89"> 89</a></span>
+<span class="normal"><a href="#__codelineno-0-90"> 90</a></span>
+<span class="normal"><a href="#__codelineno-0-91"> 91</a></span>
+<span class="normal"><a href="#__codelineno-0-92"> 92</a></span>
+<span class="normal"><a href="#__codelineno-0-93"> 93</a></span>
+<span class="normal"><a href="#__codelineno-0-94"> 94</a></span>
+<span class="normal"><a href="#__codelineno-0-95"> 95</a></span>
+<span class="normal"><a href="#__codelineno-0-96"> 96</a></span>
+<span class="normal"><a href="#__codelineno-0-97"> 97</a></span>
+<span class="normal"><a href="#__codelineno-0-98"> 98</a></span>
+<span class="normal"><a href="#__codelineno-0-99"> 99</a></span>
+<span class="normal"><a href="#__codelineno-0-100">100</a></span>
+<span class="normal"><a href="#__codelineno-0-101">101</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2"></a><span class="sd">Author: Awni Hannun</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3"></a>
+<a id="__codelineno-0-4" name="__codelineno-0-4"></a><span class="sd">This is an example CTC decoder written in Python. The code is</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5"></a><span class="sd">intended to be a simple example and is not designed to be</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6"></a><span class="sd">especially efficient.</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7"></a>
+<a id="__codelineno-0-8" name="__codelineno-0-8"></a><span class="sd">The algorithm is a prefix beam search for a model trained</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9"></a><span class="sd">with the CTC loss function.</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10"></a>
+<a id="__codelineno-0-11" name="__codelineno-0-11"></a><span class="sd">For more details checkout either of these references:</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12"></a><span class="sd">  https://distill.pub/2017/ctc/#inference</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13"></a><span class="sd">  https://arxiv.org/abs/1408.2873</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14"></a>
+<a id="__codelineno-0-15" name="__codelineno-0-15"></a><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-0-16" name="__codelineno-0-16"></a>
+<a id="__codelineno-0-17" name="__codelineno-0-17"></a><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<a id="__codelineno-0-18" name="__codelineno-0-18"></a><span class="kn">import</span> <span class="nn">math</span>
+<a id="__codelineno-0-19" name="__codelineno-0-19"></a><span class="kn">import</span> <span class="nn">collections</span>
+<a id="__codelineno-0-20" name="__codelineno-0-20"></a>
+<a id="__codelineno-0-21" name="__codelineno-0-21"></a><span class="n">NEG_INF</span> <span class="o">=</span> <span class="o">-</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-22" name="__codelineno-0-22"></a>
+<a id="__codelineno-0-23" name="__codelineno-0-23"></a><span class="k">def</span> <span class="nf">decode</span><span class="p">(</span><span class="n">probs</span><span class="p">,</span> <span class="n">beam_size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<a id="__codelineno-0-24" name="__codelineno-0-24"></a>    <span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-0-25" name="__codelineno-0-25"></a><span class="sd">    Performs inference for the given output probabilities.</span>
+<a id="__codelineno-0-26" name="__codelineno-0-26"></a>
+<a id="__codelineno-0-27" name="__codelineno-0-27"></a><span class="sd">    Arguments:</span>
+<a id="__codelineno-0-28" name="__codelineno-0-28"></a><span class="sd">      probs: The output probabilities (e.g. log post-softmax) for each</span>
+<a id="__codelineno-0-29" name="__codelineno-0-29"></a><span class="sd">        time step. Should be an array of shape (time x output dim).</span>
+<a id="__codelineno-0-30" name="__codelineno-0-30"></a><span class="sd">      beam_size (int): Size of the beam to use during inference.</span>
+<a id="__codelineno-0-31" name="__codelineno-0-31"></a><span class="sd">      blank (int): Index of the CTC blank label.</span>
+<a id="__codelineno-0-32" name="__codelineno-0-32"></a>
+<a id="__codelineno-0-33" name="__codelineno-0-33"></a><span class="sd">    Returns the output label sequence and the corresponding negative</span>
+<a id="__codelineno-0-34" name="__codelineno-0-34"></a><span class="sd">    log-likelihood estimated by the decoder.</span>
+<a id="__codelineno-0-35" name="__codelineno-0-35"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-36" name="__codelineno-0-36"></a>    <span class="n">T</span><span class="p">,</span> <span class="n">S</span> <span class="o">=</span> <span class="n">probs</span><span class="o">.</span><span class="n">shape</span>
+<a id="__codelineno-0-37" name="__codelineno-0-37"></a>
+<a id="__codelineno-0-38" name="__codelineno-0-38"></a>    <span class="c1"># Elements in the beam are (prefix, (p_blank, p_no_blank))</span>
+<a id="__codelineno-0-39" name="__codelineno-0-39"></a>    <span class="c1"># Initialize the beam with the empty sequence, a probability of</span>
+<a id="__codelineno-0-40" name="__codelineno-0-40"></a>    <span class="c1"># 1 for ending in blank and zero for ending in non-blank</span>
+<a id="__codelineno-0-41" name="__codelineno-0-41"></a>    <span class="c1"># (in log space).</span>
+<a id="__codelineno-0-42" name="__codelineno-0-42"></a>    <span class="n">beam</span> <span class="o">=</span> <span class="p">[(</span><span class="nb">tuple</span><span class="p">(),</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">NEG_INF</span><span class="p">))]</span>
+<a id="__codelineno-0-43" name="__codelineno-0-43"></a>
+<a id="__codelineno-0-44" name="__codelineno-0-44"></a>    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="p">):</span> <span class="c1"># Loop over time</span>
+<a id="__codelineno-0-45" name="__codelineno-0-45"></a>
+<a id="__codelineno-0-46" name="__codelineno-0-46"></a>        <span class="c1"># A default dictionary to store the next step candidates.</span>
+<a id="__codelineno-0-47" name="__codelineno-0-47"></a>        <span class="n">next_beam</span> <span class="o">=</span> <span class="n">make_new_beam</span><span class="p">()</span>
+<a id="__codelineno-0-48" name="__codelineno-0-48"></a>
+<a id="__codelineno-0-49" name="__codelineno-0-49"></a>        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">S</span><span class="p">):</span> <span class="c1"># Loop over vocab</span>
+<a id="__codelineno-0-50" name="__codelineno-0-50"></a>            <span class="n">p</span> <span class="o">=</span> <span class="n">probs</span><span class="p">[</span><span class="n">t</span><span class="p">,</span> <span class="n">s</span><span class="p">]</span>
+<a id="__codelineno-0-51" name="__codelineno-0-51"></a>
+<a id="__codelineno-0-52" name="__codelineno-0-52"></a>            <span class="c1"># The variables p_b and p_nb are respectively the</span>
+<a id="__codelineno-0-53" name="__codelineno-0-53"></a>            <span class="c1"># probabilities for the prefix given that it ends in a</span>
+<a id="__codelineno-0-54" name="__codelineno-0-54"></a>            <span class="c1"># blank and does not end in a blank at this time step.</span>
+<a id="__codelineno-0-55" name="__codelineno-0-55"></a>            <span class="k">for</span> <span class="n">prefix</span><span class="p">,</span> <span class="p">(</span><span class="n">p_b</span><span class="p">,</span> <span class="n">p_nb</span><span class="p">)</span> <span class="ow">in</span> <span class="n">beam</span><span class="p">:</span> <span class="c1"># Loop over beam</span>
+<a id="__codelineno-0-56" name="__codelineno-0-56"></a>
+<a id="__codelineno-0-57" name="__codelineno-0-57"></a>                <span class="c1"># 情况1</span>
+<a id="__codelineno-0-58" name="__codelineno-0-58"></a>                <span class="c1"># If we propose a blank the prefix doesn&#39;t change.</span>
+<a id="__codelineno-0-59" name="__codelineno-0-59"></a>                <span class="c1"># Only the probability of ending in blank gets updated.</span>
+<a id="__codelineno-0-60" name="__codelineno-0-60"></a>                <span class="k">if</span> <span class="n">s</span> <span class="o">==</span> <span class="n">blank</span><span class="p">:</span>
+<a id="__codelineno-0-61" name="__codelineno-0-61"></a>                  <span class="c1"># n_p_b：当前时刻blank概率，n_p_nb：当前时刻非blank概率</span>
+<a id="__codelineno-0-62" name="__codelineno-0-62"></a>                  <span class="n">n_p_b</span><span class="p">,</span> <span class="n">n_p_nb</span> <span class="o">=</span> <span class="n">next_beam</span><span class="p">[</span><span class="n">prefix</span><span class="p">]</span>
+<a id="__codelineno-0-63" name="__codelineno-0-63"></a>                  <span class="c1"># logsumexp(n_p_b, p_b + p, p_nb + p): </span>
+<a id="__codelineno-0-64" name="__codelineno-0-64"></a>                  <span class="c1"># n_p_b x ((p_b + p) + (p_nb + p))</span>
+<a id="__codelineno-0-65" name="__codelineno-0-65"></a>                  <span class="n">n_p_b</span> <span class="o">=</span> <span class="n">logsumexp</span><span class="p">(</span><span class="n">n_p_b</span><span class="p">,</span> <span class="n">p_b</span> <span class="o">+</span> <span class="n">p</span><span class="p">,</span> <span class="n">p_nb</span> <span class="o">+</span> <span class="n">p</span><span class="p">)</span>
+<a id="__codelineno-0-66" name="__codelineno-0-66"></a>                  <span class="n">next_beam</span><span class="p">[</span><span class="n">prefix</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">n_p_b</span><span class="p">,</span> <span class="n">n_p_nb</span><span class="p">)</span>
+<a id="__codelineno-0-67" name="__codelineno-0-67"></a>                  <span class="k">continue</span>
+<a id="__codelineno-0-68" name="__codelineno-0-68"></a>
+<a id="__codelineno-0-69" name="__codelineno-0-69"></a>                <span class="c1"># Extend the prefix by the new character s and add it to</span>
+<a id="__codelineno-0-70" name="__codelineno-0-70"></a>                <span class="c1"># the beam. Only the probability of not ending in blank</span>
+<a id="__codelineno-0-71" name="__codelineno-0-71"></a>                <span class="c1"># gets updated.</span>
+<a id="__codelineno-0-72" name="__codelineno-0-72"></a>                <span class="n">end_t</span> <span class="o">=</span> <span class="n">prefix</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">prefix</span> <span class="k">else</span> <span class="kc">None</span>
+<a id="__codelineno-0-73" name="__codelineno-0-73"></a>                <span class="n">n_prefix</span> <span class="o">=</span> <span class="n">prefix</span> <span class="o">+</span> <span class="p">(</span><span class="n">s</span><span class="p">,)</span>
+<a id="__codelineno-0-74" name="__codelineno-0-74"></a>                <span class="n">n_p_b</span><span class="p">,</span> <span class="n">n_p_nb</span> <span class="o">=</span> <span class="n">next_beam</span><span class="p">[</span><span class="n">n_prefix</span><span class="p">]</span>
+<a id="__codelineno-0-75" name="__codelineno-0-75"></a>                <span class="k">if</span> <span class="n">s</span> <span class="o">!=</span> <span class="n">end_t</span><span class="p">:</span>  <span class="c1"># 情况4</span>
+<a id="__codelineno-0-76" name="__codelineno-0-76"></a>                  <span class="n">n_p_nb</span> <span class="o">=</span> <span class="n">logsumexp</span><span class="p">(</span><span class="n">n_p_nb</span><span class="p">,</span> <span class="n">p_b</span> <span class="o">+</span> <span class="n">p</span><span class="p">,</span> <span class="n">p_nb</span> <span class="o">+</span> <span class="n">p</span><span class="p">)</span>
+<a id="__codelineno-0-77" name="__codelineno-0-77"></a>                <span class="k">else</span><span class="p">:</span>  <span class="c1"># 情况2和3</span>
+<a id="__codelineno-0-78" name="__codelineno-0-78"></a>                  <span class="c1"># We don&#39;t include the previous probability of not ending</span>
+<a id="__codelineno-0-79" name="__codelineno-0-79"></a>                  <span class="c1"># in blank (p_nb) if s is repeated at the end. The CTC</span>
+<a id="__codelineno-0-80" name="__codelineno-0-80"></a>                  <span class="c1"># algorithm merges characters not separated by a blank.</span>
+<a id="__codelineno-0-81" name="__codelineno-0-81"></a>                  <span class="n">n_p_nb</span> <span class="o">=</span> <span class="n">logsumexp</span><span class="p">(</span><span class="n">n_p_nb</span><span class="p">,</span> <span class="n">p_b</span> <span class="o">+</span> <span class="n">p</span><span class="p">)</span>
+<a id="__codelineno-0-82" name="__codelineno-0-82"></a>
+<a id="__codelineno-0-83" name="__codelineno-0-83"></a>                <span class="c1"># *NB* this would be a good place to include an LM score.</span>
+<a id="__codelineno-0-84" name="__codelineno-0-84"></a>                <span class="n">next_beam</span><span class="p">[</span><span class="n">n_prefix</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">n_p_b</span><span class="p">,</span> <span class="n">n_p_nb</span><span class="p">)</span>
+<a id="__codelineno-0-85" name="__codelineno-0-85"></a>
+<a id="__codelineno-0-86" name="__codelineno-0-86"></a>                <span class="c1"># If s is repeated at the end we also update the unchanged</span>
+<a id="__codelineno-0-87" name="__codelineno-0-87"></a>                <span class="c1"># prefix. This is the merging case.</span>
+<a id="__codelineno-0-88" name="__codelineno-0-88"></a>                <span class="k">if</span> <span class="n">s</span> <span class="o">==</span> <span class="n">end_t</span><span class="p">:</span>  <span class="c1"># 情况2，规整字符串不变，但规整概率需要更新</span>
+<a id="__codelineno-0-89" name="__codelineno-0-89"></a>                  <span class="n">n_p_b</span><span class="p">,</span> <span class="n">n_p_nb</span> <span class="o">=</span> <span class="n">next_beam</span><span class="p">[</span><span class="n">prefix</span><span class="p">]</span>
+<a id="__codelineno-0-90" name="__codelineno-0-90"></a>                  <span class="n">n_p_nb</span> <span class="o">=</span> <span class="n">logsumexp</span><span class="p">(</span><span class="n">n_p_nb</span><span class="p">,</span> <span class="n">p_nb</span> <span class="o">+</span> <span class="n">p</span><span class="p">)</span>
+<a id="__codelineno-0-91" name="__codelineno-0-91"></a>                  <span class="n">next_beam</span><span class="p">[</span><span class="n">prefix</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">n_p_b</span><span class="p">,</span> <span class="n">n_p_nb</span><span class="p">)</span>
+<a id="__codelineno-0-92" name="__codelineno-0-92"></a>
+<a id="__codelineno-0-93" name="__codelineno-0-93"></a>        <span class="c1"># Sort and trim the beam before moving on to the</span>
+<a id="__codelineno-0-94" name="__codelineno-0-94"></a>        <span class="c1"># next time-step.</span>
+<a id="__codelineno-0-95" name="__codelineno-0-95"></a>        <span class="n">beam</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">next_beam</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span>
+<a id="__codelineno-0-96" name="__codelineno-0-96"></a>                <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span> <span class="n">logsumexp</span><span class="p">(</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+<a id="__codelineno-0-97" name="__codelineno-0-97"></a>                <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<a id="__codelineno-0-98" name="__codelineno-0-98"></a>        <span class="n">beam</span> <span class="o">=</span> <span class="n">beam</span><span class="p">[:</span><span class="n">beam_size</span><span class="p">]</span>
+<a id="__codelineno-0-99" name="__codelineno-0-99"></a>
+<a id="__codelineno-0-100" name="__codelineno-0-100"></a>    <span class="n">best</span> <span class="o">=</span> <span class="n">beam</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<a id="__codelineno-0-101" name="__codelineno-0-101"></a>    <span class="k">return</span> <span class="n">best</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">-</span><span class="n">logsumexp</span><span class="p">(</span><span class="o">*</span><span class="n">best</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</code></pre></div></td></tr></table></div>
+<h2 id="wenet">WeNet中获取字级别的时间戳</h2>
+<p>在语音识别的一些任务中，字级别的时间戳和N-best扮演着重要的作用，比如视频应用中，语音识别结合字级别的时间戳可以在精确的时间显示字幕，在会议场景中，字级别的时间戳可以标定与会者说某句话某个字的精确时间。</p>
+<p>每个前缀串可以由多个串规约而成。WeNet 使用前缀串的被规约串中最优的一条路径，即viterbi路径来记录时间信息，viterbi路径记录了每个字峰值的时间。</p>
+<p><img alt="" src="../attachments/Pasted%20image%2020220512013922.png" /></p>
+<p>如上图所示，解码后一共得到三个解码结果：a，ab和ba：</p>
+<ul>
+<li>对于解码结果a来说，考虑到剪枝策略，因此规约前的串只可能是<span class="arithmatex">\(\epsilon a\epsilon\)</span>，<span class="arithmatex">\(\epsilon a a\)</span>或者<span class="arithmatex">\(aaa\)</span>。<ul>
+<li>viterbi分数较高的是<span class="arithmatex">\(aaa\)</span>，为<span class="arithmatex">\(0.40\times 0.35\times 0.50=0.07\)</span>。</li>
+<li>a的峰值在<span class="arithmatex">\(T=3\)</span>，对应的概率为<span class="arithmatex">\(0.50\)</span>，对应的时间戳<span class="arithmatex">\(T=[3]\)</span>。</li>
+</ul>
+</li>
+<li>对于解码结果ab来说，规约前的串可能是aab或者<span class="arithmatex">\(a\epsilon b\)</span>。<ul>
+<li>viterbi分数较高的是<span class="arithmatex">\(a\epsilon b\)</span>，为<span class="arithmatex">\(0.40\times 0.40\times 0.40=0.064\)</span>。</li>
+<li>a和b对应的时间戳为<span class="arithmatex">\(T=[1,3]\)</span>。</li>
+</ul>
+</li>
+<li>对于解码结果ba来说，规约前的串可能是<span class="arithmatex">\(\epsilon ba,b\epsilon a,ba\epsilon ,baa\)</span>或者<span class="arithmatex">\(bba\)</span>。<ul>
+<li>viterbi分数较高的是<span class="arithmatex">\(b\epsilon a\)</span>，为<span class="arithmatex">\(0.35\times 0.40\times 0.50=0.07\)</span>。</li>
+<li>b和a的时间戳为<span class="arithmatex">\(T=[1,3]\)</span>。</li>
+</ul>
+</li>
+</ul>
+<p>通常一个字的时间戳信息应该包括起始时间和终止时间，而使用上述算法，只能获取该字峰值所在的时间，因此在WeNet实现中，考虑到延迟等因素，将峰值所在的时间当做该字的终止时间，上一个字峰值所在的时间当做起始时间。</p>
+<h2 id="_1">代码实现</h2>
+<p>WeNet使用HashMap保存解码过程中产生的规整字符串（字符对应的ID序列）及其对应的分数信息：</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-1-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-1-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-1-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-1-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-1-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-1-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-1-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-1-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-1-10">10</a></span>
+<span class="normal"><a href="#__codelineno-1-11">11</a></span>
+<span class="normal"><a href="#__codelineno-1-12">12</a></span>
+<span class="normal"><a href="#__codelineno-1-13">13</a></span>
+<span class="normal"><a href="#__codelineno-1-14">14</a></span>
+<span class="normal"><a href="#__codelineno-1-15">15</a></span>
+<span class="normal"><a href="#__codelineno-1-16">16</a></span>
+<span class="normal"><a href="#__codelineno-1-17">17</a></span>
+<span class="normal"><a href="#__codelineno-1-18">18</a></span>
+<span class="normal"><a href="#__codelineno-1-19">19</a></span>
+<span class="normal"><a href="#__codelineno-1-20">20</a></span>
+<span class="normal"><a href="#__codelineno-1-21">21</a></span>
+<span class="normal"><a href="#__codelineno-1-22">22</a></span>
+<span class="normal"><a href="#__codelineno-1-23">23</a></span>
+<span class="normal"><a href="#__codelineno-1-24">24</a></span>
+<span class="normal"><a href="#__codelineno-1-25">25</a></span>
+<span class="normal"><a href="#__codelineno-1-26">26</a></span>
+<span class="normal"><a href="#__codelineno-1-27">27</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="c1">// wenet/runtime/core/decoder/ctc_prefix_beam_search.cc</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2"></a><span class="n">std</span><span class="o">::</span><span class="n">unordered_map</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">PrefixScore</span><span class="p">,</span><span class="w"> </span><span class="n">PrefixHash</span><span class="o">&gt;</span><span class="w"> </span><span class="n">next_hyps</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-1-3" name="__codelineno-1-3"></a>
+<a id="__codelineno-1-4" name="__codelineno-1-4"></a><span class="c1">// wenet/runtime/core/decoder/ctc_prefix_beam_search.h</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5"></a><span class="k">struct</span><span class="w"> </span><span class="nc">PrefixScore</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<a id="__codelineno-1-6" name="__codelineno-1-6"></a><span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="n">kFloatMax</span><span class="p">;</span><span class="w">               </span><span class="c1">// 以blank结尾的分数</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7"></a><span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="n">ns</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="n">kFloatMax</span><span class="p">;</span><span class="w">              </span><span class="c1">// 以非blank结尾的分数</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8"></a><span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="n">v_s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="n">kFloatMax</span><span class="p">;</span><span class="w">             </span><span class="c1">// 以blank结尾的viterbi分数</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9"></a><span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="n">v_ns</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="n">kFloatMax</span><span class="p">;</span><span class="w">            </span><span class="c1">// 以非blank结尾的viterbi分数</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10"></a><span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="n">cur_token_prob</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="n">kFloatMax</span><span class="p">;</span><span class="w">  </span><span class="c1">// 当前token峰值的概率</span>
+<a id="__codelineno-1-11" name="__codelineno-1-11"></a><span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">times_s</span><span class="p">;</span><span class="w">           </span><span class="c1">// 以blank结尾viterbi路径的时间戳</span>
+<a id="__codelineno-1-12" name="__codelineno-1-12"></a><span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">times_ns</span><span class="p">;</span><span class="w">          </span><span class="c1">// 以非blank结尾viterbi路径的时间戳</span>
+<a id="__codelineno-1-13" name="__codelineno-1-13"></a>
+<a id="__codelineno-1-14" name="__codelineno-1-14"></a><span class="w">  </span><span class="c1">// blank和非blank规整概率之和</span>
+<a id="__codelineno-1-15" name="__codelineno-1-15"></a><span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="nf">score</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">LogAdd</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="n">ns</span><span class="p">);</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+<a id="__codelineno-1-16" name="__codelineno-1-16"></a><span class="w">  </span><span class="c1">// viterbi分数为blank和非blank维特比分数的最大值</span>
+<a id="__codelineno-1-17" name="__codelineno-1-17"></a><span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="nf">viterbi_score</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">v_s</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">v_ns</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">v_s</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">v_ns</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+<a id="__codelineno-1-18" name="__codelineno-1-18"></a><span class="w">  </span><span class="c1">// 根据viterbi分数选择规整串的时间戳</span>
+<a id="__codelineno-1-19" name="__codelineno-1-19"></a><span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">times</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<a id="__codelineno-1-20" name="__codelineno-1-20"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">v_s</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">v_ns</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">times_s</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">times_ns</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-1-21" name="__codelineno-1-21"></a><span class="w">  </span><span class="p">}</span><span class="w"></span>
+<a id="__codelineno-1-22" name="__codelineno-1-22"></a>
+<a id="__codelineno-1-23" name="__codelineno-1-23"></a><span class="w">  </span><span class="p">...</span><span class="w"></span>
+<a id="__codelineno-1-24" name="__codelineno-1-24"></a>
+<a id="__codelineno-1-25" name="__codelineno-1-25"></a><span class="w">  </span><span class="c1">// 语言模型和e2e声学模型分数之和</span>
+<a id="__codelineno-1-26" name="__codelineno-1-26"></a><span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="n">total_score</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">score</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">context_score</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+<a id="__codelineno-1-27" name="__codelineno-1-27"></a><span class="p">};</span><span class="w"></span>
+</code></pre></div></td></tr></table></div>
+<p>在解码过程中，通过<code>for</code>循环遍历每个时刻，获取每个时刻的输出，然后执行CTC Prefix Beam Search。</p>
+<h3 id="_2">第一次剪枝</h3>
+<p>声学模型每个时刻输出<code>vocab_size</code>个概率值，第一次剪枝时，选取前<code>opts_.first_beam_size</code>（默认值10）个字符和对应概率值。</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-1">1</a></span>
+<span class="normal"><a href="#__codelineno-2-2">2</a></span>
+<span class="normal"><a href="#__codelineno-2-3">3</a></span>
+<span class="normal"><a href="#__codelineno-2-4">4</a></span>
+<span class="normal"><a href="#__codelineno-2-5">5</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="c1">// wenet/runtime/core/decoder/ctc_prefix_beam_search.cc</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2"></a><span class="c1">// 1. First beam prune, only select topk candidates</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3"></a><span class="n">std</span><span class="o">::</span><span class="n">tuple</span><span class="o">&lt;</span><span class="n">Tensor</span><span class="p">,</span><span class="w"> </span><span class="n">Tensor</span><span class="o">&gt;</span><span class="w"> </span><span class="n">topk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">logp_t</span><span class="p">.</span><span class="n">topk</span><span class="p">(</span><span class="n">opts_</span><span class="p">.</span><span class="n">first_beam_size</span><span class="p">);</span><span class="w"></span>
+<a id="__codelineno-2-4" name="__codelineno-2-4"></a><span class="n">Tensor</span><span class="w"> </span><span class="n">topk_score</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">get</span><span class="o">&lt;</span><span class="mi">0</span><span class="o">&gt;</span><span class="p">(</span><span class="n">topk</span><span class="p">);</span><span class="w"></span>
+<a id="__codelineno-2-5" name="__codelineno-2-5"></a><span class="n">Tensor</span><span class="w"> </span><span class="n">topk_index</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">get</span><span class="o">&lt;</span><span class="mi">1</span><span class="o">&gt;</span><span class="p">(</span><span class="n">topk</span><span class="p">);</span><span class="w"></span>
+</code></pre></div></td></tr></table></div>
+<h3 id="_3">令牌传播</h3>
+<p>令牌传播（Token Passing）中遍历当前时刻的<code>opts_.first_beam_size</code>个输出，对每一个输出执行CTC Prefix Beam Search。</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-3-1">  1</a></span>
+<span class="normal"><a href="#__codelineno-3-2">  2</a></span>
+<span class="normal"><a href="#__codelineno-3-3">  3</a></span>
+<span class="normal"><a href="#__codelineno-3-4">  4</a></span>
+<span class="normal"><a href="#__codelineno-3-5">  5</a></span>
+<span class="normal"><a href="#__codelineno-3-6">  6</a></span>
+<span class="normal"><a href="#__codelineno-3-7">  7</a></span>
+<span class="normal"><a href="#__codelineno-3-8">  8</a></span>
+<span class="normal"><a href="#__codelineno-3-9">  9</a></span>
+<span class="normal"><a href="#__codelineno-3-10"> 10</a></span>
+<span class="normal"><a href="#__codelineno-3-11"> 11</a></span>
+<span class="normal"><a href="#__codelineno-3-12"> 12</a></span>
+<span class="normal"><a href="#__codelineno-3-13"> 13</a></span>
+<span class="normal"><a href="#__codelineno-3-14"> 14</a></span>
+<span class="normal"><a href="#__codelineno-3-15"> 15</a></span>
+<span class="normal"><a href="#__codelineno-3-16"> 16</a></span>
+<span class="normal"><a href="#__codelineno-3-17"> 17</a></span>
+<span class="normal"><a href="#__codelineno-3-18"> 18</a></span>
+<span class="normal"><a href="#__codelineno-3-19"> 19</a></span>
+<span class="normal"><a href="#__codelineno-3-20"> 20</a></span>
+<span class="normal"><a href="#__codelineno-3-21"> 21</a></span>
+<span class="normal"><a href="#__codelineno-3-22"> 22</a></span>
+<span class="normal"><a href="#__codelineno-3-23"> 23</a></span>
+<span class="normal"><a href="#__codelineno-3-24"> 24</a></span>
+<span class="normal"><a href="#__codelineno-3-25"> 25</a></span>
+<span class="normal"><a href="#__codelineno-3-26"> 26</a></span>
+<span class="normal"><a href="#__codelineno-3-27"> 27</a></span>
+<span class="normal"><a href="#__codelineno-3-28"> 28</a></span>
+<span class="normal"><a href="#__codelineno-3-29"> 29</a></span>
+<span class="normal"><a href="#__codelineno-3-30"> 30</a></span>
+<span class="normal"><a href="#__codelineno-3-31"> 31</a></span>
+<span class="normal"><a href="#__codelineno-3-32"> 32</a></span>
+<span class="normal"><a href="#__codelineno-3-33"> 33</a></span>
+<span class="normal"><a href="#__codelineno-3-34"> 34</a></span>
+<span class="normal"><a href="#__codelineno-3-35"> 35</a></span>
+<span class="normal"><a href="#__codelineno-3-36"> 36</a></span>
+<span class="normal"><a href="#__codelineno-3-37"> 37</a></span>
+<span class="normal"><a href="#__codelineno-3-38"> 38</a></span>
+<span class="normal"><a href="#__codelineno-3-39"> 39</a></span>
+<span class="normal"><a href="#__codelineno-3-40"> 40</a></span>
+<span class="normal"><a href="#__codelineno-3-41"> 41</a></span>
+<span class="normal"><a href="#__codelineno-3-42"> 42</a></span>
+<span class="normal"><a href="#__codelineno-3-43"> 43</a></span>
+<span class="normal"><a href="#__codelineno-3-44"> 44</a></span>
+<span class="normal"><a href="#__codelineno-3-45"> 45</a></span>
+<span class="normal"><a href="#__codelineno-3-46"> 46</a></span>
+<span class="normal"><a href="#__codelineno-3-47"> 47</a></span>
+<span class="normal"><a href="#__codelineno-3-48"> 48</a></span>
+<span class="normal"><a href="#__codelineno-3-49"> 49</a></span>
+<span class="normal"><a href="#__codelineno-3-50"> 50</a></span>
+<span class="normal"><a href="#__codelineno-3-51"> 51</a></span>
+<span class="normal"><a href="#__codelineno-3-52"> 52</a></span>
+<span class="normal"><a href="#__codelineno-3-53"> 53</a></span>
+<span class="normal"><a href="#__codelineno-3-54"> 54</a></span>
+<span class="normal"><a href="#__codelineno-3-55"> 55</a></span>
+<span class="normal"><a href="#__codelineno-3-56"> 56</a></span>
+<span class="normal"><a href="#__codelineno-3-57"> 57</a></span>
+<span class="normal"><a href="#__codelineno-3-58"> 58</a></span>
+<span class="normal"><a href="#__codelineno-3-59"> 59</a></span>
+<span class="normal"><a href="#__codelineno-3-60"> 60</a></span>
+<span class="normal"><a href="#__codelineno-3-61"> 61</a></span>
+<span class="normal"><a href="#__codelineno-3-62"> 62</a></span>
+<span class="normal"><a href="#__codelineno-3-63"> 63</a></span>
+<span class="normal"><a href="#__codelineno-3-64"> 64</a></span>
+<span class="normal"><a href="#__codelineno-3-65"> 65</a></span>
+<span class="normal"><a href="#__codelineno-3-66"> 66</a></span>
+<span class="normal"><a href="#__codelineno-3-67"> 67</a></span>
+<span class="normal"><a href="#__codelineno-3-68"> 68</a></span>
+<span class="normal"><a href="#__codelineno-3-69"> 69</a></span>
+<span class="normal"><a href="#__codelineno-3-70"> 70</a></span>
+<span class="normal"><a href="#__codelineno-3-71"> 71</a></span>
+<span class="normal"><a href="#__codelineno-3-72"> 72</a></span>
+<span class="normal"><a href="#__codelineno-3-73"> 73</a></span>
+<span class="normal"><a href="#__codelineno-3-74"> 74</a></span>
+<span class="normal"><a href="#__codelineno-3-75"> 75</a></span>
+<span class="normal"><a href="#__codelineno-3-76"> 76</a></span>
+<span class="normal"><a href="#__codelineno-3-77"> 77</a></span>
+<span class="normal"><a href="#__codelineno-3-78"> 78</a></span>
+<span class="normal"><a href="#__codelineno-3-79"> 79</a></span>
+<span class="normal"><a href="#__codelineno-3-80"> 80</a></span>
+<span class="normal"><a href="#__codelineno-3-81"> 81</a></span>
+<span class="normal"><a href="#__codelineno-3-82"> 82</a></span>
+<span class="normal"><a href="#__codelineno-3-83"> 83</a></span>
+<span class="normal"><a href="#__codelineno-3-84"> 84</a></span>
+<span class="normal"><a href="#__codelineno-3-85"> 85</a></span>
+<span class="normal"><a href="#__codelineno-3-86"> 86</a></span>
+<span class="normal"><a href="#__codelineno-3-87"> 87</a></span>
+<span class="normal"><a href="#__codelineno-3-88"> 88</a></span>
+<span class="normal"><a href="#__codelineno-3-89"> 89</a></span>
+<span class="normal"><a href="#__codelineno-3-90"> 90</a></span>
+<span class="normal"><a href="#__codelineno-3-91"> 91</a></span>
+<span class="normal"><a href="#__codelineno-3-92"> 92</a></span>
+<span class="normal"><a href="#__codelineno-3-93"> 93</a></span>
+<span class="normal"><a href="#__codelineno-3-94"> 94</a></span>
+<span class="normal"><a href="#__codelineno-3-95"> 95</a></span>
+<span class="normal"><a href="#__codelineno-3-96"> 96</a></span>
+<span class="normal"><a href="#__codelineno-3-97"> 97</a></span>
+<span class="normal"><a href="#__codelineno-3-98"> 98</a></span>
+<span class="normal"><a href="#__codelineno-3-99"> 99</a></span>
+<span class="normal"><a href="#__codelineno-3-100">100</a></span>
+<span class="normal"><a href="#__codelineno-3-101">101</a></span>
+<span class="normal"><a href="#__codelineno-3-102">102</a></span>
+<span class="normal"><a href="#__codelineno-3-103">103</a></span>
+<span class="normal"><a href="#__codelineno-3-104">104</a></span>
+<span class="normal"><a href="#__codelineno-3-105">105</a></span>
+<span class="normal"><a href="#__codelineno-3-106">106</a></span>
+<span class="normal"><a href="#__codelineno-3-107">107</a></span>
+<span class="normal"><a href="#__codelineno-3-108">108</a></span>
+<span class="normal"><a href="#__codelineno-3-109">109</a></span>
+<span class="normal"><a href="#__codelineno-3-110">110</a></span>
+<span class="normal"><a href="#__codelineno-3-111">111</a></span>
+<span class="normal"><a href="#__codelineno-3-112">112</a></span>
+<span class="normal"><a href="#__codelineno-3-113">113</a></span>
+<span class="normal"><a href="#__codelineno-3-114">114</a></span>
+<span class="normal"><a href="#__codelineno-3-115">115</a></span>
+<span class="normal"><a href="#__codelineno-3-116">116</a></span>
+<span class="normal"><a href="#__codelineno-3-117">117</a></span>
+<span class="normal"><a href="#__codelineno-3-118">118</a></span>
+<span class="normal"><a href="#__codelineno-3-119">119</a></span>
+<span class="normal"><a href="#__codelineno-3-120">120</a></span>
+<span class="normal"><a href="#__codelineno-3-121">121</a></span>
+<span class="normal"><a href="#__codelineno-3-122">122</a></span>
+<span class="normal"><a href="#__codelineno-3-123">123</a></span>
+<span class="normal"><a href="#__codelineno-3-124">124</a></span>
+<span class="normal"><a href="#__codelineno-3-125">125</a></span>
+<span class="normal"><a href="#__codelineno-3-126">126</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1"></a><span class="c1">// 2. Token Passing</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2"></a><span class="c1">// next_hyps 记录下一个时刻的规约字符串，避免更新当前时刻的规约字符串</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3"></a><span class="n">std</span><span class="o">::</span><span class="n">unordered_map</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">PrefixScore</span><span class="p">,</span><span class="w"> </span><span class="n">PrefixHash</span><span class="o">&gt;</span><span class="w"> </span><span class="n">next_hyps</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-3-4" name="__codelineno-3-4"></a><span class="p">...</span><span class="w"></span>
+<a id="__codelineno-3-5" name="__codelineno-3-5"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">topk_index</span><span class="p">.</span><span class="n">size</span><span class="p">();</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">// 遍历当前beam_size个输出</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6"></a><span class="w">      </span><span class="kt">int</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">topk_index</span><span class="p">[</span><span class="n">i</span><span class="p">];</span><span class="w"></span>
+<a id="__codelineno-3-7" name="__codelineno-3-7"></a><span class="w">      </span><span class="k">auto</span><span class="w"> </span><span class="n">prob</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">topk_score</span><span class="p">[</span><span class="n">i</span><span class="p">];</span><span class="w"></span>
+<a id="__codelineno-3-8" name="__codelineno-3-8"></a><span class="w">      </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">it</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">cur_hyps_</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<a id="__codelineno-3-9" name="__codelineno-3-9"></a><span class="w">        </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">prefix</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">it</span><span class="p">.</span><span class="n">first</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-3-10" name="__codelineno-3-10"></a><span class="w">        </span><span class="k">const</span><span class="w"> </span><span class="n">PrefixScore</span><span class="o">&amp;</span><span class="w"> </span><span class="n">prefix_score</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">it</span><span class="p">.</span><span class="n">second</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-3-11" name="__codelineno-3-11"></a><span class="w">        </span><span class="c1">// 如果 prefix 不在 next_hyps 中, next_hyps[prefix] 则会插入默认的分数信息</span>
+<a id="__codelineno-3-12" name="__codelineno-3-12"></a><span class="w">        </span><span class="c1">// 也即PrefixScore(-inf, -inf)</span>
+<a id="__codelineno-3-13" name="__codelineno-3-13"></a>
+<a id="__codelineno-3-14" name="__codelineno-3-14"></a><span class="w">        </span><span class="c1">// 代码中利用对数，将乘法转化为加法：LogAdd()</span>
+<a id="__codelineno-3-15" name="__codelineno-3-15"></a>
+<a id="__codelineno-3-16" name="__codelineno-3-16"></a><span class="w">        </span><span class="c1">// 为叙述方便，下述将当前时刻新的规整字符串称作“新串”</span>
+<a id="__codelineno-3-17" name="__codelineno-3-17"></a><span class="w">        </span><span class="c1">// 前一时刻的规整字符串称作“前缀串”</span>
+<a id="__codelineno-3-18" name="__codelineno-3-18"></a>
+<a id="__codelineno-3-19" name="__codelineno-3-19"></a><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">id</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">opts_</span><span class="p">.</span><span class="n">blank</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<a id="__codelineno-3-20" name="__codelineno-3-20"></a><span class="w">          </span><span class="c1">// 情况1：当前时刻输出blank，则新串和前缀串相同</span>
+<a id="__codelineno-3-21" name="__codelineno-3-21"></a><span class="w">          </span><span class="c1">// Case 0: *a + ε =&gt; *a</span>
+<a id="__codelineno-3-22" name="__codelineno-3-22"></a><span class="w">          </span><span class="n">PrefixScore</span><span class="o">&amp;</span><span class="w"> </span><span class="n">next_score</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">next_hyps</span><span class="p">[</span><span class="n">prefix</span><span class="p">];</span><span class="w"></span>
+<a id="__codelineno-3-23" name="__codelineno-3-23"></a><span class="w">          </span><span class="c1">// 新串以 ε 结尾的分数 next_score.s 为两者之和：</span>
+<a id="__codelineno-3-24" name="__codelineno-3-24"></a><span class="w">          </span><span class="c1">//  1. 新串以 ε 结尾的分数 next_score.s</span>
+<a id="__codelineno-3-25" name="__codelineno-3-25"></a><span class="w">          </span><span class="c1">//  2. 前缀串的分数 prefix_score.score() 与当前输出的概率的对数 prob 之和</span>
+<a id="__codelineno-3-26" name="__codelineno-3-26"></a><span class="w">          </span><span class="n">next_score</span><span class="p">.</span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LogAdd</span><span class="p">(</span><span class="n">next_score</span><span class="p">.</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="n">prefix_score</span><span class="p">.</span><span class="n">score</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">prob</span><span class="p">);</span><span class="w"></span>
+<a id="__codelineno-3-27" name="__codelineno-3-27"></a><span class="w">          </span><span class="c1">// 新串以 ε 结尾的 viterbi 分数 next_score.v_s 为：</span>
+<a id="__codelineno-3-28" name="__codelineno-3-28"></a><span class="w">          </span><span class="c1">// 前缀串的 viterbi 分数 prefix_score.viterbi_score() 与当前输出的概率 prob 的对数和</span>
+<a id="__codelineno-3-29" name="__codelineno-3-29"></a><span class="w">          </span><span class="n">next_score</span><span class="p">.</span><span class="n">v_s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">prefix_score</span><span class="p">.</span><span class="n">viterbi_score</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">prob</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-3-30" name="__codelineno-3-30"></a><span class="w">          </span><span class="c1">// 新串以 ε 结尾的 viterbi 路径的时间戳 next_score.times_s 等于：</span>
+<a id="__codelineno-3-31" name="__codelineno-3-31"></a><span class="w">          </span><span class="c1">// 前缀串的时间戳 prefix_score.times()</span>
+<a id="__codelineno-3-32" name="__codelineno-3-32"></a><span class="w">          </span><span class="n">next_score</span><span class="p">.</span><span class="n">times_s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">prefix_score</span><span class="p">.</span><span class="n">times</span><span class="p">();</span><span class="w"></span>
+<a id="__codelineno-3-33" name="__codelineno-3-33"></a><span class="w">          </span><span class="c1">// 上下文偏置（context biasing），通过偏置短语列表使模型倾向于识别特定词</span>
+<a id="__codelineno-3-34" name="__codelineno-3-34"></a><span class="w">          </span><span class="c1">// Prefix not changed, copy the context from prefix.</span>
+<a id="__codelineno-3-35" name="__codelineno-3-35"></a><span class="w">          </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">context_graph_</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="o">!</span><span class="n">next_score</span><span class="p">.</span><span class="n">has_context</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<a id="__codelineno-3-36" name="__codelineno-3-36"></a><span class="w">            </span><span class="n">next_score</span><span class="p">.</span><span class="n">CopyContext</span><span class="p">(</span><span class="n">prefix_score</span><span class="p">);</span><span class="w"></span>
+<a id="__codelineno-3-37" name="__codelineno-3-37"></a><span class="w">            </span><span class="n">next_score</span><span class="p">.</span><span class="n">has_context</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-3-38" name="__codelineno-3-38"></a><span class="w">          </span><span class="p">}</span><span class="w"></span>
+<a id="__codelineno-3-39" name="__codelineno-3-39"></a><span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">prefix</span><span class="p">.</span><span class="n">empty</span><span class="p">()</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">prefix</span><span class="p">.</span><span class="n">back</span><span class="p">())</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<a id="__codelineno-3-40" name="__codelineno-3-40"></a><span class="w">          </span><span class="c1">// 情况2：当前时刻的输出字符（不含blank），与CTC字符串最后一个字符相同（因此与前缀串最后一个字符也相同）</span>
+<a id="__codelineno-3-41" name="__codelineno-3-41"></a><span class="w">          </span><span class="c1">// 则新串和前缀串相同</span>
+<a id="__codelineno-3-42" name="__codelineno-3-42"></a><span class="w">          </span><span class="c1">// Case 2: *a + a =&gt; *a</span>
+<a id="__codelineno-3-43" name="__codelineno-3-43"></a><span class="w">          </span><span class="n">PrefixScore</span><span class="o">&amp;</span><span class="w"> </span><span class="n">next_score1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">next_hyps</span><span class="p">[</span><span class="n">prefix</span><span class="p">];</span><span class="w"></span>
+<a id="__codelineno-3-44" name="__codelineno-3-44"></a><span class="w">          </span><span class="c1">// 新串以非 ε 结尾的分数 next_score1.ns 为两者之和：</span>
+<a id="__codelineno-3-45" name="__codelineno-3-45"></a><span class="w">          </span><span class="c1">//  1. 新串以非 ε 结尾的分数 next_score1.ns</span>
+<a id="__codelineno-3-46" name="__codelineno-3-46"></a><span class="w">          </span><span class="c1">//  2. 前缀串以非 ε 结尾的分数 prefix_score.ns 和当前输出的概率 prob 的对数和</span>
+<a id="__codelineno-3-47" name="__codelineno-3-47"></a><span class="w">          </span><span class="n">next_score1</span><span class="p">.</span><span class="n">ns</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LogAdd</span><span class="p">(</span><span class="n">next_score1</span><span class="p">.</span><span class="n">ns</span><span class="p">,</span><span class="w"> </span><span class="n">prefix_score</span><span class="p">.</span><span class="n">ns</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">prob</span><span class="p">);</span><span class="w"></span>
+<a id="__codelineno-3-48" name="__codelineno-3-48"></a><span class="w">          </span><span class="c1">// 判断是否需要更新以非 ε 结尾的新串 viterbi 分数 next_score1.v_ns</span>
+<a id="__codelineno-3-49" name="__codelineno-3-49"></a><span class="w">          </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">next_score1</span><span class="p">.</span><span class="n">v_ns</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">prefix_score</span><span class="p">.</span><span class="n">v_ns</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">prob</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<a id="__codelineno-3-50" name="__codelineno-3-50"></a><span class="w">            </span><span class="n">next_score1</span><span class="p">.</span><span class="n">v_ns</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">prefix_score</span><span class="p">.</span><span class="n">v_ns</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">prob</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-3-51" name="__codelineno-3-51"></a><span class="w">            </span><span class="c1">// 判断是否需要更新新串中最后一个字峰值的概率 next_score1.cur_token_prob</span>
+<a id="__codelineno-3-52" name="__codelineno-3-52"></a><span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">next_score1</span><span class="p">.</span><span class="n">cur_token_prob</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">prob</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<a id="__codelineno-3-53" name="__codelineno-3-53"></a><span class="w">              </span><span class="n">next_score1</span><span class="p">.</span><span class="n">cur_token_prob</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">prob</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-3-54" name="__codelineno-3-54"></a><span class="w">              </span><span class="c1">// 新串以非 ε 结尾的 viterbi 路径的时间戳 next_score1.times_ns 等于：</span>
+<a id="__codelineno-3-55" name="__codelineno-3-55"></a><span class="w">              </span><span class="c1">// 前缀串以非 ε 结尾的 viterbi 路径的时间戳 prefix_score.times_ns</span>
+<a id="__codelineno-3-56" name="__codelineno-3-56"></a><span class="w">              </span><span class="n">next_score1</span><span class="p">.</span><span class="n">times_ns</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">prefix_score</span><span class="p">.</span><span class="n">times_ns</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-3-57" name="__codelineno-3-57"></a><span class="w">              </span><span class="n">CHECK_GT</span><span class="p">(</span><span class="n">next_score1</span><span class="p">.</span><span class="n">times_ns</span><span class="p">.</span><span class="n">size</span><span class="p">(),</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
+<a id="__codelineno-3-58" name="__codelineno-3-58"></a><span class="w">              </span><span class="c1">// 更新新串中最后一个字峰值的位置 next_score1.times_ns.back()</span>
+<a id="__codelineno-3-59" name="__codelineno-3-59"></a><span class="w">              </span><span class="n">next_score1</span><span class="p">.</span><span class="n">times_ns</span><span class="p">.</span><span class="n">back</span><span class="p">()</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">abs_time_step_</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-3-60" name="__codelineno-3-60"></a><span class="w">            </span><span class="p">}</span><span class="w"></span>
+<a id="__codelineno-3-61" name="__codelineno-3-61"></a><span class="w">          </span><span class="p">}</span><span class="w"></span>
+<a id="__codelineno-3-62" name="__codelineno-3-62"></a><span class="w">          </span><span class="c1">// 上下文偏置</span>
+<a id="__codelineno-3-63" name="__codelineno-3-63"></a><span class="w">          </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">context_graph_</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="o">!</span><span class="n">next_score1</span><span class="p">.</span><span class="n">has_context</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<a id="__codelineno-3-64" name="__codelineno-3-64"></a><span class="w">            </span><span class="n">next_score1</span><span class="p">.</span><span class="n">CopyContext</span><span class="p">(</span><span class="n">prefix_score</span><span class="p">);</span><span class="w"></span>
+<a id="__codelineno-3-65" name="__codelineno-3-65"></a><span class="w">            </span><span class="n">next_score1</span><span class="p">.</span><span class="n">has_context</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-3-66" name="__codelineno-3-66"></a><span class="w">          </span><span class="p">}</span><span class="w"></span>
+<a id="__codelineno-3-67" name="__codelineno-3-67"></a>
+<a id="__codelineno-3-68" name="__codelineno-3-68"></a><span class="w">          </span><span class="c1">// 情况3：当前时刻的输出字符（不含blank），与前缀串最后一个字符相同，但CTC字符串最后一个字符为blank</span>
+<a id="__codelineno-3-69" name="__codelineno-3-69"></a><span class="w">          </span><span class="c1">// 则新串在前缀串的基础上加上当前时刻的输出字符</span>
+<a id="__codelineno-3-70" name="__codelineno-3-70"></a><span class="w">          </span><span class="c1">// Case 3: *aε + a =&gt; *aa</span>
+<a id="__codelineno-3-71" name="__codelineno-3-71"></a><span class="w">          </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">new_prefix</span><span class="p">(</span><span class="n">prefix</span><span class="p">);</span><span class="w"></span>
+<a id="__codelineno-3-72" name="__codelineno-3-72"></a><span class="w">          </span><span class="c1">// 将当前时刻的输出拼接到前缀串上，得到新串</span>
+<a id="__codelineno-3-73" name="__codelineno-3-73"></a><span class="w">          </span><span class="n">new_prefix</span><span class="p">.</span><span class="n">emplace_back</span><span class="p">(</span><span class="n">id</span><span class="p">);</span><span class="w"></span>
+<a id="__codelineno-3-74" name="__codelineno-3-74"></a><span class="w">          </span><span class="n">PrefixScore</span><span class="o">&amp;</span><span class="w"> </span><span class="n">next_score2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">next_hyps</span><span class="p">[</span><span class="n">new_prefix</span><span class="p">];</span><span class="w"></span>
+<a id="__codelineno-3-75" name="__codelineno-3-75"></a><span class="w">          </span><span class="c1">// 新串以非 ε 结尾的分数 next_score2.ns 为两者之和：</span>
+<a id="__codelineno-3-76" name="__codelineno-3-76"></a><span class="w">          </span><span class="c1">//  1. 新串以非 ε 结尾的分数 next_score2.ns</span>
+<a id="__codelineno-3-77" name="__codelineno-3-77"></a><span class="w">          </span><span class="c1">//  2. 前缀串以 ε 结尾的分数 prefix_score.s 和当前输出的概率 prob 的对数和</span>
+<a id="__codelineno-3-78" name="__codelineno-3-78"></a><span class="w">          </span><span class="n">next_score2</span><span class="p">.</span><span class="n">ns</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LogAdd</span><span class="p">(</span><span class="n">next_score2</span><span class="p">.</span><span class="n">ns</span><span class="p">,</span><span class="w"> </span><span class="n">prefix_score</span><span class="p">.</span><span class="n">s</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">prob</span><span class="p">);</span><span class="w"></span>
+<a id="__codelineno-3-79" name="__codelineno-3-79"></a><span class="w">          </span><span class="c1">// 判断是否需要更新新串以非 ε 结尾的 viterbi 分数 next_score2.v_ns</span>
+<a id="__codelineno-3-80" name="__codelineno-3-80"></a><span class="w">          </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">next_score2</span><span class="p">.</span><span class="n">v_ns</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">prefix_score</span><span class="p">.</span><span class="n">v_s</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">prob</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<a id="__codelineno-3-81" name="__codelineno-3-81"></a><span class="w">            </span><span class="n">next_score2</span><span class="p">.</span><span class="n">v_ns</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">prefix_score</span><span class="p">.</span><span class="n">v_s</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">prob</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-3-82" name="__codelineno-3-82"></a><span class="w">            </span><span class="n">next_score2</span><span class="p">.</span><span class="n">cur_token_prob</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">prob</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-3-83" name="__codelineno-3-83"></a><span class="w">            </span><span class="c1">// 新串以非 ε 结尾的 viterbi 路径的时间戳 next_score2.times_ns 等于：</span>
+<a id="__codelineno-3-84" name="__codelineno-3-84"></a><span class="w">            </span><span class="c1">// 前缀串以 ε 结尾的 viterbi 路径的时间戳 prefix_score.times_s，拼接上当前时间步 abs_time_step_</span>
+<a id="__codelineno-3-85" name="__codelineno-3-85"></a><span class="w">            </span><span class="n">next_score2</span><span class="p">.</span><span class="n">times_ns</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">prefix_score</span><span class="p">.</span><span class="n">times_s</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-3-86" name="__codelineno-3-86"></a><span class="w">            </span><span class="n">next_score2</span><span class="p">.</span><span class="n">times_ns</span><span class="p">.</span><span class="n">emplace_back</span><span class="p">(</span><span class="n">abs_time_step_</span><span class="p">);</span><span class="w"></span>
+<a id="__codelineno-3-87" name="__codelineno-3-87"></a><span class="w">          </span><span class="p">}</span><span class="w"></span>
+<a id="__codelineno-3-88" name="__codelineno-3-88"></a><span class="w">          </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">context_graph_</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="o">!</span><span class="n">next_score2</span><span class="p">.</span><span class="n">has_context</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<a id="__codelineno-3-89" name="__codelineno-3-89"></a><span class="w">            </span><span class="c1">// 上下文偏置</span>
+<a id="__codelineno-3-90" name="__codelineno-3-90"></a><span class="w">            </span><span class="c1">// Prefix changed, calculate the context score.</span>
+<a id="__codelineno-3-91" name="__codelineno-3-91"></a><span class="w">            </span><span class="n">next_score2</span><span class="p">.</span><span class="n">UpdateContext</span><span class="p">(</span><span class="n">context_graph_</span><span class="p">,</span><span class="w"> </span><span class="n">prefix_score</span><span class="p">,</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"></span>
+<a id="__codelineno-3-92" name="__codelineno-3-92"></a><span class="w">                                      </span><span class="n">prefix</span><span class="p">.</span><span class="n">size</span><span class="p">());</span><span class="w"></span>
+<a id="__codelineno-3-93" name="__codelineno-3-93"></a><span class="w">            </span><span class="n">next_score2</span><span class="p">.</span><span class="n">has_context</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-3-94" name="__codelineno-3-94"></a><span class="w">          </span><span class="p">}</span><span class="w"></span>
+<a id="__codelineno-3-95" name="__codelineno-3-95"></a><span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<a id="__codelineno-3-96" name="__codelineno-3-96"></a><span class="w">          </span><span class="c1">// 情况4：当前时刻的输出字符（不含blank），与CTC字符串最后一个字符不同（因此与前缀串最后一个字符也不同）</span>
+<a id="__codelineno-3-97" name="__codelineno-3-97"></a><span class="w">          </span><span class="c1">// 则新串在前缀串的基础上加上当前时刻的输出字符</span>
+<a id="__codelineno-3-98" name="__codelineno-3-98"></a><span class="w">          </span><span class="c1">// Case 4: *a + b =&gt; *ab, *aε + b =&gt; *ab</span>
+<a id="__codelineno-3-99" name="__codelineno-3-99"></a><span class="w">          </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">new_prefix</span><span class="p">(</span><span class="n">prefix</span><span class="p">);</span><span class="w"></span>
+<a id="__codelineno-3-100" name="__codelineno-3-100"></a><span class="w">          </span><span class="c1">// 将当前时刻的输出拼接到前缀串上，得到新串</span>
+<a id="__codelineno-3-101" name="__codelineno-3-101"></a><span class="w">          </span><span class="n">new_prefix</span><span class="p">.</span><span class="n">emplace_back</span><span class="p">(</span><span class="n">id</span><span class="p">);</span><span class="w"></span>
+<a id="__codelineno-3-102" name="__codelineno-3-102"></a><span class="w">          </span><span class="n">PrefixScore</span><span class="o">&amp;</span><span class="w"> </span><span class="n">next_score</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">next_hyps</span><span class="p">[</span><span class="n">new_prefix</span><span class="p">];</span><span class="w"></span>
+<a id="__codelineno-3-103" name="__codelineno-3-103"></a><span class="w">          </span><span class="c1">// 新串以非 ε 结尾的分数 next_score.ns 为两者之和：</span>
+<a id="__codelineno-3-104" name="__codelineno-3-104"></a><span class="w">          </span><span class="c1">//  1. 新串以非 ε 结尾的分数 next_score.ns</span>
+<a id="__codelineno-3-105" name="__codelineno-3-105"></a><span class="w">          </span><span class="c1">//  2. 前缀串的分数 prefix_score.score() 和当前输出的概率 prob 的对数和</span>
+<a id="__codelineno-3-106" name="__codelineno-3-106"></a><span class="w">          </span><span class="n">next_score</span><span class="p">.</span><span class="n">ns</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LogAdd</span><span class="p">(</span><span class="n">next_score</span><span class="p">.</span><span class="n">ns</span><span class="p">,</span><span class="w"> </span><span class="n">prefix_score</span><span class="p">.</span><span class="n">score</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">prob</span><span class="p">);</span><span class="w"></span>
+<a id="__codelineno-3-107" name="__codelineno-3-107"></a><span class="w">          </span><span class="c1">// 判断是否需要更新新串以非 ε 结尾的 viterbi 分数 next_score.v_ns</span>
+<a id="__codelineno-3-108" name="__codelineno-3-108"></a><span class="w">          </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">next_score</span><span class="p">.</span><span class="n">v_ns</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">prefix_score</span><span class="p">.</span><span class="n">viterbi_score</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">prob</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<a id="__codelineno-3-109" name="__codelineno-3-109"></a><span class="w">            </span><span class="n">next_score</span><span class="p">.</span><span class="n">v_ns</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">prefix_score</span><span class="p">.</span><span class="n">viterbi_score</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">prob</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-3-110" name="__codelineno-3-110"></a><span class="w">            </span><span class="c1">// 更新前缀串最后一个字峰值的概率</span>
+<a id="__codelineno-3-111" name="__codelineno-3-111"></a><span class="w">            </span><span class="n">next_score</span><span class="p">.</span><span class="n">cur_token_prob</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">prob</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-3-112" name="__codelineno-3-112"></a><span class="w">            </span><span class="c1">// 新串以非 ε 结尾的 viterbi 路径的时间戳 next_score.times_ns 等于：</span>
+<a id="__codelineno-3-113" name="__codelineno-3-113"></a><span class="w">            </span><span class="c1">// 前缀串 viterbi 路径的时间戳 prefix_score.times()，拼接上当前时间步 abs_time_step_</span>
+<a id="__codelineno-3-114" name="__codelineno-3-114"></a><span class="w">            </span><span class="n">next_score</span><span class="p">.</span><span class="n">times_ns</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">prefix_score</span><span class="p">.</span><span class="n">times</span><span class="p">();</span><span class="w"></span>
+<a id="__codelineno-3-115" name="__codelineno-3-115"></a><span class="w">            </span><span class="n">next_score</span><span class="p">.</span><span class="n">times_ns</span><span class="p">.</span><span class="n">emplace_back</span><span class="p">(</span><span class="n">abs_time_step_</span><span class="p">);</span><span class="w"></span>
+<a id="__codelineno-3-116" name="__codelineno-3-116"></a><span class="w">          </span><span class="p">}</span><span class="w"></span>
+<a id="__codelineno-3-117" name="__codelineno-3-117"></a><span class="w">          </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">context_graph_</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="o">!</span><span class="n">next_score</span><span class="p">.</span><span class="n">has_context</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<a id="__codelineno-3-118" name="__codelineno-3-118"></a><span class="w">            </span><span class="c1">// 上下文偏置</span>
+<a id="__codelineno-3-119" name="__codelineno-3-119"></a><span class="w">            </span><span class="c1">// Calculate the context score.</span>
+<a id="__codelineno-3-120" name="__codelineno-3-120"></a><span class="w">            </span><span class="n">next_score</span><span class="p">.</span><span class="n">UpdateContext</span><span class="p">(</span><span class="n">context_graph_</span><span class="p">,</span><span class="w"> </span><span class="n">prefix_score</span><span class="p">,</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"></span>
+<a id="__codelineno-3-121" name="__codelineno-3-121"></a><span class="w">                                     </span><span class="n">prefix</span><span class="p">.</span><span class="n">size</span><span class="p">());</span><span class="w"></span>
+<a id="__codelineno-3-122" name="__codelineno-3-122"></a><span class="w">            </span><span class="n">next_score</span><span class="p">.</span><span class="n">has_context</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-3-123" name="__codelineno-3-123"></a><span class="w">          </span><span class="p">}</span><span class="w"></span>
+<a id="__codelineno-3-124" name="__codelineno-3-124"></a><span class="w">        </span><span class="p">}</span><span class="w"></span>
+<a id="__codelineno-3-125" name="__codelineno-3-125"></a><span class="w">      </span><span class="p">}</span><span class="w"></span>
+<a id="__codelineno-3-126" name="__codelineno-3-126"></a><span class="w">    </span><span class="p">}</span><span class="w"></span>
+</code></pre></div></td></tr></table></div>
+<h3 id="_4">第二次剪枝</h3>
+<p>第二次剪枝时只保留分数最高的<code>opts_.second_beam_size</code>条路径（N-Best），便于后续的重打分。</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-4-1">1</a></span>
+<span class="normal"><a href="#__codelineno-4-2">2</a></span>
+<span class="normal"><a href="#__codelineno-4-3">3</a></span>
+<span class="normal"><a href="#__codelineno-4-4">4</a></span>
+<span class="normal"><a href="#__codelineno-4-5">5</a></span>
+<span class="normal"><a href="#__codelineno-4-6">6</a></span>
+<span class="normal"><a href="#__codelineno-4-7">7</a></span>
+<span class="normal"><a href="#__codelineno-4-8">8</a></span>
+<span class="normal"><a href="#__codelineno-4-9">9</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="c1">// 3. Second beam prune, only keep top n best paths</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2"></a><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">PrefixScore</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">arr</span><span class="p">(</span><span class="n">next_hyps</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span><span class="w"></span>
+<a id="__codelineno-4-3" name="__codelineno-4-3"></a><span class="w">                                                          </span><span class="n">next_hyps</span><span class="p">.</span><span class="n">end</span><span class="p">());</span><span class="w"></span>
+<a id="__codelineno-4-4" name="__codelineno-4-4"></a><span class="kt">int</span><span class="w"> </span><span class="n">second_beam_size</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<a id="__codelineno-4-5" name="__codelineno-4-5"></a><span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">min</span><span class="p">(</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">arr</span><span class="p">.</span><span class="n">size</span><span class="p">()),</span><span class="w"> </span><span class="n">opts_</span><span class="p">.</span><span class="n">second_beam_size</span><span class="p">);</span><span class="w"></span>
+<a id="__codelineno-4-6" name="__codelineno-4-6"></a><span class="n">std</span><span class="o">::</span><span class="n">nth_element</span><span class="p">(</span><span class="n">arr</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span><span class="w"> </span><span class="n">arr</span><span class="p">.</span><span class="n">begin</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">second_beam_size</span><span class="p">,</span><span class="w"> </span><span class="n">arr</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span><span class="w"></span>
+<a id="__codelineno-4-7" name="__codelineno-4-7"></a><span class="w">                 </span><span class="n">PrefixScoreCompare</span><span class="p">);</span><span class="w"></span>
+<a id="__codelineno-4-8" name="__codelineno-4-8"></a><span class="n">arr</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">second_beam_size</span><span class="p">);</span><span class="w"></span>
+<a id="__codelineno-4-9" name="__codelineno-4-9"></a><span class="n">std</span><span class="o">::</span><span class="n">sort</span><span class="p">(</span><span class="n">arr</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span><span class="w"> </span><span class="n">arr</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span><span class="w"> </span><span class="n">PrefixScoreCompare</span><span class="p">);</span><span class="w"></span>
+</code></pre></div></td></tr></table></div>
+<h3 id="_5">更新规整字符串</h3>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-5-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-5-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-5-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-5-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-5-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-5-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-5-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-5-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-5-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-5-10">10</a></span>
+<span class="normal"><a href="#__codelineno-5-11">11</a></span>
+<span class="normal"><a href="#__codelineno-5-12">12</a></span>
+<span class="normal"><a href="#__codelineno-5-13">13</a></span>
+<span class="normal"><a href="#__codelineno-5-14">14</a></span>
+<span class="normal"><a href="#__codelineno-5-15">15</a></span>
+<span class="normal"><a href="#__codelineno-5-16">16</a></span>
+<span class="normal"><a href="#__codelineno-5-17">17</a></span>
+<span class="normal"><a href="#__codelineno-5-18">18</a></span>
+<span class="normal"><a href="#__codelineno-5-19">19</a></span>
+<span class="normal"><a href="#__codelineno-5-20">20</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1"></a><span class="n">cur_hyps_</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span><span class="w"></span>
+<a id="__codelineno-5-2" name="__codelineno-5-2"></a><span class="n">outputs_</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span><span class="w"></span>
+<a id="__codelineno-5-3" name="__codelineno-5-3"></a><span class="n">hypotheses_</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span><span class="w"></span>
+<a id="__codelineno-5-4" name="__codelineno-5-4"></a><span class="n">likelihood_</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span><span class="w"></span>
+<a id="__codelineno-5-5" name="__codelineno-5-5"></a><span class="n">viterbi_likelihood_</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span><span class="w"></span>
+<a id="__codelineno-5-6" name="__codelineno-5-6"></a><span class="n">times_</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span><span class="w"></span>
+<a id="__codelineno-5-7" name="__codelineno-5-7"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">item</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">hpys</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<a id="__codelineno-5-8" name="__codelineno-5-8"></a><span class="w">  </span><span class="c1">// 更新前缀串</span>
+<a id="__codelineno-5-9" name="__codelineno-5-9"></a><span class="w">  </span><span class="n">cur_hyps_</span><span class="p">[</span><span class="n">item</span><span class="p">.</span><span class="n">first</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">item</span><span class="p">.</span><span class="n">second</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-5-10" name="__codelineno-5-10"></a><span class="w">  </span><span class="c1">// 更新语言模型的Context Graph</span>
+<a id="__codelineno-5-11" name="__codelineno-5-11"></a><span class="w">  </span><span class="n">UpdateOutputs</span><span class="p">(</span><span class="n">item</span><span class="p">);</span><span class="w"></span>
+<a id="__codelineno-5-12" name="__codelineno-5-12"></a><span class="w">  </span><span class="c1">// 更新解码结果</span>
+<a id="__codelineno-5-13" name="__codelineno-5-13"></a><span class="w">  </span><span class="n">hypotheses_</span><span class="p">.</span><span class="n">emplace_back</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">item</span><span class="p">.</span><span class="n">first</span><span class="p">));</span><span class="w"></span>
+<a id="__codelineno-5-14" name="__codelineno-5-14"></a><span class="w">  </span><span class="c1">// 更新每个解码结果的分数</span>
+<a id="__codelineno-5-15" name="__codelineno-5-15"></a><span class="w">  </span><span class="n">likelihood_</span><span class="p">.</span><span class="n">emplace_back</span><span class="p">(</span><span class="n">item</span><span class="p">.</span><span class="n">second</span><span class="p">.</span><span class="n">total_score</span><span class="p">());</span><span class="w"></span>
+<a id="__codelineno-5-16" name="__codelineno-5-16"></a><span class="w">  </span><span class="c1">// 更新每个解码结果的viterbi分数</span>
+<a id="__codelineno-5-17" name="__codelineno-5-17"></a><span class="w">  </span><span class="n">viterbi_likelihood_</span><span class="p">.</span><span class="n">emplace_back</span><span class="p">(</span><span class="n">item</span><span class="p">.</span><span class="n">second</span><span class="p">.</span><span class="n">viterbi_score</span><span class="p">());</span><span class="w"></span>
+<a id="__codelineno-5-18" name="__codelineno-5-18"></a><span class="w">  </span><span class="c1">// 更新每个解码结果的时间戳信息</span>
+<a id="__codelineno-5-19" name="__codelineno-5-19"></a><span class="w">  </span><span class="n">times_</span><span class="p">.</span><span class="n">emplace_back</span><span class="p">(</span><span class="n">item</span><span class="p">.</span><span class="n">second</span><span class="p">.</span><span class="n">times</span><span class="p">());</span><span class="w"></span>
+<a id="__codelineno-5-20" name="__codelineno-5-20"></a><span class="p">}</span><span class="w"></span>
+</code></pre></div></td></tr></table></div>
+<blockquote>
+<p><a href="http://placebokkk.github.io/asr/2020/02/01/asr-ctc-decoder.html">CTC的Decode算法-Prefix Beam Search</a>
+<a href="https://arxiv.org/abs/1408.2873">First-Pass Large Vocabulary Continuous Speech Recognition using Bi-Directional Recurrent DNNs</a>
+<a href="https://distill.pub/2017/ctc/">Distill-Sequence Modeling With CTC</a>
+<a href="https://mp.weixin.qq.com/s/YD2s4Wd9K4T_Bjm_Uha96Q">WeNet 更新：支持字级时间戳和 N-best</a></p>
+</blockquote>
+
+  <hr>
+<div class="md-source-file">
+  <small>
+    
+      最后更新:
+      2022-06-08
+    
+  </small>
+</div>
+
+              
+
+  <!-- Giscus -->
+  <h2 id="__comments">评论</h2>
+  <!-- Replace with generated snippet -->
+  <script src="https://giscus.app/client.js"
+        data-repo="cnlinxi/blog"
+        data-repo-id="R_kgDOHLI9Jw"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOHLI9J84COkTs"
+        data-mapping="pathname"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="bottom"
+        data-theme="light"
+        data-lang="zh-CN"
+        crossorigin="anonymous"
+        async>
+  </script>
+
+  <!-- Reload on palette change -->
+  <script>
+    var palette = __md_get("__palette")
+    if (palette && typeof palette.color === "object")
+      if (palette.color.scheme === "slate") {
+        var giscus = document.querySelector("script[src*=giscus]")
+        giscus.setAttribute("data-theme", "dark") 
+      }
+
+    /* Register event handlers after documented loaded */
+    document.addEventListener("DOMContentLoaded", function() {
+      var ref = document.querySelector("[data-md-component=palette]")
+      ref.addEventListener("change", function() {
+        var palette = __md_get("__palette")
+        if (palette && typeof palette.color === "object") {
+          var theme = palette.color.scheme === "slate" ? "dark" : "light"
+
+          /* Instruct Giscus to change theme */
+          var frame = document.querySelector(".giscus-frame")
+          frame.contentWindow.postMessage(
+            { giscus: { setConfig: { theme } } },
+            "https://giscus.app"
+          )
+        }
+      })
+    })
+  </script>
+
+            </article>
+            
+          </div>
+        </div>
+        
+          <a href="#" class="md-top md-icon" data-md-component="top" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            回到页面顶部
+          </a>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+    <nav class="md-footer__inner md-grid" aria-label="页脚" >
+      
+        
+        <a href="../wenet%E7%9A%84ctc_alignment/" class="md-footer__link md-footer__link--prev" aria-label="上一页: wenet的ctc_alignment" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                上一页
+              </span>
+              wenet的ctc_alignment
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../wenet%E5%AF%B9onnx%E7%9A%84%E6%94%AF%E6%8C%81/" class="md-footer__link md-footer__link--next" aria-label="下一页: wenet对onnx的支持" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                下一页
+              </span>
+              wenet对onnx的支持
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.expand", "toc.follow", "toc.integrate", "navigation.top", "search.suggest", "search.highlight", "search.share"], "search": "../../assets/javascripts/workers/search.b028fd86.min.js", "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.config.lang": "ja", "search.config.pipeline": "trimmer, stemmer", "search.config.separator": "[\\s\\-\uff0c\u3002]+", "search.placeholder": "\u641c\u7d22", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version.title": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.f758a944.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

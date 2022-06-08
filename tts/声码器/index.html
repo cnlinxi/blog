@@ -1,0 +1,3179 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.3.3">
+    
+    
+      
+        <title>声码器 - 语音与语言处理</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.4a0965b7.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.cbb835fc.min.css">
+        
+      
+      
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../.." title="语音与语言处理" class="md-header__button md-logo" aria-label="语音与语言处理" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            语音与语言处理
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              声码器
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" aria-label="分享" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7 0-.24-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91 1.61 0 2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08Z"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="清空当前内容" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/cnlinxi/blog" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    cnlinxi/blog
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-tabs__inner md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        主页
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../paper/%E6%9C%AC%E5%91%A8%E5%80%BC%E5%BE%97%E8%AF%BB_2022_04_23/" class="md-tabs__link">
+        最新论文
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../dsp/%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99/" class="md-tabs__link">
+        信号处理
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E6%A6%82%E8%BF%B0/" class="md-tabs__link md-tabs__link--active">
+        语音合成
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../asr/%E5%8A%A0%E6%9D%83%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/" class="md-tabs__link">
+        语音识别
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../open_source_index/" class="md-tabs__link">
+        开源数据和工具
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../develop/docker/docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" class="md-tabs__link">
+        开发
+      </a>
+    </li>
+  
+
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../leetcode/滑动窗口专题.md" class="md-tabs__link">
+        数据结构
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="语音与语言处理" class="md-nav__button md-logo" aria-label="语音与语言处理" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    语音与语言处理
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/cnlinxi/blog" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    cnlinxi/blog
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_1" type="checkbox" id="__nav_1" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_1">
+          主页
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="主页" data-md-level="1">
+        <label class="md-nav__title" for="__nav_1">
+          <span class="md-nav__icon md-icon"></span>
+          主页
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        语音与语言处理
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          最新论文
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="最新论文" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          最新论文
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../paper/%E6%9C%AC%E5%91%A8%E5%80%BC%E5%BE%97%E8%AF%BB_2022_04_23/" class="md-nav__link">
+        本周值得读-2022_04_23
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          信号处理
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="信号处理" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          信号处理
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dsp/%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99/" class="md-nav__link">
+        参考资料
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dsp/%E8%AF%AD%E9%9F%B3%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/" class="md-nav__link">
+        语音基本概念
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dsp/%E8%AF%AD%E9%9F%B3%E7%89%B9%E5%BE%81%E6%8F%90%E5%8F%96/" class="md-nav__link">
+        语音特征提取
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4">
+          语音合成
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="语音合成" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          语音合成
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E6%A6%82%E8%BF%B0/" class="md-nav__link">
+        语音合成概述
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E7%9A%84%E8%AF%84%E4%BB%B7%E6%A0%87%E5%87%86%E5%92%8C%E6%96%B9%E6%B3%95/" class="md-nav__link">
+        语音合成的评价标准和方法
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E8%AF%AD%E8%A8%80%E5%AD%A6/" class="md-nav__link">
+        语言学
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E9%9F%B3%E5%BA%93%E5%88%B6%E4%BD%9C%E5%92%8C%E6%96%87%E6%9C%AC%E5%89%8D%E7%AB%AF/" class="md-nav__link">
+        音库制作和文本前端
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E5%A3%B0%E5%AD%A6%E6%A8%A1%E5%9E%8B/" class="md-nav__link">
+        声学模型
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          声码器
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        声码器
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#griffin-lim" class="md-nav__link">
+    Griffin-Lim声码器
+  </a>
+  
+    <nav class="md-nav" aria-label="Griffin-Lim声码器">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    算法原理
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    代码实现
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#straight" class="md-nav__link">
+    STRAIGHT声码器
+  </a>
+  
+    <nav class="md-nav" aria-label="STRAIGHT声码器">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    概述
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    特征提取
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    语音合成
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#world" class="md-nav__link">
+    WORLD声码器
+  </a>
+  
+    <nav class="md-nav" aria-label="WORLD声码器">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    声学特征
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#world_1" class="md-nav__link">
+    WORLD的分析功能
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diof0" class="md-nav__link">
+    DIO算法提取基频F0
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cheaptricksp" class="md-nav__link">
+    CheapTrick算法提取频谱包络SP
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#plantinum" class="md-nav__link">
+    PLANTINUM提取非周期信号
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#world_2" class="md-nav__link">
+    WORLD的合成算法
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    使用示例
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#nhv" class="md-nav__link">
+    NHV
+  </a>
+  
+    <nav class="md-nav" aria-label="NHV">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    源滤波器合成原理
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    共振峰合成方法
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nhv_1" class="md-nav__link">
+    NHV概述
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    整体结构
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    脉冲串生成器
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#neural-network-filter-estimator" class="md-nav__link">
+    神经网络滤波估计器（Neural Network Filter Estimator）
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ltvfirs" class="md-nav__link">
+    线性时变（LTV）滤波器和可训练的有限冲激响应（FIRs）
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    神经网络的训练
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    小结
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hifigan" class="md-nav__link">
+    HiFiGAN
+  </a>
+  
+    <nav class="md-nav" aria-label="HiFiGAN">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hifigan_1" class="md-nav__link">
+    HiFiGAN概述
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hifigan_2" class="md-nav__link">
+    HiFiGAN生成器简介
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    上采样结构
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    多感受野融合
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hifigan_3" class="md-nav__link">
+    HiFiGAN判别器简介
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    多尺度判别器
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    多周期判别器
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_19" class="md-nav__link">
+    损失函数简介
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_20" class="md-nav__link">
+    生成对抗损失
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_21" class="md-nav__link">
+    梅尔频谱损失
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_22" class="md-nav__link">
+    特征匹配损失
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_23" class="md-nav__link">
+    整体损失
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E7%9A%84%E6%80%BB%E4%BD%93%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB/" class="md-nav__link">
+        语音合成的总体知识体系
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5">
+          语音识别
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="语音识别" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          语音识别
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../asr/%E5%8A%A0%E6%9D%83%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/" class="md-nav__link">
+        加权有限状态机
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../asr/arpa2fst%E5%B0%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E8%BD%AC%E4%B8%BAWFST/" class="md-nav__link">
+        arpa2fst将语言模型转为WFST
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../asr/kaldi%E4%B8%AD%E7%9A%84%E8%A7%A3%E7%A0%81%E8%BF%87%E7%A8%8B/" class="md-nav__link">
+        kaldi中的解码过程
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../asr/kaldi%E4%B8%AD%E7%9A%84Simple-Decoder/" class="md-nav__link">
+        kaldi中的Simple-Decoder
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../asr/OpenFST%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" class="md-nav__link">
+        OpenFST基本操作
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../asr/wenet%E6%80%BB%E4%BD%93%E8%A7%A3%E6%9E%90/" class="md-nav__link">
+        wenet总体解析
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../asr/wenet_runtime%E7%9F%A5%E8%AF%86%E7%82%B9/" class="md-nav__link">
+        WeNet runtime知识点
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../asr/wenet_kaitang-ssl-train%E7%9F%A5%E8%AF%86%E7%82%B9/" class="md-nav__link">
+        wenet_kaitang-ssl-train知识点
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../asr/wenet%E7%9A%84ctc_alignment/" class="md-nav__link">
+        wenet的ctc_alignment
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../asr/wenet%E7%9A%84ctc_prefix_beam_search/" class="md-nav__link">
+        wenet的ctc_prefix_beam_search
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../asr/wenet%E5%AF%B9onnx%E7%9A%84%E6%94%AF%E6%8C%81/" class="md-nav__link">
+        wenet对onnx的支持
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../asr/wenet%E4%B8%ADendpoint%E6%A3%80%E6%B5%8B/" class="md-nav__link">
+        wenet中endpoint检测
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6">
+          开源数据和工具
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="开源数据和工具" data-md-level="1">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          开源数据和工具
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../open_source_index/" class="md-nav__link">
+        主页
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_7" type="checkbox" id="__nav_7" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_7">
+          开发
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="开发" data-md-level="1">
+        <label class="md-nav__title" for="__nav_7">
+          <span class="md-nav__icon md-icon"></span>
+          开发
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_7_1" type="checkbox" id="__nav_7_1" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_7_1">
+          docker
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="docker" data-md-level="2">
+        <label class="md-nav__title" for="__nav_7_1">
+          <span class="md-nav__icon md-icon"></span>
+          docker
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/docker/docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" class="md-nav__link">
+        docker常用命令
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_7_2" type="checkbox" id="__nav_7_2" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_7_2">
+          python
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="python" data-md-level="2">
+        <label class="md-nav__title" for="__nav_7_2">
+          <span class="md-nav__icon md-icon"></span>
+          python
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/python/python%E7%9A%84%E5%8F%96%E5%8F%8D%E8%BF%90%E7%AE%97%E7%AC%A6/" class="md-nav__link">
+        python的取反运算符
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/python/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/" class="md-nav__link">
+        正则表达式
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/python/conda%E5%92%8Cpip/" class="md-nav__link">
+        conda和pip
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/python/numpy%E5%AD%98%E5%8F%96%E6%95%B0%E6%8D%AE/" class="md-nav__link">
+        numpy存取数据
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/python/__future__%E7%94%A8%E6%B3%95/" class="md-nav__link">
+        __future__用法
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_7_3" type="checkbox" id="__nav_7_3" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_7_3">
+          shell
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="shell" data-md-level="2">
+        <label class="md-nav__title" for="__nav_7_3">
+          <span class="md-nav__icon md-icon"></span>
+          shell
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/shell/Linux%E6%93%8D%E4%BD%9C%E5%9F%BA%E7%A1%80%E5%A4%87%E5%BF%98%E5%BD%95/" class="md-nav__link">
+        Linux操作基础备忘录
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/shell/vim/" class="md-nav__link">
+        vim
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/shell/top_linux%E4%B8%8B%E7%9A%84%E4%BB%BB%E5%8A%A1%E7%AE%A1%E7%90%86%E5%99%A8/" class="md-nav__link">
+        top_linux下的任务管理器
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/shell/shell%E8%B0%83%E8%AF%95/" class="md-nav__link">
+        shell调试
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/shell/cat%E5%92%8CEOF/" class="md-nav__link">
+        cat和EOF
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/shell/tailf/" class="md-nav__link">
+        tailf
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/shell/shell%E8%AF%AD%E6%B3%95%E9%80%9F%E6%9F%A5%E6%89%8B%E5%86%8C/" class="md-nav__link">
+        shell语法速查手册
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_7_4" type="checkbox" id="__nav_7_4" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_7_4">
+          cpp
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="cpp" data-md-level="2">
+        <label class="md-nav__title" for="__nav_7_4">
+          <span class="md-nav__icon md-icon"></span>
+          cpp
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/cpp/stl%E7%9A%84map/" class="md-nav__link">
+        STL的map
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/cpp/cpp%E8%B0%83%E8%AF%95/" class="md-nav__link">
+        cpp调试技巧
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/cpp/cpp%E7%9A%84%E7%B1%BB%E8%AE%BF%E9%97%AE%E4%BF%AE%E9%A5%B0%E7%AC%A6/" class="md-nav__link">
+        cpp的类访问修饰符
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/cpp/cpp%E5%85%B3%E9%94%AE%E5%AD%97const%E4%BF%AE%E9%A5%B0%E5%87%BD%E6%95%B0/" class="md-nav__link">
+        cpp关键字const修饰函数
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/cpp/cpp%E5%AE%BD%E5%AD%97%E7%AC%A6wchar/" class="md-nav__link">
+        cpp宽字符wchar
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/cpp/gcc%E7%9A%84%E5%B8%B8%E7%94%A8%E7%BC%96%E8%AF%91%E9%80%89%E9%A1%B9/" class="md-nav__link">
+        GCC的常用编译选项
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/cpp/c%E6%88%96cpp%E8%BD%AF%E4%BB%B6%E7%BC%96%E8%AF%91/" class="md-nav__link">
+        c或cpp软件编译
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/cpp/stl%E7%9A%84vector/" class="md-nav__link">
+        STL的vector
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/cpp/cpp%E4%B8%AD%E7%9A%84int_t/" class="md-nav__link">
+        cpp中的int_t
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/cpp/stl%E7%9A%84string/" class="md-nav__link">
+        string操作
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/cpp/cpp%E5%8F%B3%E5%80%BC%E5%BC%95%E7%94%A8/" class="md-nav__link">
+        cpp右值引用和std::move
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/cpp/cpp%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" class="md-nav__link">
+        cpp并发编程
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/cpp/c%E5%8F%8Acpp%E7%9A%84%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99/" class="md-nav__link">
+        c及cpp的文件读写
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/cpp/cpp%E5%B8%B8%E7%94%A8%E5%BA%93gflags_glog_gtest/" class="md-nav__link">
+        cpp常用库gflags/glog/gtest
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_7_5" type="checkbox" id="__nav_7_5" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_7_5">
+          git
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="git" data-md-level="2">
+        <label class="md-nav__title" for="__nav_7_5">
+          <span class="md-nav__icon md-icon"></span>
+          git
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/git/git%E4%B8%AD%E7%9A%84HEAD/" class="md-nav__link">
+        git中的HEAD
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/git/git%E5%B8%B8%E7%94%A8%E5%9B%9E%E9%80%80%E6%93%8D%E4%BD%9C/" class="md-nav__link">
+        git常用回退操作
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/git/git%E7%9A%84%E6%8C%87%E9%92%88ref%E5%92%8Creflog/" class="md-nav__link">
+        git的指针ref和reflog
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/git/git%E8%BD%AC%E7%A7%BB%E9%83%A8%E5%88%86%E4%BB%A3%E7%A0%81cherry-pick/" class="md-nav__link">
+        git转移部分代码cherry-pick
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/git/git%E6%97%A5%E5%BF%97/" class="md-nav__link">
+        git日志
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/git/git%E5%88%86%E6%94%AF%E5%90%88%E5%B9%B6/" class="md-nav__link">
+        git分支合并
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/git/git%E7%9A%84fast_forward/" class="md-nav__link">
+        Git的Fast Forward
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/git/git%E4%BF%AE%E6%94%B9%E6%8F%90%E4%BA%A4%E4%BF%A1%E6%81%AF/" class="md-nav__link">
+        git修改提交信息
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/git/git%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%BA%90/" class="md-nav__link">
+        git学习资源
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_8" type="checkbox" id="__nav_8" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_8">
+          数据结构
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="数据结构" data-md-level="1">
+        <label class="md-nav__title" for="__nav_8">
+          <span class="md-nav__icon md-icon"></span>
+          数据结构
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../leetcode/滑动窗口专题.md" class="md-nav__link">
+        None
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../leetcode/DFS回溯算法专题.md" class="md-nav__link">
+        None
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../leetcode/一般二叉树专题.md" class="md-nav__link">
+        None
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../leetcode/二叉搜索树专题.md" class="md-nav__link">
+        None
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+  
+                
+  <a href="https://github.com/cnlinxi/blog/edit/main/docs/tts/声码器.md" title="编辑此页" class="md-content__button md-icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25Z"/></svg>
+  </a>
+
+
+
+<h1 id="_1">声码器</h1>
+<p>声码器（Vocoder），又称语音信号分析合成系统，负责对声音进行分析和合成，主要用于合成人类的语音。声码器主要由以下功能：</p>
+<ol>
+<li>
+<p>分析Analysis</p>
+</li>
+<li>
+<p>操纵Manipulation</p>
+</li>
+<li>
+<p>合成Synthesis</p>
+</li>
+</ol>
+<p>分析过程主要是从一段原始声音波形中提取声学特征，比如线性谱、MFCC；操纵过程是指对提取的原始声学特征进行压缩等降维处理，使其表征能力进一步提升；合成过程是指将此声学特征恢复至原始波形。人类发声机理可以用经典的源-滤波器模型建模，也就是输入的激励部分通过线性时不变进行操作，输出的声道谐振部分作为合成语音。输入部分被称为激励部分（Source Excitation Part），激励部分对应肺部气流与声带共同作用形成的激励，输出结果被称为声道谐振部分（Vocal Tract Resonance Part），对应人类发音结构，而声道谐振部分对应于声道的调音部分，对声音进行调制。</p>
+<p>声码器的发展可以分为两个阶段，包括用于统计参数语音合成（Statistical Parameteric Speech Synthesis，SPSS）基于信号处理的声码器，和基于神经网络的声码器。常用基于信号处理的声码器包括Griffin-Lim，STRAIGHT和WORLD。早期神经声码器包括WaveNet、WaveRNN等，近年来神经声码器发展迅速，涌现出包括MelGAN、HiFiGAN、LPCNet、NHV等优秀的工作。</p>
+<blockquote>
+<p>Griffin D. and Lim J. (1984). "Signal Estimation from Modified Short-Time Fourier Transform\". IEEE Transactions on Acoustics, Speech and Signal Processing. 32 (2): 236--243. doi:10.1109/TASSP.1984.1164317</p>
+<p>Kawahara H. Speech representation and transformation using adaptive interpolation of weighted spectrum: vocoder revisited[C]. 1997 IEEE International Conference on Acoustics, Speech, and Signal Processing. IEEE, 1997, 2: 1303-1306.</p>
+<p>Morise M, Yokomori F, Ozawa K. World: a vocoder-based high-quality speech synthesis system for real-time applications[J]. IEICE TRANSACTIONS on Information and Systems, 2016, 99(7): 1877-1884.</p>
+</blockquote>
+<h2 id="griffin-lim">Griffin-Lim声码器</h2>
+<p>在早期的很多Tacotron开源语音合成模型中均采用Griffin-Lim声码器，同时也有一些专门的开源实现，比如<a href="https://github.com/bkvogel/griffin_lim">GriffinLim</a>。</p>
+<h3 id="_2">算法原理</h3>
+<p>原始的音频很难提取特征，需要进行傅里叶变换将时域信号转换到频域进行分析。音频进行傅里叶变换后，结果为复数，复数的绝对值就是幅度谱，而复数的实部与虚部之间形成的角度就是相位谱。经过傅里叶变换之后获得的幅度谱特征明显，可以清楚看到基频和对应的谐波。基频一般是声带的频率，而谐波则是声音经过声道、口腔、鼻腔等器官后产生的共振频率，且频率是基频的整数倍。</p>
+<p>Griffin-Lim将幅度谱恢复为原始波形，但是相比原始波形，幅度谱缺失了原始相位谱信息。音频一般采用的是短时傅里叶变化，因此需要将音频分割成帧（每帧20ms~50ms），再进行傅里叶变换，帧与帧之间是有重叠的。Griffin-Lim算法利用两帧之间有重叠部分的这个约束重构信号，因此如果使用Griffin-Lim算法还原音频信号，就需要尽量保证两帧之间重叠越多越好，一般帧移为每一帧长度的25%左右，也就是帧之间重叠75%为宜。</p>
+<p>Griffin-Lim在已知幅度谱，不知道相位谱的情况下重建语音，算法的实现较为简单，整体是一种迭代算法，迭代过程如下：</p>
+<ol>
+<li>
+<p>随机初始化一个相位谱；</p>
+</li>
+<li>
+<p>用相位谱和已知的幅度谱经过逆短时傅里叶变换（ISTFT）合成新语音；</p>
+</li>
+<li>
+<p>对合成的语音做短时傅里叶变换，得到新的幅度谱和相位谱；</p>
+</li>
+<li>
+<p>丢弃新的幅度谱，用相位谱和已知的幅度谱合成语音，如此重复，直至达到设定的迭代轮数。</p>
+</li>
+</ol>
+<p>在迭代过程中，预测序列与真实序列幅度谱之间的距离在不断缩小，类似于EM算法。推导过程参见：<a href="https://zhuanlan.zhihu.com/p/102539783">Griffin Lim算法的过程和证明</a>和<a href="https://zhuanlan.zhihu.com/p/66809424">Griffin Lim声码器介绍</a>。</p>
+<h3 id="_3">代码实现</h3>
+<p>摘抄自<a href="https://zhuanlan.zhihu.com/p/25002923">Build End-To-End TTS Tacotron: Griffin Lim 信号估计算法</a>。</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-0-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-0-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-0-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-0-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-0-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-0-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-0-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-0-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-0-10">10</a></span>
+<span class="normal"><a href="#__codelineno-0-11">11</a></span>
+<span class="normal"><a href="#__codelineno-0-12">12</a></span>
+<span class="normal"><a href="#__codelineno-0-13">13</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="k">def</span> <span class="nf">griffin_lim</span><span class="p">(</span><span class="n">stftm_matrix</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">min_iter</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mi">20</span><span class="p">):</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2"></a>    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3"></a>    <span class="n">y_iter</span> <span class="o">=</span> <span class="p">[]</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4"></a>
+<a id="__codelineno-0-5" name="__codelineno-0-5"></a>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_iter</span><span class="p">):</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6"></a>        <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="n">min_iter</span> <span class="ow">and</span> <span class="p">(</span><span class="n">i</span> <span class="o">-</span> <span class="n">min_iter</span><span class="p">)</span> <span class="o">%</span> <span class="n">delta</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7"></a>            <span class="n">y_iter</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">y</span><span class="p">,</span> <span class="n">i</span><span class="p">))</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8"></a>        <span class="n">stft_matrix</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">stft</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9"></a>        <span class="n">stft_matrix</span> <span class="o">=</span> <span class="n">stftm_matrix</span> <span class="o">*</span> <span class="n">stft_matrix</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">stft_matrix</span><span class="p">)</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10"></a>        <span class="n">y</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">istft</span><span class="p">(</span><span class="n">stft_matrix</span><span class="p">)</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11"></a>    <span class="n">y_iter</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">y</span><span class="p">,</span> <span class="n">max_iter</span><span class="p">))</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12"></a>
+<a id="__codelineno-0-13" name="__codelineno-0-13"></a>    <span class="k">return</span> <span class="n">y_iter</span>
+</code></pre></div></td></tr></table></div>
+<p>具体使用：</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-1-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-1-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-1-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-1-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-1-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-1-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-1-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-1-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-1-10">10</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="c1"># assume 1 channel wav file</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2"></a><span class="n">sr</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">wavfile</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">input_wav_path</span><span class="p">)</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3"></a>
+<a id="__codelineno-1-4" name="__codelineno-1-4"></a><span class="c1"># 由 STFT -&gt; STFT magnitude</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5"></a><span class="n">stftm_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">librosa</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">stft</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6"></a><span class="c1"># + random 模拟 modification</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7"></a><span class="n">stftm_matrix_modified</span> <span class="o">=</span> <span class="n">stftm_matrix</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">stftm_matrix</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8"></a>
+<a id="__codelineno-1-9" name="__codelineno-1-9"></a><span class="c1"># Griffin-Lim 估计音频信号</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10"></a><span class="n">y_iters</span> <span class="o">=</span> <span class="n">griffin_lim</span><span class="p">(</span><span class="n">stftm_matrix_modified</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+<h2 id="straight">STRAIGHT声码器</h2>
+<h3 id="_4">概述</h3>
+<p>STARIGHT（Speech Transformation and Representation using Adaptive Interpolation of weiGHTed spectrum），即利用自适应加权谱内插进行语音转换和表征。STRAIGHT将语音信号解析成相互独立的频谱参数（谱包络）和基频参数（激励部分），能够对语音信号的基频、时长、增益、语速等参数进行灵活的调整，该模型在分析阶段仅针对语音基音、平滑功率谱和非周期成分3个声学参数进行分析提取，在合成阶段利用上述3个声学参数进行语音重构。</p>
+<p>STRAIGHT采用源-滤波器表征语音信号，可将语音信号看作激励信号通过时变线性滤波器的结果。</p>
+<details class="note" open="open">
+<summary>对于能量信号和周期信号，其傅里叶变换收敛，因此可以用频谱（Spectrum）来描述；对于随机信号，傅里叶变换不收敛，因此不能用频谱进行描述，而应当使用功率谱（PSD），不严谨地说，功率谱可以看作是随机信号的频谱，参见<a href="https://zhuanlan.zhihu.com/p/417454806">功率谱密度（PSD）</a>。</summary>
+</details>
+<h3 id="_5">特征提取</h3>
+<ol>
+<li>
+<p>平滑功率谱的提取，包括低频带补偿和清音帧处理等过程。STRAIGHT分析阶段的一个关键步骤是进行自适应频谱分析，获取无干扰且平滑的功率谱。自适应加权谱的提取关键在于对提取出来的功率谱进行一系列的平滑和补偿。对输入信号进行：语音信号预处理-&gt;功率谱提取-&gt;低频噪声补偿-&gt;过平滑补偿-&gt;静音帧谱图的处理，最后得到自适应功率谱。</p>
+</li>
+<li>
+<p>非周期成分提取。</p>
+</li>
+<li>
+<p>通过小波时频分析的方式，提取基频轨迹。首先通过对语音信号中的基频信息进行解析，然后计算出相应的瞬时基频值，最后在频域进行谐波解析，并在频率轴进行平滑处理，获得语音信号的各个基频参数。</p>
+</li>
+</ol>
+<h3 id="_6">语音合成</h3>
+<p>STARIGHT采用PSOLA技术和最小相位脉冲响应相结合的方式，在合成语音时输入待合成语音的基音频率轨迹和去除了周期性的二维短时谱包络。</p>
+<p>开源的STRAIGHT声码器大多是MATLAB实现，比如<a href="https://github.com/HidekiKawahara/legacy_STRAIGHT">Legacy STRAIGHT</a>，<a href="https://github.com/ashmanmode/StraightRepo">StraightRepo</a>。在开源语音合成系统<a href="https://github.com/CSTR-Edinburgh/merlin">merlin</a>中存在可用的STRAIGHT工具，参见<a href="https://github.com/CSTR-Edinburgh/merlin/blob/master/misc/scripts/vocoder/straight/copy_synthesis.sh">StraightCopySynthesis</a>。</p>
+<h2 id="world">WORLD声码器</h2>
+<h3 id="_7">声学特征</h3>
+<p>WORLD通过获取三个声学特征合成原始语音，这三个声学特征分别是：基频（fundamental frequency，F0），频谱包络（Spectrum Envelop，也称频谱参数Spectrum Parameter，SP）和非周期信号参数（Aperiodic Parameter，AP）。</p>
+<ol>
+<li>
+<p>基频F0</p>
+<p>基频F0决定浊音，对应激励部分的周期脉冲序列，如果将声学信号分为周期和非周期信号，基频F0部分包含了语音的韵律信息和结构信息。对于一个由振动而发出的声音信号，这个信号可以看作是若干组频率不同的正弦波叠加而成，其中频率最低的正弦波即为<code>基频</code>，其它则为<code>泛音</code>。</p>
+<p>WORLD提取基频的流程：首先，利用低通滤波器对原始信号进行滤波；之后，对滤波之后的信号进行评估，由于滤波之后的信号应该恰好是一个正弦波，每个波段的长度应该恰好都是一个周期长度，因此通过计算这四个周期的标准差，可以评估此正弦波正确与否；最后选取标准差最小周期的倒数作为最终的基频。</p>
+</li>
+<li>
+<p>频谱包络SP</p>
+<p>频谱包络SP决定音色，对应声道谐振部分时不变系统的冲激响应，可以看作通过此线性时不变系统之后，声码器会对激励与系统响应进行卷积。将不同频率的振幅最高点通过平滑的曲线连接起来，就是频谱包络，求解方法有多种，在求解梅尔倒谱系数时，使用的是倒谱法。</p>
+<details class="note" open="open">
+<summary>倒频谱（Cepstrum）也称为倒谱、二次谱和对数功率谱等，倒频谱的工程定义为：信号功率谱对数值进行傅里叶逆变换的结果，也就是：信号-&gt;求功率谱-&gt;求对数-&gt;求傅里叶逆变换。参见<a href="https://zhuanlan.zhihu.com/p/34989414">信号频域分析方法的理解（频谱、能量谱、功率谱、倒频谱、小波分析）</a>。</summary>
+</details>
+</li>
+<li>
+<p>非周期信号参数AP</p>
+<p>非周期信号参数AP决定清音，对应混合激励部分的非周期脉冲序列，一般的语音都是由周期和非周期信号组成，因此除了上述的周期信号的声学参数，还需要非周期信号参数，才能够恢复出原始信号。混合激励可以通过AP来控制浊音段中周期激励和噪音（非周期）成分的相对比重。</p>
+</li>
+</ol>
+<h3 id="world_1">WORLD的分析功能</h3>
+<p>WORLD包含3个语音分析模块，语音分析模型包括DIO模块、CheapTrick模块，PLATINUM模块。</p>
+<p><img alt="WORLD声码器整体结构" src="../image/vocoder_world_arch.png" /></p>
+<p>WORLD可以提取原始波形中的基频F0，基频包络SP和非周期信号AP，这三种声学特征对应三种提取算法：DIO输入波形提取基频，CheapTrick输入基频、波形提取频谱包络，D4C输入基频、频谱包络和波形提取非周期信号。最终，通过这三种声学特征通过最小相位谱与激励信号卷积后，输出恢复的原始波形。</p>
+<h3 id="diof0">DIO算法提取基频F0</h3>
+<p>F0是周期信号最长持续时间的倒数，反过来，周期是基频的整数分之一。基频会产生二次谐波、三次谐波等，最长的周期理论上对应着频率最低的部分，也就是在语谱图上对应最下面的亮线，能量最高的部分。</p>
+<p><img alt="基频和谐波" src="vocoder_pitch_harmonic.png" /></p>
+<p>有很多的算法估计基频F0，可以分为两类：一个是利用时域特征，比如自相关；一个利用频谱特征，比如倒谱cepstrum。WORLD使用DIO估计基频F0，比YIN、SWIPE要快，性能依然较好，DIO分为以下三步。</p>
+<ol>
+<li>
+<p>低通滤波器对原始信号进行滤波。使用不同频带的低通滤波器：因为不知道基频的位置，因此这一步包含不同周期的sin低通滤波器。</p>
+</li>
+<li>
+<p>取4个周期计算置信度。计算获得的各个可能基频F0的置信度，因为由基频分量组成的sin信号包含4个间隔（2个顶点、2个过零点）。如果滤波器得到的间隔长度一致，则说明是一个基波，如下图所示。</p>
+<p><img alt="取四个间隔计算候选F0及其置信度" src="../image/vocoder_world_dio1.png" /></p>
+</li>
+<li>
+<p>从某个时间点的正弦波中提取出四个周期信号，并计算置信度，也就是标准差。然后选择标准差最低，也就是置信度最高的基波。</p>
+</li>
+</ol>
+<h3 id="cheaptricksp">CheapTrick算法提取频谱包络SP</h3>
+<p>声音包含不同频率的信号，覆盖0到18000Hz，每个频率都有其振幅，定义每种频率中波的振幅最高点连线形成的图形为<code>包络</code>。频谱包络是个重要的参数，在频率-振幅图中，用平滑的曲线将所有共振峰连接起来，这个平滑的曲线就是频谱包络。</p>
+<p><img alt="取四个间隔计算候选F0及其置信度" src="../image/vocoder_world_sp.png" /></p>
+<p>提取频谱包络SP的典型算法有线性预测编码（Linear Predictive Coding，LPC）和Cepstrum。线性预测编码LPC的原理是用若干个历史语音采样点的加权线性求和去不断逼近当前的语音采样点；Cepstrum则是基于复数倒谱拥有频谱幅度与相位信息的原理，通过对一个信号进行快速傅里叶变换FFT-&gt;取绝对值-&gt;取对数-&gt;相位展开-&gt;逆快速傅里叶变换IFFT的变换处理，从而得到对应的倒谱图。</p>
+<p>WORLD采用CheapTrick做谱分析，思想来自于音高同步分析（pitch synchronous analysis），其过程是：先将不同基频进行自适应加窗操作，以及功率谱平滑操作，随后将信号在频域上进行同态滤波。</p>
+<h3 id="plantinum">PLANTINUM提取非周期信号</h3>
+<p>混合激励和非周期信号参数AP经常应用到合成中，在Legacy-STRAIGHT和TANDEM-STRAIGHT算法中，aperiodicity被用于合成周期和非周期的信号。WORLD直接通过PLANTINUM从波形、F0和谱包络中得到混合激励的非周期信号。</p>
+<h3 id="world_2">WORLD的合成算法</h3>
+<p>TANDEM-STRAIGHT直接使用周期响应计算声带的振动，而Legacy-STRAIGHT则操纵组延迟（group delay）以避免嗡嗡声。在WORLD中，利用最小相位响应和激励信号的卷积来计算声带的振动，从下图所示，可以看到，WORLD的卷积比STAIGHT要少，因此计算量更少。</p>
+<p><img alt="WORLD合成算法" src="../image/vocoder_world_synthesis.png" /></p>
+<h3 id="_8">使用示例</h3>
+<p>WORLD声码器有较为成熟的<a href="https://github.com/mmorise/World">开源实现</a>，并且有对应的Python封装：<a href="https://github.com/JeremyCCHsu/Python-Wrapper-for-World-Vocoder">PyWORLD: A Python wrapper of WORLD Vocoder</a>，另有<a href="http://ml.cs.yamanashi.ac.jp/world/english">官方实现</a>。以下示例包括了通过<code>PyWorld</code>提取声学参数，合成原始音频，修改部分声学参数，编辑原始音频。</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-2-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-2-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-2-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-2-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-2-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-2-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-2-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-2-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-2-10">10</a></span>
+<span class="normal"><a href="#__codelineno-2-11">11</a></span>
+<span class="normal"><a href="#__codelineno-2-12">12</a></span>
+<span class="normal"><a href="#__codelineno-2-13">13</a></span>
+<span class="normal"><a href="#__codelineno-2-14">14</a></span>
+<span class="normal"><a href="#__codelineno-2-15">15</a></span>
+<span class="normal"><a href="#__codelineno-2-16">16</a></span>
+<span class="normal"><a href="#__codelineno-2-17">17</a></span>
+<span class="normal"><a href="#__codelineno-2-18">18</a></span>
+<span class="normal"><a href="#__codelineno-2-19">19</a></span>
+<span class="normal"><a href="#__codelineno-2-20">20</a></span>
+<span class="normal"><a href="#__codelineno-2-21">21</a></span>
+<span class="normal"><a href="#__codelineno-2-22">22</a></span>
+<span class="normal"><a href="#__codelineno-2-23">23</a></span>
+<span class="normal"><a href="#__codelineno-2-24">24</a></span>
+<span class="normal"><a href="#__codelineno-2-25">25</a></span>
+<span class="normal"><a href="#__codelineno-2-26">26</a></span>
+<span class="normal"><a href="#__codelineno-2-27">27</a></span>
+<span class="normal"><a href="#__codelineno-2-28">28</a></span>
+<span class="normal"><a href="#__codelineno-2-29">29</a></span>
+<span class="normal"><a href="#__codelineno-2-30">30</a></span>
+<span class="normal"><a href="#__codelineno-2-31">31</a></span>
+<span class="normal"><a href="#__codelineno-2-32">32</a></span>
+<span class="normal"><a href="#__codelineno-2-33">33</a></span>
+<span class="normal"><a href="#__codelineno-2-34">34</a></span>
+<span class="normal"><a href="#__codelineno-2-35">35</a></span>
+<span class="normal"><a href="#__codelineno-2-36">36</a></span>
+<span class="normal"><a href="#__codelineno-2-37">37</a></span>
+<span class="normal"><a href="#__codelineno-2-38">38</a></span>
+<span class="normal"><a href="#__codelineno-2-39">39</a></span>
+<span class="normal"><a href="#__codelineno-2-40">40</a></span>
+<span class="normal"><a href="#__codelineno-2-41">41</a></span>
+<span class="normal"><a href="#__codelineno-2-42">42</a></span>
+<span class="normal"><a href="#__codelineno-2-43">43</a></span>
+<span class="normal"><a href="#__codelineno-2-44">44</a></span>
+<span class="normal"><a href="#__codelineno-2-45">45</a></span>
+<span class="normal"><a href="#__codelineno-2-46">46</a></span>
+<span class="normal"><a href="#__codelineno-2-47">47</a></span>
+<span class="normal"><a href="#__codelineno-2-48">48</a></span>
+<span class="normal"><a href="#__codelineno-2-49">49</a></span>
+<span class="normal"><a href="#__codelineno-2-50">50</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="kn">import</span> <span class="nn">pyworld</span> <span class="k">as</span> <span class="nn">pw</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2"></a><span class="kn">from</span> <span class="nn">scipy.io</span> <span class="kn">import</span> <span class="n">wavfile</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3"></a><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4"></a><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5"></a><span class="kn">import</span> <span class="nn">os</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6"></a><span class="kn">import</span> <span class="nn">soundfile</span> <span class="k">as</span> <span class="nn">sf</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7"></a>
+<a id="__codelineno-2-8" name="__codelineno-2-8"></a><span class="c1"># 提取语音特征</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9"></a><span class="n">x</span><span class="p">,</span> <span class="n">fs</span> <span class="o">=</span> <span class="n">sf</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">WAV_FILE_PATH</span><span class="p">)</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10"></a>
+<a id="__codelineno-2-11" name="__codelineno-2-11"></a><span class="c1"># f0 : ndarray</span>
+<a id="__codelineno-2-12" name="__codelineno-2-12"></a><span class="c1">#     F0 contour. 基频等高线</span>
+<a id="__codelineno-2-13" name="__codelineno-2-13"></a><span class="c1"># sp : ndarray</span>
+<a id="__codelineno-2-14" name="__codelineno-2-14"></a><span class="c1">#     Spectral envelope. 频谱包络</span>
+<a id="__codelineno-2-15" name="__codelineno-2-15"></a><span class="c1"># ap : ndarray</span>
+<a id="__codelineno-2-16" name="__codelineno-2-16"></a><span class="c1">#     Aperiodicity. 非周期性</span>
+<a id="__codelineno-2-17" name="__codelineno-2-17"></a><span class="n">f0</span><span class="p">,</span> <span class="n">sp</span><span class="p">,</span> <span class="n">ap</span> <span class="o">=</span> <span class="n">pw</span><span class="o">.</span><span class="n">wav2world</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">fs</span><span class="p">)</span>    <span class="c1"># use default options</span>
+<a id="__codelineno-2-18" name="__codelineno-2-18"></a>
+<a id="__codelineno-2-19" name="__codelineno-2-19"></a><span class="c1"># 分别提取声学参数</span>
+<a id="__codelineno-2-20" name="__codelineno-2-20"></a><span class="c1"># 使用DIO算法计算音频的基频F0</span>
+<a id="__codelineno-2-21" name="__codelineno-2-21"></a><span class="n">_f0</span><span class="p">,</span> <span class="n">t</span> <span class="o">=</span> <span class="n">pw</span><span class="o">.</span><span class="n">dio</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">f0_floor</span><span class="o">=</span> <span class="mf">50.0</span><span class="p">,</span> <span class="n">f0_ceil</span><span class="o">=</span> <span class="mf">600.0</span><span class="p">,</span> <span class="n">channels_in_octave</span><span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">frame_period</span><span class="o">=</span><span class="n">pw</span><span class="o">.</span><span class="n">default_frame_period</span><span class="p">)</span>
+<a id="__codelineno-2-22" name="__codelineno-2-22"></a>
+<a id="__codelineno-2-23" name="__codelineno-2-23"></a><span class="c1"># 使用CheapTrick算法计算音频的频谱包络</span>
+<a id="__codelineno-2-24" name="__codelineno-2-24"></a><span class="n">_sp</span> <span class="o">=</span> <span class="n">pw</span><span class="o">.</span><span class="n">cheaptrick</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">_f0</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">fs</span><span class="p">)</span>
+<a id="__codelineno-2-25" name="__codelineno-2-25"></a>
+<a id="__codelineno-2-26" name="__codelineno-2-26"></a><span class="c1"># 计算aperiodic参数</span>
+<a id="__codelineno-2-27" name="__codelineno-2-27"></a><span class="n">_ap</span> <span class="o">=</span> <span class="n">pw</span><span class="o">.</span><span class="n">d4c</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">_f0</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">fs</span><span class="p">)</span>
+<a id="__codelineno-2-28" name="__codelineno-2-28"></a>
+<a id="__codelineno-2-29" name="__codelineno-2-29"></a><span class="c1"># 基于以上参数合成原始音频</span>
+<a id="__codelineno-2-30" name="__codelineno-2-30"></a><span class="n">_y</span> <span class="o">=</span> <span class="n">pw</span><span class="o">.</span><span class="n">synthesize</span><span class="p">(</span><span class="n">_f0</span><span class="p">,</span> <span class="n">_sp</span><span class="p">,</span> <span class="n">_ap</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">pw</span><span class="o">.</span><span class="n">default_frame_period</span><span class="p">)</span>
+<a id="__codelineno-2-31" name="__codelineno-2-31"></a>
+<a id="__codelineno-2-32" name="__codelineno-2-32"></a><span class="c1"># 1.变高频-更类似女性</span>
+<a id="__codelineno-2-33" name="__codelineno-2-33"></a><span class="n">high_freq</span> <span class="o">=</span> <span class="n">pw</span><span class="o">.</span><span class="n">synthesize</span><span class="p">(</span><span class="n">f0</span><span class="o">*</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">sp</span><span class="p">,</span> <span class="n">ap</span><span class="p">,</span> <span class="n">fs</span><span class="p">)</span>
+<a id="__codelineno-2-34" name="__codelineno-2-34"></a>
+<a id="__codelineno-2-35" name="__codelineno-2-35"></a><span class="c1"># 2.直接修改基频，变为机器人发声</span>
+<a id="__codelineno-2-36" name="__codelineno-2-36"></a><span class="n">robot_like_f0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">f0</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span>
+<a id="__codelineno-2-37" name="__codelineno-2-37"></a><span class="n">robot_like</span> <span class="o">=</span> <span class="n">pw</span><span class="o">.</span><span class="n">synthesize</span><span class="p">(</span><span class="n">robot_like_f0</span><span class="p">,</span> <span class="n">sp</span><span class="p">,</span> <span class="n">ap</span><span class="p">,</span> <span class="n">fs</span><span class="p">)</span>
+<a id="__codelineno-2-38" name="__codelineno-2-38"></a>
+<a id="__codelineno-2-39" name="__codelineno-2-39"></a><span class="c1"># 3.提高基频，同时频谱包络后移 -&gt; 更温柔的女性？</span>
+<a id="__codelineno-2-40" name="__codelineno-2-40"></a><span class="n">female_like_sp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">sp</span><span class="p">)</span>
+<a id="__codelineno-2-41" name="__codelineno-2-41"></a><span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">female_like_sp</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+<a id="__codelineno-2-42" name="__codelineno-2-42"></a>    <span class="n">female_like_sp</span><span class="p">[:,</span> <span class="n">f</span><span class="p">]</span> <span class="o">=</span> <span class="n">sp</span><span class="p">[:,</span> <span class="nb">int</span><span class="p">(</span><span class="n">f</span><span class="o">/</span><span class="mf">1.2</span><span class="p">)]</span>
+<a id="__codelineno-2-43" name="__codelineno-2-43"></a><span class="n">female_like</span> <span class="o">=</span> <span class="n">pw</span><span class="o">.</span><span class="n">synthesize</span><span class="p">(</span><span class="n">f0</span><span class="o">*</span><span class="mi">2</span><span class="p">,</span> <span class="n">female_like_sp</span><span class="p">,</span> <span class="n">ap</span><span class="p">,</span> <span class="n">fs</span><span class="p">)</span>
+<a id="__codelineno-2-44" name="__codelineno-2-44"></a>
+<a id="__codelineno-2-45" name="__codelineno-2-45"></a><span class="c1"># 4.转换基频（不能直接转换）</span>
+<a id="__codelineno-2-46" name="__codelineno-2-46"></a><span class="n">x2</span><span class="p">,</span> <span class="n">fs2</span> <span class="o">=</span> <span class="n">sf</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">WAV_FILE_PATH2</span><span class="p">)</span>
+<a id="__codelineno-2-47" name="__codelineno-2-47"></a><span class="n">f02</span><span class="p">,</span> <span class="n">sp2</span><span class="p">,</span> <span class="n">ap2</span> <span class="o">=</span> <span class="n">pw</span><span class="o">.</span><span class="n">wav2world</span><span class="p">(</span><span class="n">x2</span><span class="p">,</span> <span class="n">fs2</span><span class="p">)</span>
+<a id="__codelineno-2-48" name="__codelineno-2-48"></a><span class="n">f02</span> <span class="o">=</span> <span class="n">f02</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">f0</span><span class="p">)]</span>
+<a id="__codelineno-2-49" name="__codelineno-2-49"></a><span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">f0</span><span class="p">),</span><span class="nb">len</span><span class="p">(</span><span class="n">f02</span><span class="p">))</span>
+<a id="__codelineno-2-50" name="__codelineno-2-50"></a><span class="n">other_like</span> <span class="o">=</span> <span class="n">pw</span><span class="o">.</span><span class="n">synthesize</span><span class="p">(</span><span class="n">f02</span><span class="p">,</span> <span class="n">sp</span><span class="p">,</span> <span class="n">ap</span><span class="p">,</span> <span class="n">fs</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+<h2 id="nhv">NHV</h2>
+<h3 id="_9">源滤波器合成原理</h3>
+<p>如下图所示，基于源-滤波器的参数合成中，合成器的工作流程主要可分为三步。</p>
+<ol>
+<li>
+<p>根据待合成音节的声调特性构造相应的声门波激励源。</p>
+</li>
+<li>
+<p>再根据协同发音、速度变换（时长参数）等音变信息在原始声道的基础上构造出新的声道参数模型。</p>
+</li>
+<li>
+<p>最后将声门波激励源送入新的声道模型中，输出就是结合给定韵律特性的合成语音。</p>
+</li>
+</ol>
+<p>共振峰合成和LPC（线性预测分析）合成是上述源-滤波器结构的参数合成中最常用的两种方法，实现原理类似，只是使用的声道模型不同。同时针对声道模型的特性，在源的选取上也略有区别。</p>
+<p><img alt="源-滤波器合成结构框图" src="../image/vocoder_nhv_source_filter.png" /></p>
+<h3 id="_10">共振峰合成方法</h3>
+<p>与线性预测方法类似，共振峰合成方法也是对声源-声道模型的模拟，但它更侧重于对声道谐振特性的模拟。它把人的声道看作一个谐振腔，腔体的谐振特性决定所发出语音信号的频谱特性，也即共振峰特性。音色各异的语音有不同的共振峰模式，用每个共振峰以及其带宽作为参数可以构成一个共振峰滤波器，将多个共振峰滤波器组合起来模拟声道的传输特性，根据这个特性对声源发生器产生的激励信号进行调制，经过辐射模型后，就可以得到合成语音。</p>
+<p>语音学的研究结果表明，决定语音感知的声学特征主要是语音的共振峰，因此如果合成器的结构和参数设置正确，则这种方法能够合成高音质、高可懂度的语音。</p>
+<ol>
+<li>
+<p>激励源模型</p>
+<p>一般共振峰合成器的激励源有三种类型：合成浊音时用周期激励序列；合成清音时用伪随机噪音；合成浊擦音时用周期激励调制的噪音。发浊音时，声带不断地张开和关闭，产生间隙的脉冲波，开始时声门闭合幅度为零，接着声门逐渐打开，幅度缓慢上升，然后快速下降，当再次降低到零之后，有一个导数不连续点，相当于声门突然关闭。因此浊音时激励函数形式有三角波、多项式波和滤波器激励响应激励函数。</p>
+</li>
+<li>
+<p>共振峰声道模型</p>
+<p>对于声道模型，声学理论表明，语音信号谱中的谐振特性（对应声道传递函数中的极点）完全由声道的形状决定，与激励源的位置无关。</p>
+</li>
+</ol>
+<h3 id="nhv_1">NHV概述</h3>
+<p>许多神经声码器旨在提升源-滤波器（source-filter）模型中对源（source）的建模能力，包括LPCNet、GELP和GlotGAN通过神经网络仅建模源（比如建模线性预测的残差信号），而通过时变滤波器直接生成语音。不同于仅对源进行建模，神经源滤波器（Neural Source-Filter，NSF）框架将经典框架中的线性滤波器替换为卷积神经网络，其中DDSP通过神经网络控制谐波加性噪声（Harmonic plus Noise）生成音频。</p>
+<blockquote>
+<p>J. Engel, L. H. Hantrakul, C. Gu, and A. Roberts, "DDSP: Differentiable digital signal processing," in Proc. ICLR, 2020.</p>
+</blockquote>
+<p>NHV论文地址：<a href="https://www.isca-speech.org/archive_v0/Interspeech_2020/pdfs/3188.pdf">Neural Homomorphic Vocoder</a>。神经同态声码器（Neural Homomorphic Vocoder，NHV）通过线性时变滤波器对脉冲串和噪音进行滤波后生成语音。给定声学特征，神经网络通过估计时变脉冲响应的复数谱控制线性时变（Linear Time-Varying，LTV）滤波器，并利用多尺度STFT和对抗损失函数进行训练。</p>
+<h3 id="_11">整体结构</h3>
+<p><img alt="源-滤波器示意图" src="../image/vocoder_nhv_arch.png" /></p>
+<p>源-滤波器示意图如上图所示， <span class="arithmatex">\({e[n]}\)</span> 表示源（source）， <span class="arithmatex">\(h[n]\)</span> 为滤波器， <span class="arithmatex">\(s[n]\)</span> 则是重建的样本点。在NHV中，神经网络负责建模源-滤波器模型中的线性时变（Linear Time-Varying，LTV）滤波器。类似于谐波噪音加性模型（Harmonic plus Noise model），NHV分别生成谐波和噪音成分。谐波部分，主要是通过线性时变脉冲串（LTV filtered impulse trains）建模发音部分的周期性振动；噪音部分，包括背景噪音、不发音成分、以及发音部分中的随机成分，通过线性时变滤波噪音建模。将原始的语音信号 <span class="arithmatex">\(x\)</span> 和重建信号 <span class="arithmatex">\(s\)</span> 切分为若干个帧长 <span class="arithmatex">\(L\)</span> 的不重叠帧， <span class="arithmatex">\(m\)</span> 为帧索引， <span class="arithmatex">\(n\)</span> 为样本点索引， <span class="arithmatex">\(c\)</span> 为特征索引，因此总帧数和总样本点数满足：</p>
+<div class="arithmatex">\[
+N=M\times L
+\]</div>
+<p>上式中， <span class="arithmatex">\(N\)</span> 表示样本点总数， <span class="arithmatex">\(M\)</span> 表示不重叠帧帧数， <span class="arithmatex">\(L\)</span> 表示每个帧中的样本点个数。</p>
+<p>脉冲响应 <span class="arithmatex">\(h\)</span> 是因果的，谐波脉冲响应 <span class="arithmatex">\(h_h\)</span> 和噪音脉冲响应 <span class="arithmatex">\(h_n\)</span> 无限长， <span class="arithmatex">\(n\in \mathbb{Z}\)</span> 。</p>
+<p><img alt="NHV的语音合成过程" src="../image/vocoder_nhv_inference.png" /></p>
+<p>NHV的语音生成过程如上图所示，首先通过帧级别基频 <span class="arithmatex">\(f_0[m]\)</span> 生成脉冲串 <span class="arithmatex">\(p[n]\)</span> ，从高斯分布中采样得到噪音信号 <span class="arithmatex">\(u[n]\)</span> ；接着神经网络利用对数域梅尔谱 <span class="arithmatex">\(S[m,c]\)</span> 估计出每一帧的谐波脉冲响应 <span class="arithmatex">\(h_h[m,n]\)</span> 和噪音脉冲响应 <span class="arithmatex">\(h_n[m,n]\)</span> ；接着脉冲串 <span class="arithmatex">\(p[n]\)</span> 和噪音信号 <span class="arithmatex">\(u[n]\)</span> 通过LTV线性时变滤波器获得谐波成分 <span class="arithmatex">\(s_h[n]\)</span> 和噪音成分 <span class="arithmatex">\(s_n[n]\)</span> ；最后， <span class="arithmatex">\(s_h[n]\)</span> 和 <span class="arithmatex">\(s_n[n]\)</span> 加起来，并通过可训练的因果有限冲激响应滤波器 <span class="arithmatex">\(h[n]\)</span> 滤波，获得最终的语音样本点 <span class="arithmatex">\(s[n]\)</span> 。</p>
+<h3 id="_12">脉冲串生成器</h3>
+<p>利用低通正弦波的和生成脉冲串：</p>
+<div class="arithmatex">\[
+p(t)=\left\{\begin{array}{l}
+    \sum_{k=1}^{2kf_0(t)&lt;f_s}{\rm cos}(\int_{0}^{t}2\pi k f_0(\tau){\rm d}\tau),\quad if\ f_0(t)&gt;0 \\ 
+    0,\quad if\ f_0(t)=0
+   \end{array}\right.
+\]</div>
+<p>其中，通过zero-order hold或者线性插值从 <span class="arithmatex">\(f_0[m]\)</span> 中重建 <span class="arithmatex">\(f_0(t)\)</span> ，且 <span class="arithmatex">\(p[n]=p(n/f_s)\)</span> ， <span class="arithmatex">\(f_s\)</span> 为采样率。</p>
+<p>由于加性生成时，根据采样率和帧移需要加和200个正弦函数，计算量较大，因此可以采用近似算法：将基频周期四舍五入到采样周期的倍数，此时离散脉冲序列是稀疏的，然后可以按顺序生成，一次生成一个音高。</p>
+<h3 id="neural-network-filter-estimator">神经网络滤波估计器（Neural Network Filter Estimator）</h3>
+<p><img alt="NHV的原理" src="../image/vocoder_nhv_nn_filter_estimator.png" /></p>
+<p>使用复数谱 <span class="arithmatex">\(\hat{h}_h\)</span> 和 <span class="arithmatex">\(\hat{h}_n\)</span> 作为冲激响应 <span class="arithmatex">\(h_h\)</span> 和 <span class="arithmatex">\(h_n\)</span> 的中间表示，复数谱同时描述了幅度响应和滤波器的组延迟（group delay），滤波器的组延迟会影响语音的音色。不同于使用线性相位或最小相位滤波器，NHV使用符合相位滤波器，从数据中学习相位特性。限制复倒谱的长度相当于限制幅度和相位响应的分辨率，这提供了控制滤波器复杂性的简单方法------神经网络只预测低频带系数，高频带谱系数设置为零。实验中，每帧预测两个10ms复数谱。实现上，无限冲激响应IIR，比如 <span class="arithmatex">\(h_h[m,n]\)</span> 和 <span class="arithmatex">\(h_n[m,n]\)</span> 通过有限冲激响应FIR近似，离散傅里叶变换的窗长必须足够大，以避免混叠现象，实验中窗长设置为 <span class="arithmatex">\(N=1024\)</span> 。</p>
+<h3 id="ltvfirs">线性时变（LTV）滤波器和可训练的有限冲激响应（FIRs）</h3>
+<p>FIR（有限冲激响应）常用于音频信号处理，FIR和IIR（无限冲激响应）最直观的区别就体现在结构形式上，IIR的方程中，当前的输出<span class="arithmatex">\(y(n)\)</span>是由当前输入<span class="arithmatex">\(x(n)\)</span>，过去输入<span class="arithmatex">\(x(n-1),x(n-2)\)</span>和过去输出<span class="arithmatex">\(y(n-2),y(n-1)\)</span>这三类值决定。而在FIR方程中，则没有过去输出这项。IIR的差分方程如下：</p>
+<div class="arithmatex">\[
+y(n)=\sum_{k=1}^N a_ky(n-k)+\sum_{k=0}^M b_kx(n-k)
+\]</div>
+<p>而FIR的差分方程为：</p>
+<div class="arithmatex">\[
+y(n)=\sum_{k=0}^M b_k x(n-k)
+\]</div>
+<p>由于IIR的当前输出受到以前输出值的影响，因此它是有反馈的，或者说输出值是递归的；而FIR就是无反馈，非递归的。</p>
+<p>谐波部分的线性时变滤波器定义如下式所示：</p>
+<div class="arithmatex">\[
+s_h[n]=\sum_{m=0}^{M}(w_L[n-mL]\cdot p[n])*h_h[m,n]
+\]</div>
+<p>卷积可以在时域和频域上应用，可训练的FIR滤波器 <span class="arithmatex">\(h[n]\)</span> 可以应用到语音生成的最后一步，谐波部分的卷积过程如下图所示。</p>
+<p><img alt="谐波部分的卷积过程" src="../image/vocoder_nhv_harmonic_sample.png" /></p>
+<h3 id="_13">神经网络的训练</h3>
+<ol>
+<li>
+<p>多尺度STFT损失</p>
+<p>因为要求原始信号 <span class="arithmatex">\(x\)</span> 和重建信号 <span class="arithmatex">\(s\)</span> 的声门激励（Glottal Closure Instants，GCIs）完全对齐，因此在重建信号 <span class="arithmatex">\(x[n]\)</span> 和原始信号 <span class="arithmatex">\(s[n]\)</span> 之间无法施加点级损失，而多尺度STFT计算损失时允许信号间相位错位。类似于多子带MelGAN，多尺度STFT损失定义为不同参数下原始和重建幅度谱之间的L1距离之和：</p>
+<div class="arithmatex">\[
+{\rm L}_R=\frac{1}{C}\sum_{i=0}^{C-1}\frac{1}{K_i}(||X_i-S_i||_1+||{\rm log}X_i-{\rm log}S_i||_1)
+\]</div>
+<p>上式中， <span class="arithmatex">\(X_i\)</span> 和 <span class="arithmatex">\(S_i\)</span> 分别为原始信号 <span class="arithmatex">\(x\)</span> 和重建信号 <span class="arithmatex">\(s\)</span> 在参数 <span class="arithmatex">\(i\)</span> 设置下计算获得的幅度谱，每个幅度谱包括 <span class="arithmatex">\(K_i\)</span> 个值，共 <span class="arithmatex">\(C\)</span> 组STFT参数配置，组数越多，重建信号的混叠问题一般越少。</p>
+<blockquote>
+<p>Yang G, Yang S, Liu K, et al. Multi-band MelGAN: Faster waveform generation for high-quality text-to-speech[C]. 2021 IEEE Spoken Language Technology Workshop (SLT). IEEE, 2021: 492-498.</p>
+</blockquote>
+</li>
+<li>
+<p>对抗损失函数</p>
+<p>NHV采取合页损失函数形式：</p>
+<div class="arithmatex">\[
+{\rm L}_D=\mathbb{E}_{x,S}[{\rm max}(0,1-D(x,S))]+\mathbb{E}_{f_0,S}[{\rm max}(0,1+D(G(f_0,S),S))]
+\]</div>
+<div class="arithmatex">\[
+{\rm G}=\mathbb{E}_{f_0,S}[-D(G(f_0,S),S)]
+\]</div>
+<p>上式中， <span class="arithmatex">\(D(x,S)\)</span> 表示判别器网络， <span class="arithmatex">\(D\)</span> 输入原始信号 <span class="arithmatex">\(x\)</span> 或重建信号 <span class="arithmatex">\(s\)</span> ，以及真实log域梅尔频谱 <span class="arithmatex">\(S\)</span> ， <span class="arithmatex">\(f_0\)</span> 表示基频，生成器 <span class="arithmatex">\(G(f_0,S)\)</span> 输出重建信号 <span class="arithmatex">\(s\)</span> 。</p>
+</li>
+</ol>
+<h3 id="_14">小结</h3>
+<p>NHV是基于源-滤波器的神经声码器，通过神经网络建模线性时变滤波器（LTV），对脉冲串和噪音进行滤波后生成语音，并结合多尺度STFT和对抗损失进行训练。</p>
+<h2 id="hifigan">HiFiGAN</h2>
+<h3 id="hifigan_1">HiFiGAN概述</h3>
+<p>HiFiGAN是近年来在学术界和工业界都较为常用的声码器，能够将声学模型产生的频谱转换为高质量的音频，这种声码器采用生成对抗网络（Generative Adversial Networks，GAN）作为基础生成模型，相比于之前相近的MelGAN，改进点在于：</p>
+<ol>
+<li>
+<p>引入了多周期判别器（Multi-Period Discriminator，MPD）。HiFiGAN同时拥有多尺度判别器（Multi-Scale Discriminator，MSD）和多周期判别器，尽可能增强GAN判别器甄别合成或真实音频的能力，从而提升合成音质。</p>
+</li>
+<li>
+<p>生成器中提出了多感受野融合模块。WaveNet为了增大感受野，叠加带洞卷积，音质虽然很好，但是也使得模型较大，推理速度较慢。HiFiGAN则提出了一种残差结构，交替使用带洞卷积和普通卷积增大感受野，保证合成音质的同时，提高推理速度。</p>
+</li>
+</ol>
+<h3 id="hifigan_2">HiFiGAN生成器简介</h3>
+<p>HiFiGAN的生成器主要有两块，一个是上采样结构，具体由一维转置卷积组成；二是所谓的多感受野融合（Multi-Receptive Field Fusion，MRF）模块，主要负责对上采样获得的采样点进行优化，具体由残差网络组成。</p>
+<h3 id="_15">上采样结构</h3>
+<p>作为声码器的生成器，不但需要负责将频谱从频域转换到时域，而且要进行上采样（upsampling）。以80维梅尔频谱合成16kHz的语音为例，假设帧移为10ms，则每个帧移内有160个语音样本点，需要通过80个梅尔频谱值获得，因此，需要利用卷积网络不断增加输出"长度"，降低输出"通道数"，直到上采样倍数达到160，通道数降低为1即可。</p>
+<p>对于上采样操作，可以使用插值算法进行处理，比如最近邻插值（Nearest neighbor interpolation）、双线性插值（Bi-Linear interpolation）、双立方插值（Bi-Cubic interpolation）等，但是这些插值算法说到底是人工规则，而神经网络可以自动学习合适的变换，<a href="https://pytorch.org/docs/master/generated/torch.nn.ConvTranspose1d.html">转置卷积（ConvTransposed）</a>，也称反卷积Deconvolution、微步卷积Fractionally-strided Convolution，则是合适的上采样结构。一般的卷积中，每次卷积操作都是对输入张量和卷积核的每个元素进行相乘再加和，卷积的输入和输出是<code>多对一</code>的映射关系，而转置卷积则反过来，是<code>一对多</code>的映射关系。从计算机的内部实现来看，定义：</p>
+<ol>
+<li>
+<p><span class="arithmatex">\(X\)</span> 为输入张量，大小为 <span class="arithmatex">\(X_{width}\times X_{height}\)</span></p>
+</li>
+<li>
+<p><span class="arithmatex">\(Y\)</span> 为输出张量，大小为 <span class="arithmatex">\(Y_{width}\times Y_{height}\)</span></p>
+</li>
+<li>
+<p><span class="arithmatex">\(C\)</span> 为卷积核，大小为 <span class="arithmatex">\(C_{width}\times C_{height}\)</span></p>
+</li>
+</ol>
+<p>经过普通的卷积运算之后，将大张量 <span class="arithmatex">\(X\)</span> "下采样"到小张量 <span class="arithmatex">\(Y\)</span> 。具体来说，首先将输入张量展平为向量，也即是 <span class="arithmatex">\([X_{width}\times X_{height},1]\)</span> ，同时也将卷积核展平成向量到输入张量 <span class="arithmatex">\(X\)</span> 的大小：由于卷积核小于输入张量，在行和列上都用0填充至输入张量大小，然后展平，则卷积核向量大小为 <span class="arithmatex">\([1,X_{width}\times X_{height}]\)</span> ；同时按照步长，左侧填充0偏移该卷积核向量，最终，卷积核向量的个数为输出张量元素个数，则构成的卷积核张量大小为 <span class="arithmatex">\([Y_{width}\times Y_{height},X_{width}\times X_{height}]\)</span> ，卷积核张量和输入张量矩阵乘，获得输出张量 <span class="arithmatex">\([Y_{width}\times Y_{height},1]\)</span> ，重塑大小为 <span class="arithmatex">\(C_{width},C_{height}\)</span> 。</p>
+<p>此时，如果使用卷积核张量的转置 <span class="arithmatex">\([X_{width}\times X_{height},Y_{width}\times Y_{height}]\)</span> 矩阵乘展平的 <span class="arithmatex">\([Y_{width}\times Y_{height},1]\)</span> ，得到的结果就是 <span class="arithmatex">\([X_{width}\times X_{height},1]\)</span> ，和刚刚的输入张量大小相同，这就完成了一次<code>转置卷积</code>。但实际上，上述操作并非可逆关系，卷积将输入张量"下采样"到输出张量，本质是有损压缩的过程，由于在卷积中使用的<code>卷积核张量</code>并非可逆矩阵，转置卷积操作之后并不能恢复到原始的数值，仅仅是恢复到原始的形状。这其实也就是线性谱与梅尔频谱关系，加权求和得到梅尔频谱之后就回不来了，顶多求梅尔滤波器组的伪逆，近似恢复到线性谱。</p>
+<p>此外，在使用转置卷积时需要注意棋盘效应（Checkboard artifacts）。棋盘效应主要是由于转置卷积的"不均匀重叠"（Uneven overlap）造成的，输出中每个像素接受的信息量与相邻像素不同，在输出上找不到连续且均匀重叠的区域，表现是图像中一些色块的颜色比周围色块要深，像棋盘上的方格，参见<a href="https://distill.pub/2016/deconv-checkerboard">Deconvolution and Checkerboard Artifacts</a>。避免棋盘效应的方法主要有：kernel_size的大小尽可能被stride整除，尽可能使用stride=1的转置卷积；堆叠转置卷积减轻重叠；网络末尾使用 <span class="arithmatex">\(1\times 1\)</span> 的转置卷积等。</p>
+<p>通过上述的原理部分，可以看出卷积和转置卷积是对偶运算，输入变输出，输出变输入，卷积的输入输出大小关系为：</p>
+<div class="arithmatex">\[
+L_{out}=\frac{L_{in}+2\times padding-kernel\_size}{stride}+1
+\]</div>
+<p>那么转置卷积的输入输出大小则为：</p>
+<div class="arithmatex">\[
+L_{out}=(L_{in}-1)\times stride+kernel\_size-2\times padding
+\]</div>
+<p>当然，加入dilation之后，大小计算稍复杂些，参见<a href="https://pytorch.org/docs/master/generated/torch.nn.ConvTranspose1d.html">Pytorch-ConvTranspose1d</a>，<a href="https://pytorch.org/docs/master/generated/torch.nn.Conv1d.html">Pytorch-Conv1d</a>。</p>
+<p>该部分参考文献：</p>
+<ol>
+<li>
+<p><a href="https://www.zhihu.com/question/48279880/answer/1682194600">怎样通俗易懂地解释反卷积？</a></p>
+</li>
+<li>
+<p><a href="https://zhuanlan.zhihu.com/p/158933003">一文搞懂反卷积，转置卷积</a></p>
+</li>
+<li>
+<p><a href="https://distill.pub/2016/deconv-checkerboard">Deconvolution and Checkerboard Artifacts</a></p>
+</li>
+<li>
+<p><a href="https://www.zhihu.com/question/436832427/answer/1679396968">如何去除生成图片产生的棋盘伪影？</a></p>
+</li>
+<li>
+<p><a href="https://arxiv.org/abs/1603.07285">A guide to convolution arithmetic for deep learning</a></p>
+</li>
+<li>
+<p><a href="https://pytorch.org/docs/master/generated/torch.nn.ConvTranspose1d.html">Pytorch-ConvTranspose1d</a></p>
+</li>
+<li>
+<p><a href="https://pytorch.org/docs/master/generated/torch.nn.Conv1d.html">Pytorch-Conv1d</a></p>
+</li>
+</ol>
+<p>转置卷积实现的上采样层定义为：</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-3-1">1</a></span>
+<span class="normal"><a href="#__codelineno-3-2">2</a></span>
+<span class="normal"><a href="#__codelineno-3-3">3</a></span>
+<span class="normal"><a href="#__codelineno-3-4">4</a></span>
+<span class="normal"><a href="#__codelineno-3-5">5</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1"></a><span class="bp">self</span><span class="o">.</span><span class="n">ups</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">ModuleList</span><span class="p">()</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2"></a><span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">h</span><span class="o">.</span><span class="n">upsample_rates</span><span class="p">,</span> <span class="n">h</span><span class="o">.</span><span class="n">upsample_kernel_sizes</span><span class="p">)):</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">ups</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">weight_norm</span><span class="p">(</span><span class="n">ConvTranspose1d</span><span class="p">(</span><span class="n">h</span><span class="o">.</span><span class="n">upsample_initial_channel</span><span class="o">//</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="n">i</span><span class="p">),</span> 
+<a id="__codelineno-3-4" name="__codelineno-3-4"></a>    <span class="n">h</span><span class="o">.</span><span class="n">upsample_initial_channel</span><span class="o">//</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)),</span><span class="n">kernel_size</span><span class="o">=</span><span class="n">k</span><span class="p">,</span> 
+<a id="__codelineno-3-5" name="__codelineno-3-5"></a>    <span class="n">stride</span><span class="o">=</span><span class="n">u</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="p">(</span><span class="n">k</span><span class="o">-</span><span class="n">u</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span><span class="p">)))</span>
+</code></pre></div></td></tr></table></div>
+<p>对于hop_size=256来说，h.upsample_rates和h.upsample_kernel_sizes分别为：</p>
+<ol>
+<li>
+<p>"upsample_rates": [8,8,2,2],</p>
+</li>
+<li>
+<p>"upsample_kernel_sizes": [16,16,4,4],</p>
+</li>
+</ol>
+<p>根据转置卷积的输入输出大小关系：</p>
+<div class="arithmatex">\[
+L_{out}=(L_{in}-1)\times stride-2\times padding+dilation\times (kernel\_size-1)+output\_padding+1
+\]</div>
+<p>用于上采样的转置卷积，通过设置合适的padding，配合卷积核大小（kernel_size）和步进（stride），就可以实现输出与输入大小呈"步进倍数"的关系，在这里，卷积核（upsample_kernel_sizes）设置为步进（upsample_rates）的2倍。设置参数时，必须保持帧移点数，是各个卷积层步进（或者代码中所谓的上采样率update_rates）的乘积，在上例中，也就是：</p>
+<div class="arithmatex">\[
+hop\_length=256=8\times 8\times 2\times 2
+\]</div>
+<h3 id="_16">多感受野融合</h3>
+<p>转置卷积的上采样容易导致棋盘效应，因此每次转置卷积上采样之后，都会跟着一个多感受野融合（MRF）的残差网络，以进一步提升样本点的生成质量。多感受野融合模块是一种利用带洞卷积和普通卷积提高生成器感受野的结构，带洞卷积的扩张倍数逐步递增，如dilation=1,3,5，每个带洞卷积之后，跟着卷积核大于1的普通卷积，从而实现带洞卷积和普通卷积的交替使用。带洞卷积和普通卷积的输入输出大小保持不变，在一轮带洞和普通卷积完成之后，原始输入跳连到卷积的结果，从而实现一轮"多感受野融合"。多感受野融合的具体实现上，论文中提出了两种参数量不同的残差网络。一种是参数量较多，多组带洞卷积（dilation=1,3,5）和普通卷积交替使用，HiFiGAN v1 (config_v1.json)和HiFiGAN v2 (config_v2.json)均使用该种多感受野融合（MRF）模块。：</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-4-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-4-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-4-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-4-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-4-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-4-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-4-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-4-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-4-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-4-10">10</a></span>
+<span class="normal"><a href="#__codelineno-4-11">11</a></span>
+<span class="normal"><a href="#__codelineno-4-12">12</a></span>
+<span class="normal"><a href="#__codelineno-4-13">13</a></span>
+<span class="normal"><a href="#__codelineno-4-14">14</a></span>
+<span class="normal"><a href="#__codelineno-4-15">15</a></span>
+<span class="normal"><a href="#__codelineno-4-16">16</a></span>
+<span class="normal"><a href="#__codelineno-4-17">17</a></span>
+<span class="normal"><a href="#__codelineno-4-18">18</a></span>
+<span class="normal"><a href="#__codelineno-4-19">19</a></span>
+<span class="normal"><a href="#__codelineno-4-20">20</a></span>
+<span class="normal"><a href="#__codelineno-4-21">21</a></span>
+<span class="normal"><a href="#__codelineno-4-22">22</a></span>
+<span class="normal"><a href="#__codelineno-4-23">23</a></span>
+<span class="normal"><a href="#__codelineno-4-24">24</a></span>
+<span class="normal"><a href="#__codelineno-4-25">25</a></span>
+<span class="normal"><a href="#__codelineno-4-26">26</a></span>
+<span class="normal"><a href="#__codelineno-4-27">27</a></span>
+<span class="normal"><a href="#__codelineno-4-28">28</a></span>
+<span class="normal"><a href="#__codelineno-4-29">29</a></span>
+<span class="normal"><a href="#__codelineno-4-30">30</a></span>
+<span class="normal"><a href="#__codelineno-4-31">31</a></span>
+<span class="normal"><a href="#__codelineno-4-32">32</a></span>
+<span class="normal"><a href="#__codelineno-4-33">33</a></span>
+<span class="normal"><a href="#__codelineno-4-34">34</a></span>
+<span class="normal"><a href="#__codelineno-4-35">35</a></span>
+<span class="normal"><a href="#__codelineno-4-36">36</a></span>
+<span class="normal"><a href="#__codelineno-4-37">37</a></span>
+<span class="normal"><a href="#__codelineno-4-38">38</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="k">class</span> <span class="nc">ResBlock1</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2"></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">channels</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">dilation</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">)):</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3"></a>        <span class="nb">super</span><span class="p">(</span><span class="n">ResBlock1</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">h</span> <span class="o">=</span> <span class="n">h</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">convs1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">ModuleList</span><span class="p">([</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6"></a>            <span class="n">weight_norm</span><span class="p">(</span><span class="n">Conv1d</span><span class="p">(</span><span class="n">channels</span><span class="p">,</span> <span class="n">channels</span><span class="p">,</span> <span class="n">kernel_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> 
+<a id="__codelineno-4-7" name="__codelineno-4-7"></a>                <span class="n">dilation</span><span class="o">=</span><span class="n">dilation</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">padding</span><span class="o">=</span><span class="n">get_padding</span><span class="p">(</span><span class="n">kernel_size</span><span class="p">,</span> <span class="n">dilation</span><span class="p">[</span><span class="mi">0</span><span class="p">]))),</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8"></a>            <span class="n">weight_norm</span><span class="p">(</span><span class="n">Conv1d</span><span class="p">(</span><span class="n">channels</span><span class="p">,</span> <span class="n">channels</span><span class="p">,</span> <span class="n">kernel_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> 
+<a id="__codelineno-4-9" name="__codelineno-4-9"></a>                <span class="n">dilation</span><span class="o">=</span><span class="n">dilation</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">padding</span><span class="o">=</span><span class="n">get_padding</span><span class="p">(</span><span class="n">kernel_size</span><span class="p">,</span> <span class="n">dilation</span><span class="p">[</span><span class="mi">1</span><span class="p">]))),</span>
+<a id="__codelineno-4-10" name="__codelineno-4-10"></a>            <span class="n">weight_norm</span><span class="p">(</span><span class="n">Conv1d</span><span class="p">(</span><span class="n">channels</span><span class="p">,</span> <span class="n">channels</span><span class="p">,</span> <span class="n">kernel_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> 
+<a id="__codelineno-4-11" name="__codelineno-4-11"></a>                <span class="n">dilation</span><span class="o">=</span><span class="n">dilation</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">padding</span><span class="o">=</span><span class="n">get_padding</span><span class="p">(</span><span class="n">kernel_size</span><span class="p">,</span> <span class="n">dilation</span><span class="p">[</span><span class="mi">2</span><span class="p">]))),</span>
+<a id="__codelineno-4-12" name="__codelineno-4-12"></a>        <span class="p">])</span>
+<a id="__codelineno-4-13" name="__codelineno-4-13"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">convs1</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">init_weights</span><span class="p">)</span>
+<a id="__codelineno-4-14" name="__codelineno-4-14"></a>
+<a id="__codelineno-4-15" name="__codelineno-4-15"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">convs2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">ModuleList</span><span class="p">([</span>
+<a id="__codelineno-4-16" name="__codelineno-4-16"></a>            <span class="n">weight_norm</span><span class="p">(</span><span class="n">Conv1d</span><span class="p">(</span><span class="n">channels</span><span class="p">,</span> <span class="n">channels</span><span class="p">,</span> <span class="n">kernel_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dilation</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+<a id="__codelineno-4-17" name="__codelineno-4-17"></a>                                <span class="n">padding</span><span class="o">=</span><span class="n">get_padding</span><span class="p">(</span><span class="n">kernel_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">))),</span>
+<a id="__codelineno-4-18" name="__codelineno-4-18"></a>            <span class="n">weight_norm</span><span class="p">(</span><span class="n">Conv1d</span><span class="p">(</span><span class="n">channels</span><span class="p">,</span> <span class="n">channels</span><span class="p">,</span> <span class="n">kernel_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dilation</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+<a id="__codelineno-4-19" name="__codelineno-4-19"></a>                                <span class="n">padding</span><span class="o">=</span><span class="n">get_padding</span><span class="p">(</span><span class="n">kernel_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">))),</span>
+<a id="__codelineno-4-20" name="__codelineno-4-20"></a>            <span class="n">weight_norm</span><span class="p">(</span><span class="n">Conv1d</span><span class="p">(</span><span class="n">channels</span><span class="p">,</span> <span class="n">channels</span><span class="p">,</span> <span class="n">kernel_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dilation</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+<a id="__codelineno-4-21" name="__codelineno-4-21"></a>                                <span class="n">padding</span><span class="o">=</span><span class="n">get_padding</span><span class="p">(</span><span class="n">kernel_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">)))</span>
+<a id="__codelineno-4-22" name="__codelineno-4-22"></a>        <span class="p">])</span>
+<a id="__codelineno-4-23" name="__codelineno-4-23"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">convs2</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">init_weights</span><span class="p">)</span>
+<a id="__codelineno-4-24" name="__codelineno-4-24"></a>
+<a id="__codelineno-4-25" name="__codelineno-4-25"></a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<a id="__codelineno-4-26" name="__codelineno-4-26"></a>        <span class="k">for</span> <span class="n">c1</span><span class="p">,</span> <span class="n">c2</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">convs1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">convs2</span><span class="p">):</span>
+<a id="__codelineno-4-27" name="__codelineno-4-27"></a>            <span class="n">xt</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">leaky_relu</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">LRELU_SLOPE</span><span class="p">)</span>
+<a id="__codelineno-4-28" name="__codelineno-4-28"></a>            <span class="n">xt</span> <span class="o">=</span> <span class="n">c1</span><span class="p">(</span><span class="n">xt</span><span class="p">)</span>
+<a id="__codelineno-4-29" name="__codelineno-4-29"></a>            <span class="n">xt</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">leaky_relu</span><span class="p">(</span><span class="n">xt</span><span class="p">,</span> <span class="n">LRELU_SLOPE</span><span class="p">)</span>
+<a id="__codelineno-4-30" name="__codelineno-4-30"></a>            <span class="n">xt</span> <span class="o">=</span> <span class="n">c2</span><span class="p">(</span><span class="n">xt</span><span class="p">)</span>
+<a id="__codelineno-4-31" name="__codelineno-4-31"></a>            <span class="n">x</span> <span class="o">=</span> <span class="n">xt</span> <span class="o">+</span> <span class="n">x</span>
+<a id="__codelineno-4-32" name="__codelineno-4-32"></a>        <span class="k">return</span> <span class="n">x</span>
+<a id="__codelineno-4-33" name="__codelineno-4-33"></a>
+<a id="__codelineno-4-34" name="__codelineno-4-34"></a>    <span class="k">def</span> <span class="nf">remove_weight_norm</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="__codelineno-4-35" name="__codelineno-4-35"></a>        <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">convs1</span><span class="p">:</span>
+<a id="__codelineno-4-36" name="__codelineno-4-36"></a>            <span class="n">remove_weight_norm</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
+<a id="__codelineno-4-37" name="__codelineno-4-37"></a>        <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">convs2</span><span class="p">:</span>
+<a id="__codelineno-4-38" name="__codelineno-4-38"></a>            <span class="n">remove_weight_norm</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+<p>另外一种MRF大大减少了参数量，仅由两层带洞卷积（dilation=1,3）组成，但依然保持了跳跃连接的结构:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-5-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-5-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-5-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-5-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-5-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-5-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-5-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-5-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-5-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-5-10">10</a></span>
+<span class="normal"><a href="#__codelineno-5-11">11</a></span>
+<span class="normal"><a href="#__codelineno-5-12">12</a></span>
+<span class="normal"><a href="#__codelineno-5-13">13</a></span>
+<span class="normal"><a href="#__codelineno-5-14">14</a></span>
+<span class="normal"><a href="#__codelineno-5-15">15</a></span>
+<span class="normal"><a href="#__codelineno-5-16">16</a></span>
+<span class="normal"><a href="#__codelineno-5-17">17</a></span>
+<span class="normal"><a href="#__codelineno-5-18">18</a></span>
+<span class="normal"><a href="#__codelineno-5-19">19</a></span>
+<span class="normal"><a href="#__codelineno-5-20">20</a></span>
+<span class="normal"><a href="#__codelineno-5-21">21</a></span>
+<span class="normal"><a href="#__codelineno-5-22">22</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1"></a><span class="k">class</span> <span class="nc">ResBlock2</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2"></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">channels</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">dilation</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)):</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3"></a>        <span class="nb">super</span><span class="p">(</span><span class="n">ResBlock2</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">h</span> <span class="o">=</span> <span class="n">h</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">convs</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">ModuleList</span><span class="p">([</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6"></a>            <span class="n">weight_norm</span><span class="p">(</span><span class="n">Conv1d</span><span class="p">(</span><span class="n">channels</span><span class="p">,</span> <span class="n">channels</span><span class="p">,</span> <span class="n">kernel_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> 
+<a id="__codelineno-5-7" name="__codelineno-5-7"></a>                <span class="n">dilation</span><span class="o">=</span><span class="n">dilation</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">padding</span><span class="o">=</span><span class="n">get_padding</span><span class="p">(</span><span class="n">kernel_size</span><span class="p">,</span> <span class="n">dilation</span><span class="p">[</span><span class="mi">0</span><span class="p">]))),</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8"></a>            <span class="n">weight_norm</span><span class="p">(</span><span class="n">Conv1d</span><span class="p">(</span><span class="n">channels</span><span class="p">,</span> <span class="n">channels</span><span class="p">,</span> <span class="n">kernel_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> 
+<a id="__codelineno-5-9" name="__codelineno-5-9"></a>                <span class="n">dilation</span><span class="o">=</span><span class="n">dilation</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">padding</span><span class="o">=</span><span class="n">get_padding</span><span class="p">(</span><span class="n">kernel_size</span><span class="p">,</span> <span class="n">dilation</span><span class="p">[</span><span class="mi">1</span><span class="p">]))),</span>
+<a id="__codelineno-5-10" name="__codelineno-5-10"></a>        <span class="p">])</span>
+<a id="__codelineno-5-11" name="__codelineno-5-11"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">convs</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">init_weights</span><span class="p">)</span>
+<a id="__codelineno-5-12" name="__codelineno-5-12"></a>
+<a id="__codelineno-5-13" name="__codelineno-5-13"></a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<a id="__codelineno-5-14" name="__codelineno-5-14"></a>        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">convs</span><span class="p">:</span>
+<a id="__codelineno-5-15" name="__codelineno-5-15"></a>            <span class="n">xt</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">leaky_relu</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">LRELU_SLOPE</span><span class="p">)</span>
+<a id="__codelineno-5-16" name="__codelineno-5-16"></a>            <span class="n">xt</span> <span class="o">=</span> <span class="n">c</span><span class="p">(</span><span class="n">xt</span><span class="p">)</span>
+<a id="__codelineno-5-17" name="__codelineno-5-17"></a>            <span class="n">x</span> <span class="o">=</span> <span class="n">xt</span> <span class="o">+</span> <span class="n">x</span>
+<a id="__codelineno-5-18" name="__codelineno-5-18"></a>        <span class="k">return</span> <span class="n">x</span>
+<a id="__codelineno-5-19" name="__codelineno-5-19"></a>
+<a id="__codelineno-5-20" name="__codelineno-5-20"></a>    <span class="k">def</span> <span class="nf">remove_weight_norm</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="__codelineno-5-21" name="__codelineno-5-21"></a>        <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">convs</span><span class="p">:</span>
+<a id="__codelineno-5-22" name="__codelineno-5-22"></a>            <span class="n">remove_weight_norm</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+<p>注意到两种MRF都使用了weight_norm对神经网络的权重进行规范化，相比于batch_norm，weight_norm不依赖mini-batch的数据，对噪音数据更为鲁棒；并且，可以应用于RNN等时序网络上；此外，weight_norm直接对神经网络的权重值进行规范化，前向和后向计算时，带来的额外计算和存储开销都较小。weight_norm本质是利用方向 <span class="arithmatex">\(v\)</span> 和幅度张量 <span class="arithmatex">\(g\)</span> 替代权重张量 <span class="arithmatex">\(w\)</span> ：</p>
+<div class="arithmatex">\[
+w=g\frac{v}{||v||}
+\]</div>
+<p>方向张量 <span class="arithmatex">\(v\)</span> 和 <span class="arithmatex">\(w\)</span> 大小相同，幅度张量 <span class="arithmatex">\(g\)</span> 比 <span class="arithmatex">\(w\)</span> 少一维，使得 <span class="arithmatex">\(w\)</span> 能够比较容易地整体缩放。不直接优化 <span class="arithmatex">\(w\)</span> ，而是训练 <span class="arithmatex">\(v\)</span> 和 <span class="arithmatex">\(g\)</span> 。</p>
+<p>同时注意到，在推理时需要remove_weight_norm，这是因为训练时需要计算权重矩阵的方向和幅度张量，而在推理时，参数已经优化完成，要恢复回去，所以在推理时就直接移除weight_norm机制。</p>
+<p>每个卷积核的0填充个数都调用了get_padding函数，利用填充保证输入输出的长宽大小一致，该填充大小的计算方法：</p>
+<div class="arithmatex">\[
+padding=(kernel\_size-1)*padding//2
+\]</div>
+<h3 id="hifigan_3">HiFiGAN判别器简介</h3>
+<p>HiFiGAN的判别器有两个，分别是多尺度和多周期判别器，从两个不同角度分别鉴定语音。多尺度判别器源自MelGAN声码器的做法，不断平均池化语音序列，逐次将语音序列的长度减半，然后在语音的不同尺度上施加若干层卷积，最后展平，作为多尺度判别器的输出。多周期判别器则是以不同的序列长度将一维的音频序列折叠为二维平面，在二维平面上施加二维卷积。</p>
+<h3 id="_17">多尺度判别器</h3>
+<p>多尺度判别器的核心是多次平均池化，缩短序列长度，每次序列长度池化至原来的一半，然后进行卷积。具体来说，多尺度判别器首先对原样本点进行一次"原尺寸判别"，其中"原尺寸判别"模块中一维卷积的参数规范化方法为谱归一化（spectral_norm）；接着对样本点序列进行平均池化，依次将序列长度减半，然后对"下采样"的样本点序列进行判别，该模块中一维卷积的参数规范化方法为权重归一化（weight_norm）。在每一个特定尺度的子判别器中，首先进行若干层分组卷积，并对卷积的参数进行规范化；接着利用leaky_relu进行激活；在经过多个卷积层之后，最后利用输出通道为1的卷积层进行后处理，展平后作为输出。</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-6-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-6-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-6-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-6-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-6-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-6-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-6-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-6-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-6-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-6-10">10</a></span>
+<span class="normal"><a href="#__codelineno-6-11">11</a></span>
+<span class="normal"><a href="#__codelineno-6-12">12</a></span>
+<span class="normal"><a href="#__codelineno-6-13">13</a></span>
+<span class="normal"><a href="#__codelineno-6-14">14</a></span>
+<span class="normal"><a href="#__codelineno-6-15">15</a></span>
+<span class="normal"><a href="#__codelineno-6-16">16</a></span>
+<span class="normal"><a href="#__codelineno-6-17">17</a></span>
+<span class="normal"><a href="#__codelineno-6-18">18</a></span>
+<span class="normal"><a href="#__codelineno-6-19">19</a></span>
+<span class="normal"><a href="#__codelineno-6-20">20</a></span>
+<span class="normal"><a href="#__codelineno-6-21">21</a></span>
+<span class="normal"><a href="#__codelineno-6-22">22</a></span>
+<span class="normal"><a href="#__codelineno-6-23">23</a></span>
+<span class="normal"><a href="#__codelineno-6-24">24</a></span>
+<span class="normal"><a href="#__codelineno-6-25">25</a></span>
+<span class="normal"><a href="#__codelineno-6-26">26</a></span>
+<span class="normal"><a href="#__codelineno-6-27">27</a></span>
+<span class="normal"><a href="#__codelineno-6-28">28</a></span>
+<span class="normal"><a href="#__codelineno-6-29">29</a></span>
+<span class="normal"><a href="#__codelineno-6-30">30</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1"></a><span class="k">class</span> <span class="nc">MultiScaleDiscriminator</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2"></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3"></a>        <span class="nb">super</span><span class="p">(</span><span class="n">MultiScaleDiscriminator</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">discriminators</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">ModuleList</span><span class="p">([</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5"></a>            <span class="n">DiscriminatorS</span><span class="p">(</span><span class="n">use_spectral_norm</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6"></a>            <span class="n">DiscriminatorS</span><span class="p">(),</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7"></a>            <span class="n">DiscriminatorS</span><span class="p">(),</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8"></a>        <span class="p">])</span>
+<a id="__codelineno-6-9" name="__codelineno-6-9"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">meanpools</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">ModuleList</span><span class="p">([</span>
+<a id="__codelineno-6-10" name="__codelineno-6-10"></a>            <span class="n">AvgPool1d</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span>
+<a id="__codelineno-6-11" name="__codelineno-6-11"></a>            <span class="n">AvgPool1d</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<a id="__codelineno-6-12" name="__codelineno-6-12"></a>        <span class="p">])</span>
+<a id="__codelineno-6-13" name="__codelineno-6-13"></a>
+<a id="__codelineno-6-14" name="__codelineno-6-14"></a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">y_hat</span><span class="p">):</span>
+<a id="__codelineno-6-15" name="__codelineno-6-15"></a>        <span class="n">y_d_rs</span> <span class="o">=</span> <span class="p">[]</span>
+<a id="__codelineno-6-16" name="__codelineno-6-16"></a>        <span class="n">y_d_gs</span> <span class="o">=</span> <span class="p">[]</span>
+<a id="__codelineno-6-17" name="__codelineno-6-17"></a>        <span class="n">fmap_rs</span> <span class="o">=</span> <span class="p">[]</span>
+<a id="__codelineno-6-18" name="__codelineno-6-18"></a>        <span class="n">fmap_gs</span> <span class="o">=</span> <span class="p">[]</span>
+<a id="__codelineno-6-19" name="__codelineno-6-19"></a>        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">discriminators</span><span class="p">):</span>
+<a id="__codelineno-6-20" name="__codelineno-6-20"></a>            <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+<a id="__codelineno-6-21" name="__codelineno-6-21"></a>                <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">meanpools</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">](</span><span class="n">y</span><span class="p">)</span>
+<a id="__codelineno-6-22" name="__codelineno-6-22"></a>                <span class="n">y_hat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">meanpools</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">](</span><span class="n">y_hat</span><span class="p">)</span>
+<a id="__codelineno-6-23" name="__codelineno-6-23"></a>            <span class="n">y_d_r</span><span class="p">,</span> <span class="n">fmap_r</span> <span class="o">=</span> <span class="n">d</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+<a id="__codelineno-6-24" name="__codelineno-6-24"></a>            <span class="n">y_d_g</span><span class="p">,</span> <span class="n">fmap_g</span> <span class="o">=</span> <span class="n">d</span><span class="p">(</span><span class="n">y_hat</span><span class="p">)</span>
+<a id="__codelineno-6-25" name="__codelineno-6-25"></a>            <span class="n">y_d_rs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y_d_r</span><span class="p">)</span>
+<a id="__codelineno-6-26" name="__codelineno-6-26"></a>            <span class="n">fmap_rs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fmap_r</span><span class="p">)</span>
+<a id="__codelineno-6-27" name="__codelineno-6-27"></a>            <span class="n">y_d_gs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y_d_g</span><span class="p">)</span>
+<a id="__codelineno-6-28" name="__codelineno-6-28"></a>            <span class="n">fmap_gs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fmap_g</span><span class="p">)</span>
+<a id="__codelineno-6-29" name="__codelineno-6-29"></a>
+<a id="__codelineno-6-30" name="__codelineno-6-30"></a>        <span class="k">return</span> <span class="n">y_d_rs</span><span class="p">,</span> <span class="n">y_d_gs</span><span class="p">,</span> <span class="n">fmap_rs</span><span class="p">,</span> <span class="n">fmap_gs</span>
+</code></pre></div></td></tr></table></div>
+<p>上述代码中y_d_rs和y_d_gs分别是真实和生成样本的多尺度判别器展平后的整体输出，fmap_rs和y_d_gs分别是真实和生成样本经过每一层卷积的特征图（feature map）。子判别器DiscriminatorS由若干层卷积组成，最后一层输出通道为1，之后对输出进行展平。注意到，与MelGAN不同，多尺度判别器的第一个子判别器DiscriminatorS使用谱归一化spectral_norm，之后两个子判别器则是正常使用权重归一化weight_norm规整可训练参数。谱归一化实际是在每次更新完可训练参数 <span class="arithmatex">\(W\)</span> 之后，都除以 <span class="arithmatex">\(W\)</span> 的奇异值，以保证整个网络满足利普希茨连续性，使得GAN的训练更稳定。参见<a href="https://kaizhao.net/posts/spectral-norm">GAN 的谱归一化(Spectral Norm)和矩阵的奇异值分解(Singular Value Decompostion)</a>。DiscriminatorS的具体实现如下：</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-7-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-7-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-7-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-7-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-7-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-7-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-7-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-7-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-7-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-7-10">10</a></span>
+<span class="normal"><a href="#__codelineno-7-11">11</a></span>
+<span class="normal"><a href="#__codelineno-7-12">12</a></span>
+<span class="normal"><a href="#__codelineno-7-13">13</a></span>
+<span class="normal"><a href="#__codelineno-7-14">14</a></span>
+<span class="normal"><a href="#__codelineno-7-15">15</a></span>
+<span class="normal"><a href="#__codelineno-7-16">16</a></span>
+<span class="normal"><a href="#__codelineno-7-17">17</a></span>
+<span class="normal"><a href="#__codelineno-7-18">18</a></span>
+<span class="normal"><a href="#__codelineno-7-19">19</a></span>
+<span class="normal"><a href="#__codelineno-7-20">20</a></span>
+<span class="normal"><a href="#__codelineno-7-21">21</a></span>
+<span class="normal"><a href="#__codelineno-7-22">22</a></span>
+<span class="normal"><a href="#__codelineno-7-23">23</a></span>
+<span class="normal"><a href="#__codelineno-7-24">24</a></span>
+<span class="normal"><a href="#__codelineno-7-25">25</a></span>
+<span class="normal"><a href="#__codelineno-7-26">26</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1"></a><span class="k">class</span> <span class="nc">DiscriminatorS</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2"></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">use_spectral_norm</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3"></a>        <span class="nb">super</span><span class="p">(</span><span class="n">DiscriminatorS</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4"></a>        <span class="n">norm_f</span> <span class="o">=</span> <span class="n">weight_norm</span> <span class="k">if</span> <span class="n">use_spectral_norm</span> <span class="o">==</span> <span class="kc">False</span> <span class="k">else</span> <span class="n">spectral_norm</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">convs</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">ModuleList</span><span class="p">([</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6"></a>            <span class="n">norm_f</span><span class="p">(</span><span class="n">Conv1d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">7</span><span class="p">)),</span>
+<a id="__codelineno-7-7" name="__codelineno-7-7"></a>            <span class="n">norm_f</span><span class="p">(</span><span class="n">Conv1d</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">41</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">groups</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">20</span><span class="p">)),</span>
+<a id="__codelineno-7-8" name="__codelineno-7-8"></a>            <span class="n">norm_f</span><span class="p">(</span><span class="n">Conv1d</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="mi">256</span><span class="p">,</span> <span class="mi">41</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">groups</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">20</span><span class="p">)),</span>
+<a id="__codelineno-7-9" name="__codelineno-7-9"></a>            <span class="n">norm_f</span><span class="p">(</span><span class="n">Conv1d</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="mi">512</span><span class="p">,</span> <span class="mi">41</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">groups</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">20</span><span class="p">)),</span>
+<a id="__codelineno-7-10" name="__codelineno-7-10"></a>            <span class="n">norm_f</span><span class="p">(</span><span class="n">Conv1d</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="mi">1024</span><span class="p">,</span> <span class="mi">41</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">groups</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">20</span><span class="p">)),</span>
+<a id="__codelineno-7-11" name="__codelineno-7-11"></a>            <span class="n">norm_f</span><span class="p">(</span><span class="n">Conv1d</span><span class="p">(</span><span class="mi">1024</span><span class="p">,</span> <span class="mi">1024</span><span class="p">,</span> <span class="mi">41</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">groups</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">20</span><span class="p">)),</span>
+<a id="__codelineno-7-12" name="__codelineno-7-12"></a>            <span class="n">norm_f</span><span class="p">(</span><span class="n">Conv1d</span><span class="p">(</span><span class="mi">1024</span><span class="p">,</span> <span class="mi">1024</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">2</span><span class="p">)),</span>
+<a id="__codelineno-7-13" name="__codelineno-7-13"></a>        <span class="p">])</span>
+<a id="__codelineno-7-14" name="__codelineno-7-14"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">conv_post</span> <span class="o">=</span> <span class="n">norm_f</span><span class="p">(</span><span class="n">Conv1d</span><span class="p">(</span><span class="mi">1024</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+<a id="__codelineno-7-15" name="__codelineno-7-15"></a>
+<a id="__codelineno-7-16" name="__codelineno-7-16"></a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<a id="__codelineno-7-17" name="__codelineno-7-17"></a>        <span class="n">fmap</span> <span class="o">=</span> <span class="p">[]</span>
+<a id="__codelineno-7-18" name="__codelineno-7-18"></a>        <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">convs</span><span class="p">:</span>
+<a id="__codelineno-7-19" name="__codelineno-7-19"></a>            <span class="n">x</span> <span class="o">=</span> <span class="n">l</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<a id="__codelineno-7-20" name="__codelineno-7-20"></a>            <span class="n">x</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">leaky_relu</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">LRELU_SLOPE</span><span class="p">)</span>
+<a id="__codelineno-7-21" name="__codelineno-7-21"></a>            <span class="n">fmap</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<a id="__codelineno-7-22" name="__codelineno-7-22"></a>        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conv_post</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<a id="__codelineno-7-23" name="__codelineno-7-23"></a>        <span class="n">fmap</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<a id="__codelineno-7-24" name="__codelineno-7-24"></a>        <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">flatten</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<a id="__codelineno-7-25" name="__codelineno-7-25"></a>
+<a id="__codelineno-7-26" name="__codelineno-7-26"></a>        <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">fmap</span>
+</code></pre></div></td></tr></table></div>
+<p>x是子判别器展平后的整体输出，大小为[B,l]；fmap是经过卷积后的特征图（feature map），类型为list，元素个数为卷积层数，上述代码中有8个卷积层，则fmap元素个数为8，每个元素均是大小为[B,C,l']的张量。</p>
+<h3 id="_18">多周期判别器</h3>
+<p>多周期判别器的重点是将一维样本点序列以一定周期折叠为二维平面，例如一维样本点序列[1,2,3,4,5,6]，如果以3为周期，折叠成二维平面则是[[1,2,3],[4,5,6]]，然后对这个二维平面施加二维卷积。具体来说，每个特定周期的子判别器首先进行填充，保证样本点数是周期的整倍数，以方便"折叠"为二维平面；接下来进入多个卷积层，输出通道数分别为[32,128,512,1024]，卷积之后利用leaky_relu激活，卷积层参数规范化方法均为权重归一化（weight_norm）；然后经过多个卷积层之后，利用一个输入通道数为1024，输出通道为1的卷积层进行后处理；最后展平，作为多周期判别器的最终输出。多周期判别器包含多个周期不同的子判别器，在论文代码中周期数分别设置为[2,3,5,7,11]。</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-8-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-8-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-8-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-8-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-8-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-8-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-8-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-8-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-8-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-8-10">10</a></span>
+<span class="normal"><a href="#__codelineno-8-11">11</a></span>
+<span class="normal"><a href="#__codelineno-8-12">12</a></span>
+<span class="normal"><a href="#__codelineno-8-13">13</a></span>
+<span class="normal"><a href="#__codelineno-8-14">14</a></span>
+<span class="normal"><a href="#__codelineno-8-15">15</a></span>
+<span class="normal"><a href="#__codelineno-8-16">16</a></span>
+<span class="normal"><a href="#__codelineno-8-17">17</a></span>
+<span class="normal"><a href="#__codelineno-8-18">18</a></span>
+<span class="normal"><a href="#__codelineno-8-19">19</a></span>
+<span class="normal"><a href="#__codelineno-8-20">20</a></span>
+<span class="normal"><a href="#__codelineno-8-21">21</a></span>
+<span class="normal"><a href="#__codelineno-8-22">22</a></span>
+<span class="normal"><a href="#__codelineno-8-23">23</a></span>
+<span class="normal"><a href="#__codelineno-8-24">24</a></span>
+<span class="normal"><a href="#__codelineno-8-25">25</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1"></a><span class="k">class</span> <span class="nc">MultiPeriodDiscriminator</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2"></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3"></a>        <span class="nb">super</span><span class="p">(</span><span class="n">MultiPeriodDiscriminator</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">discriminators</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">ModuleList</span><span class="p">([</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5"></a>            <span class="n">DiscriminatorP</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6"></a>            <span class="n">DiscriminatorP</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span>
+<a id="__codelineno-8-7" name="__codelineno-8-7"></a>            <span class="n">DiscriminatorP</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span>
+<a id="__codelineno-8-8" name="__codelineno-8-8"></a>            <span class="n">DiscriminatorP</span><span class="p">(</span><span class="mi">7</span><span class="p">),</span>
+<a id="__codelineno-8-9" name="__codelineno-8-9"></a>            <span class="n">DiscriminatorP</span><span class="p">(</span><span class="mi">11</span><span class="p">),</span>
+<a id="__codelineno-8-10" name="__codelineno-8-10"></a>        <span class="p">])</span>
+<a id="__codelineno-8-11" name="__codelineno-8-11"></a>
+<a id="__codelineno-8-12" name="__codelineno-8-12"></a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">y_hat</span><span class="p">):</span>
+<a id="__codelineno-8-13" name="__codelineno-8-13"></a>        <span class="n">y_d_rs</span> <span class="o">=</span> <span class="p">[]</span>
+<a id="__codelineno-8-14" name="__codelineno-8-14"></a>        <span class="n">y_d_gs</span> <span class="o">=</span> <span class="p">[]</span>
+<a id="__codelineno-8-15" name="__codelineno-8-15"></a>        <span class="n">fmap_rs</span> <span class="o">=</span> <span class="p">[]</span>
+<a id="__codelineno-8-16" name="__codelineno-8-16"></a>        <span class="n">fmap_gs</span> <span class="o">=</span> <span class="p">[]</span>
+<a id="__codelineno-8-17" name="__codelineno-8-17"></a>        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">discriminators</span><span class="p">):</span>
+<a id="__codelineno-8-18" name="__codelineno-8-18"></a>            <span class="n">y_d_r</span><span class="p">,</span> <span class="n">fmap_r</span> <span class="o">=</span> <span class="n">d</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+<a id="__codelineno-8-19" name="__codelineno-8-19"></a>            <span class="n">y_d_g</span><span class="p">,</span> <span class="n">fmap_g</span> <span class="o">=</span> <span class="n">d</span><span class="p">(</span><span class="n">y_hat</span><span class="p">)</span>
+<a id="__codelineno-8-20" name="__codelineno-8-20"></a>            <span class="n">y_d_rs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y_d_r</span><span class="p">)</span>
+<a id="__codelineno-8-21" name="__codelineno-8-21"></a>            <span class="n">fmap_rs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fmap_r</span><span class="p">)</span>
+<a id="__codelineno-8-22" name="__codelineno-8-22"></a>            <span class="n">y_d_gs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y_d_g</span><span class="p">)</span>
+<a id="__codelineno-8-23" name="__codelineno-8-23"></a>            <span class="n">fmap_gs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fmap_g</span><span class="p">)</span>
+<a id="__codelineno-8-24" name="__codelineno-8-24"></a>
+<a id="__codelineno-8-25" name="__codelineno-8-25"></a>        <span class="k">return</span> <span class="n">y_d_rs</span><span class="p">,</span> <span class="n">y_d_gs</span><span class="p">,</span> <span class="n">fmap_rs</span><span class="p">,</span> <span class="n">fmap_gs</span>
+</code></pre></div></td></tr></table></div>
+<p>上述代码中y_d_rs和y_d_gs分别是真实和生成样本的多周期判别器输出，fmap_rs和fmap_gs分别是真实和生成样本经过每一层卷积后输出的特征图（feature map）。子判别器DiscriminatorP由若干层二维卷积组成：</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-9-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-9-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-9-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-9-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-9-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-9-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-9-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-9-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-9-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-9-10">10</a></span>
+<span class="normal"><a href="#__codelineno-9-11">11</a></span>
+<span class="normal"><a href="#__codelineno-9-12">12</a></span>
+<span class="normal"><a href="#__codelineno-9-13">13</a></span>
+<span class="normal"><a href="#__codelineno-9-14">14</a></span>
+<span class="normal"><a href="#__codelineno-9-15">15</a></span>
+<span class="normal"><a href="#__codelineno-9-16">16</a></span>
+<span class="normal"><a href="#__codelineno-9-17">17</a></span>
+<span class="normal"><a href="#__codelineno-9-18">18</a></span>
+<span class="normal"><a href="#__codelineno-9-19">19</a></span>
+<span class="normal"><a href="#__codelineno-9-20">20</a></span>
+<span class="normal"><a href="#__codelineno-9-21">21</a></span>
+<span class="normal"><a href="#__codelineno-9-22">22</a></span>
+<span class="normal"><a href="#__codelineno-9-23">23</a></span>
+<span class="normal"><a href="#__codelineno-9-24">24</a></span>
+<span class="normal"><a href="#__codelineno-9-25">25</a></span>
+<span class="normal"><a href="#__codelineno-9-26">26</a></span>
+<span class="normal"><a href="#__codelineno-9-27">27</a></span>
+<span class="normal"><a href="#__codelineno-9-28">28</a></span>
+<span class="normal"><a href="#__codelineno-9-29">29</a></span>
+<span class="normal"><a href="#__codelineno-9-30">30</a></span>
+<span class="normal"><a href="#__codelineno-9-31">31</a></span>
+<span class="normal"><a href="#__codelineno-9-32">32</a></span>
+<span class="normal"><a href="#__codelineno-9-33">33</a></span>
+<span class="normal"><a href="#__codelineno-9-34">34</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1"></a><span class="k">class</span> <span class="nc">DiscriminatorP</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2"></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">use_spectral_norm</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3"></a>        <span class="nb">super</span><span class="p">(</span><span class="n">DiscriminatorP</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">period</span> <span class="o">=</span> <span class="n">period</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5"></a>        <span class="n">norm_f</span> <span class="o">=</span> <span class="n">weight_norm</span> <span class="k">if</span> <span class="n">use_spectral_norm</span> <span class="o">==</span> <span class="kc">False</span> <span class="k">else</span> <span class="n">spectral_norm</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">convs</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">ModuleList</span><span class="p">([</span>
+<a id="__codelineno-9-7" name="__codelineno-9-7"></a>            <span class="n">norm_f</span><span class="p">(</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="p">(</span><span class="n">kernel_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="n">stride</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">padding</span><span class="o">=</span><span class="p">(</span><span class="n">get_padding</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="mi">0</span><span class="p">))),</span>
+<a id="__codelineno-9-8" name="__codelineno-9-8"></a>            <span class="n">norm_f</span><span class="p">(</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="p">(</span><span class="n">kernel_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="n">stride</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">padding</span><span class="o">=</span><span class="p">(</span><span class="n">get_padding</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="mi">0</span><span class="p">))),</span>
+<a id="__codelineno-9-9" name="__codelineno-9-9"></a>            <span class="n">norm_f</span><span class="p">(</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="mi">512</span><span class="p">,</span> <span class="p">(</span><span class="n">kernel_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="n">stride</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">padding</span><span class="o">=</span><span class="p">(</span><span class="n">get_padding</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="mi">0</span><span class="p">))),</span>
+<a id="__codelineno-9-10" name="__codelineno-9-10"></a>            <span class="n">norm_f</span><span class="p">(</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="mi">1024</span><span class="p">,</span> <span class="p">(</span><span class="n">kernel_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="n">stride</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">padding</span><span class="o">=</span><span class="p">(</span><span class="n">get_padding</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="mi">0</span><span class="p">))),</span>
+<a id="__codelineno-9-11" name="__codelineno-9-11"></a>            <span class="n">norm_f</span><span class="p">(</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">1024</span><span class="p">,</span> <span class="mi">1024</span><span class="p">,</span> <span class="p">(</span><span class="n">kernel_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">))),</span>
+<a id="__codelineno-9-12" name="__codelineno-9-12"></a>        <span class="p">])</span>
+<a id="__codelineno-9-13" name="__codelineno-9-13"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">conv_post</span> <span class="o">=</span> <span class="n">norm_f</span><span class="p">(</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">1024</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)))</span>
+<a id="__codelineno-9-14" name="__codelineno-9-14"></a>
+<a id="__codelineno-9-15" name="__codelineno-9-15"></a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<a id="__codelineno-9-16" name="__codelineno-9-16"></a>        <span class="n">fmap</span> <span class="o">=</span> <span class="p">[]</span>
+<a id="__codelineno-9-17" name="__codelineno-9-17"></a>
+<a id="__codelineno-9-18" name="__codelineno-9-18"></a>        <span class="c1"># 1d to 2d</span>
+<a id="__codelineno-9-19" name="__codelineno-9-19"></a>        <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">t</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span>
+<a id="__codelineno-9-20" name="__codelineno-9-20"></a>        <span class="k">if</span> <span class="n">t</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">period</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span> <span class="c1"># pad first</span>
+<a id="__codelineno-9-21" name="__codelineno-9-21"></a>            <span class="n">n_pad</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">period</span> <span class="o">-</span> <span class="p">(</span><span class="n">t</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">period</span><span class="p">)</span>
+<a id="__codelineno-9-22" name="__codelineno-9-22"></a>            <span class="n">x</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">pad</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_pad</span><span class="p">),</span> <span class="s2">&quot;reflect&quot;</span><span class="p">)</span>
+<a id="__codelineno-9-23" name="__codelineno-9-23"></a>            <span class="n">t</span> <span class="o">=</span> <span class="n">t</span> <span class="o">+</span> <span class="n">n_pad</span>
+<a id="__codelineno-9-24" name="__codelineno-9-24"></a>        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">t</span> <span class="o">//</span> <span class="bp">self</span><span class="o">.</span><span class="n">period</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">period</span><span class="p">)</span>
+<a id="__codelineno-9-25" name="__codelineno-9-25"></a>
+<a id="__codelineno-9-26" name="__codelineno-9-26"></a>        <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">convs</span><span class="p">:</span>
+<a id="__codelineno-9-27" name="__codelineno-9-27"></a>            <span class="n">x</span> <span class="o">=</span> <span class="n">l</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<a id="__codelineno-9-28" name="__codelineno-9-28"></a>            <span class="n">x</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">leaky_relu</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">LRELU_SLOPE</span><span class="p">)</span>
+<a id="__codelineno-9-29" name="__codelineno-9-29"></a>            <span class="n">fmap</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<a id="__codelineno-9-30" name="__codelineno-9-30"></a>        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conv_post</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<a id="__codelineno-9-31" name="__codelineno-9-31"></a>        <span class="n">fmap</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<a id="__codelineno-9-32" name="__codelineno-9-32"></a>        <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">flatten</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<a id="__codelineno-9-33" name="__codelineno-9-33"></a>
+<a id="__codelineno-9-34" name="__codelineno-9-34"></a>        <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">fmap</span>
+</code></pre></div></td></tr></table></div>
+<p>x是子判别器展平后的整体输出，大小为[B,l]；fmap是经过每一层卷积后的特征图（feature map），类型为list，元素个数为卷积层数，上述代码中有6个卷积层，则fmap元素个数为6，每个元素是大小为[B,C,l',period]的张量。</p>
+<h3 id="_19">损失函数简介</h3>
+<p>HiFiGAN的损失函数主要包括三块，一个是GAN原始的生成对抗损失（GAN Loss）；第二是梅尔频谱损失（Mel-Spectrogram Loss），将生成音频转换回梅尔频谱之后，计算真实和生成音频对应梅尔频谱之间的L1距离；第三是特征匹配损失（Feature Match Loss），主要是对比真实和合成音频在中间卷积层上的差异。</p>
+<h3 id="_20">生成对抗损失</h3>
+<p>HiFiGAN仍然是一个生成对抗网络，判别器计算输入是真实样本的概率，生成器生成以假乱真的样本，最终达到生成器合成接近真实的样本，以致于判别器无法区分真实和生成样本。HiFiGAN使用<a href="https://zhuanlan.zhihu.com/p/25768099">最小二乘GAN（LS-GAN）</a>，将原始GAN中的二元交叉熵替换为最小二乘损失函数。判别器的生成对抗损失定义为：</p>
+<div class="arithmatex">\[
+{\rm L}_{Adv}(D;G)=\mathbb{E}_{(x,s)}[(D(x)-1)^2+(D(G(s)))^2]
+\]</div>
+<p>对应的代码实现：</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-10-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-10-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-10-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-10-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-10-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-10-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-10-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-10-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-10-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-10-10">10</a></span>
+<span class="normal"><a href="#__codelineno-10-11">11</a></span>
+<span class="normal"><a href="#__codelineno-10-12">12</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1"></a><span class="k">def</span> <span class="nf">discriminator_loss</span><span class="p">(</span><span class="n">disc_real_outputs</span><span class="p">,</span> <span class="n">disc_generated_outputs</span><span class="p">):</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2"></a>    <span class="n">loss</span> <span class="o">=</span> <span class="mi">0</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3"></a>    <span class="n">r_losses</span> <span class="o">=</span> <span class="p">[]</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4"></a>    <span class="n">g_losses</span> <span class="o">=</span> <span class="p">[]</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5"></a>    <span class="k">for</span> <span class="n">dr</span><span class="p">,</span> <span class="n">dg</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">disc_real_outputs</span><span class="p">,</span> <span class="n">disc_generated_outputs</span><span class="p">):</span>
+<a id="__codelineno-10-6" name="__codelineno-10-6"></a>        <span class="n">r_loss</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="n">dr</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<a id="__codelineno-10-7" name="__codelineno-10-7"></a>        <span class="n">g_loss</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dg</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<a id="__codelineno-10-8" name="__codelineno-10-8"></a>        <span class="n">loss</span> <span class="o">+=</span> <span class="p">(</span><span class="n">r_loss</span> <span class="o">+</span> <span class="n">g_loss</span><span class="p">)</span>
+<a id="__codelineno-10-9" name="__codelineno-10-9"></a>        <span class="n">r_losses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">r_loss</span><span class="o">.</span><span class="n">item</span><span class="p">())</span>
+<a id="__codelineno-10-10" name="__codelineno-10-10"></a>        <span class="n">g_losses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">g_loss</span><span class="o">.</span><span class="n">item</span><span class="p">())</span>
+<a id="__codelineno-10-11" name="__codelineno-10-11"></a>
+<a id="__codelineno-10-12" name="__codelineno-10-12"></a>    <span class="k">return</span> <span class="n">loss</span><span class="p">,</span> <span class="n">r_losses</span><span class="p">,</span> <span class="n">g_losses</span>
+</code></pre></div></td></tr></table></div>
+<p>生成器的生成对抗损失定义为：</p>
+<div class="arithmatex">\[
+{\rm L}_{Adv}(G;D)=\mathbb{E}_{s}[(D(G(s))-1)^2]
+\]</div>
+<p>其中， <span class="arithmatex">\(x\)</span> 表示真实音频， <span class="arithmatex">\(s\)</span> 表示梅尔频谱。</p>
+<p>对应的生成器代码实现：</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-11-1">1</a></span>
+<span class="normal"><a href="#__codelineno-11-2">2</a></span>
+<span class="normal"><a href="#__codelineno-11-3">3</a></span>
+<span class="normal"><a href="#__codelineno-11-4">4</a></span>
+<span class="normal"><a href="#__codelineno-11-5">5</a></span>
+<span class="normal"><a href="#__codelineno-11-6">6</a></span>
+<span class="normal"><a href="#__codelineno-11-7">7</a></span>
+<span class="normal"><a href="#__codelineno-11-8">8</a></span>
+<span class="normal"><a href="#__codelineno-11-9">9</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1"></a><span class="k">def</span> <span class="nf">generator_loss</span><span class="p">(</span><span class="n">disc_outputs</span><span class="p">):</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2"></a>    <span class="n">loss</span> <span class="o">=</span> <span class="mi">0</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3"></a>    <span class="n">gen_losses</span> <span class="o">=</span> <span class="p">[]</span>
+<a id="__codelineno-11-4" name="__codelineno-11-4"></a>    <span class="k">for</span> <span class="n">dg</span> <span class="ow">in</span> <span class="n">disc_outputs</span><span class="p">:</span>
+<a id="__codelineno-11-5" name="__codelineno-11-5"></a>        <span class="n">l</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="n">dg</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<a id="__codelineno-11-6" name="__codelineno-11-6"></a>        <span class="n">gen_losses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
+<a id="__codelineno-11-7" name="__codelineno-11-7"></a>        <span class="n">loss</span> <span class="o">+=</span> <span class="n">l</span>
+<a id="__codelineno-11-8" name="__codelineno-11-8"></a>
+<a id="__codelineno-11-9" name="__codelineno-11-9"></a>    <span class="k">return</span> <span class="n">loss</span><span class="p">,</span> <span class="n">gen_losses</span>
+</code></pre></div></td></tr></table></div>
+<p>更详尽关于GAN的理论参见：<a href="https://zhuanlan.zhihu.com/p/58812258">GAN万字长文综述</a></p>
+<h3 id="_21">梅尔频谱损失</h3>
+<p>借鉴Parallel WaveGAN等前人工作，向GAN中引入重建损失和梅尔频谱损失可以提高模型训练初期的稳定性、生成器的训练效率和合成语音的自然度。具体来说，梅尔频谱损失就是计算合成和真实语音对应频谱之间的L1距离：</p>
+<div class="arithmatex">\[
+{\rm L}_{Mel}(G)=E_{(x,s)}[||\phi(x)-\phi(G(s))||_1]
+\]</div>
+<p>其中， <span class="arithmatex">\(\phi\)</span> 表示将语音转换为梅尔频谱的映射函数。</p>
+<p>对应的损失函数实现：</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-12-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1"></a><span class="n">loss_mel</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">l1_loss</span><span class="p">(</span><span class="n">y_mel</span><span class="p">,</span> <span class="n">y_g_hat_mel</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+<p>上述代码中，y_mel表示真实语音对应的梅尔频谱，y_g_hat_mel表示梅尔频谱合成语音之后，合成语音又转换回来得到的梅尔频谱。</p>
+<h3 id="_22">特征匹配损失</h3>
+<p>特征匹配损失是用来度量神经网络从真实和合成语音中提取的特征差异，具体来说，就是计算真实和合成语音经过特征提取层之后输出之间的L1距离：</p>
+<div class="arithmatex">\[
+{\rm L}_{FM}(G;D)=\mathbb{E}_{x,s}[\sum_{i=1}^T\frac{1}{N_i}||D^i(x)-D^i(G(s))||_1]
+\]</div>
+<p>其中， <span class="arithmatex">\(T\)</span> 表示判别器中特征提取层的层数， <span class="arithmatex">\(D^i\)</span> 表示提取的特征， <span class="arithmatex">\(N_i\)</span> 表示第 <span class="arithmatex">\(i\)</span> 层判别器网络提取的特征数量。对应的代码为：</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-13-1">1</a></span>
+<span class="normal"><a href="#__codelineno-13-2">2</a></span>
+<span class="normal"><a href="#__codelineno-13-3">3</a></span>
+<span class="normal"><a href="#__codelineno-13-4">4</a></span>
+<span class="normal"><a href="#__codelineno-13-5">5</a></span>
+<span class="normal"><a href="#__codelineno-13-6">6</a></span>
+<span class="normal"><a href="#__codelineno-13-7">7</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1"></a><span class="k">def</span> <span class="nf">feature_loss</span><span class="p">(</span><span class="n">fmap_r</span><span class="p">,</span> <span class="n">fmap_g</span><span class="p">):</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2"></a>    <span class="n">loss</span> <span class="o">=</span> <span class="mi">0</span>
+<a id="__codelineno-13-3" name="__codelineno-13-3"></a>    <span class="k">for</span> <span class="n">dr</span><span class="p">,</span> <span class="n">dg</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">fmap_r</span><span class="p">,</span> <span class="n">fmap_g</span><span class="p">):</span>
+<a id="__codelineno-13-4" name="__codelineno-13-4"></a>        <span class="k">for</span> <span class="n">rl</span><span class="p">,</span> <span class="n">gl</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">dr</span><span class="p">,</span> <span class="n">dg</span><span class="p">):</span>
+<a id="__codelineno-13-5" name="__codelineno-13-5"></a>            <span class="n">loss</span> <span class="o">+=</span> <span class="n">torch</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">rl</span> <span class="o">-</span> <span class="n">gl</span><span class="p">))</span>
+<a id="__codelineno-13-6" name="__codelineno-13-6"></a>
+<a id="__codelineno-13-7" name="__codelineno-13-7"></a>    <span class="k">return</span> <span class="n">loss</span>
+</code></pre></div></td></tr></table></div>
+<h3 id="_23">整体损失</h3>
+<ol>
+<li>
+<p>生成器的整体损失为：</p>
+<div class="arithmatex">\[
+{\rm L}_G={\rm L}_{Adv}(G;D)+\lambda_{fm}{\rm L}_{FM}(G;D)+\lambda_{mel}{\rm L}_{Mel}(G)
+\]</div>
+<p>其中， <span class="arithmatex">\(\lambda_{fm}\)</span> 和 <span class="arithmatex">\(\lambda_{mel}\)</span> 分别为特征匹配和梅尔频谱损失的加权系数，实验中 <span class="arithmatex">\(\lambda_{fm}=2,\lambda_{mel}=45\)</span>。</p>
+<p>因为HiFiGAN的判别器是由多尺度判别器和多周期判别器组成，因此生成器的总体损失又可以写作：</p>
+<div class="arithmatex">\[
+{\rm L}_G=\sum_{k=1}^K[{\rm L}_{Adv}(G;D_k)+\lambda_{fm}{\rm L}_{FM}(G;D_k)]+\lambda_{mel}{\rm L}_{Mel}(G)
+\]</div>
+<p>其中， <span class="arithmatex">\(K\)</span> 为多尺度判别器和多周期判别器的个数， <span class="arithmatex">\(D_k\)</span> 表示第 <span class="arithmatex">\(k\)</span> 个MPD和MSD的子判别器。</p>
+<p>对应的代码为：
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-14-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-14-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-14-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-14-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-14-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-14-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-14-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-14-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-14-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-14-10">10</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1"></a><span class="c1"># L1 Mel-Spectrogram Loss</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2"></a><span class="n">loss_mel</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">l1_loss</span><span class="p">(</span><span class="n">y_mel</span><span class="p">,</span> <span class="n">y_g_hat_mel</span><span class="p">)</span> <span class="o">*</span> <span class="mi">45</span>
+<a id="__codelineno-14-3" name="__codelineno-14-3"></a>
+<a id="__codelineno-14-4" name="__codelineno-14-4"></a><span class="n">y_df_hat_r</span><span class="p">,</span> <span class="n">y_df_hat_g</span><span class="p">,</span> <span class="n">fmap_f_r</span><span class="p">,</span> <span class="n">fmap_f_g</span> <span class="o">=</span> <span class="n">mpd</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">y_g_hat</span><span class="p">)</span>
+<a id="__codelineno-14-5" name="__codelineno-14-5"></a><span class="n">y_ds_hat_r</span><span class="p">,</span> <span class="n">y_ds_hat_g</span><span class="p">,</span> <span class="n">fmap_s_r</span><span class="p">,</span> <span class="n">fmap_s_g</span> <span class="o">=</span> <span class="n">msd</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">y_g_hat</span><span class="p">)</span>
+<a id="__codelineno-14-6" name="__codelineno-14-6"></a><span class="n">loss_fm_f</span> <span class="o">=</span> <span class="n">feature_loss</span><span class="p">(</span><span class="n">fmap_f_r</span><span class="p">,</span> <span class="n">fmap_f_g</span><span class="p">)</span>
+<a id="__codelineno-14-7" name="__codelineno-14-7"></a><span class="n">loss_fm_s</span> <span class="o">=</span> <span class="n">feature_loss</span><span class="p">(</span><span class="n">fmap_s_r</span><span class="p">,</span> <span class="n">fmap_s_g</span><span class="p">)</span>
+<a id="__codelineno-14-8" name="__codelineno-14-8"></a><span class="n">loss_gen_f</span><span class="p">,</span> <span class="n">losses_gen_f</span> <span class="o">=</span> <span class="n">generator_loss</span><span class="p">(</span><span class="n">y_df_hat_g</span><span class="p">)</span>
+<a id="__codelineno-14-9" name="__codelineno-14-9"></a><span class="n">loss_gen_s</span><span class="p">,</span> <span class="n">losses_gen_s</span> <span class="o">=</span> <span class="n">generator_loss</span><span class="p">(</span><span class="n">y_ds_hat_g</span><span class="p">)</span>
+<a id="__codelineno-14-10" name="__codelineno-14-10"></a><span class="n">loss_gen_all</span> <span class="o">=</span> <span class="n">loss_gen_s</span> <span class="o">+</span> <span class="n">loss_gen_f</span> <span class="o">+</span> <span class="n">loss_fm_s</span> <span class="o">+</span> <span class="n">loss_fm_f</span> <span class="o">+</span> <span class="n">loss_mel</span>
+</code></pre></div></td></tr></table></div></p>
+</li>
+<li>
+<p>判别器的整体损失为：</p>
+<div class="arithmatex">\[
+{\rm L}_D={\rm L}_{Adv}(D;G)
+\]</div>
+<p>类似于生成器，由于HiFiGAN拥有多个判别器，因此判别器的整体损失可以写作：</p>
+<div class="arithmatex">\[
+{\rm L}_D=\sum_{k=1}^K{\rm L}_{Adv}(D_k;G)
+\]</div>
+<p>其中， <span class="arithmatex">\(K\)</span> 为多尺度判别器和多周期判别器的个数， <span class="arithmatex">\(D_k\)</span> 表示第 <span class="arithmatex">\(k\)</span> 个MPD和MSD的子判别器。</p>
+<p>对应的代码为：
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-15-1">1</a></span>
+<span class="normal"><a href="#__codelineno-15-2">2</a></span>
+<span class="normal"><a href="#__codelineno-15-3">3</a></span>
+<span class="normal"><a href="#__codelineno-15-4">4</a></span>
+<span class="normal"><a href="#__codelineno-15-5">5</a></span>
+<span class="normal"><a href="#__codelineno-15-6">6</a></span>
+<span class="normal"><a href="#__codelineno-15-7">7</a></span>
+<span class="normal"><a href="#__codelineno-15-8">8</a></span>
+<span class="normal"><a href="#__codelineno-15-9">9</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1"></a><span class="c1"># MPD</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2"></a><span class="n">y_df_hat_r</span><span class="p">,</span> <span class="n">y_df_hat_g</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">mpd</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">y_g_hat</span><span class="o">.</span><span class="n">detach</span><span class="p">())</span>
+<a id="__codelineno-15-3" name="__codelineno-15-3"></a><span class="n">loss_disc_f</span><span class="p">,</span> <span class="n">losses_disc_f_r</span><span class="p">,</span> <span class="n">losses_disc_f_g</span> <span class="o">=</span> <span class="n">discriminator_loss</span><span class="p">(</span><span class="n">y_df_hat_r</span><span class="p">,</span> <span class="n">y_df_hat_g</span><span class="p">)</span>
+<a id="__codelineno-15-4" name="__codelineno-15-4"></a>
+<a id="__codelineno-15-5" name="__codelineno-15-5"></a><span class="c1"># MSD</span>
+<a id="__codelineno-15-6" name="__codelineno-15-6"></a><span class="n">y_ds_hat_r</span><span class="p">,</span> <span class="n">y_ds_hat_g</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">msd</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">y_g_hat</span><span class="o">.</span><span class="n">detach</span><span class="p">())</span>
+<a id="__codelineno-15-7" name="__codelineno-15-7"></a><span class="n">loss_disc_s</span><span class="p">,</span> <span class="n">losses_disc_s_r</span><span class="p">,</span> <span class="n">losses_disc_s_g</span> <span class="o">=</span> <span class="n">discriminator_loss</span><span class="p">(</span><span class="n">y_ds_hat_r</span><span class="p">,</span> <span class="n">y_ds_hat_g</span><span class="p">)</span>
+<a id="__codelineno-15-8" name="__codelineno-15-8"></a>
+<a id="__codelineno-15-9" name="__codelineno-15-9"></a><span class="n">loss_disc_all</span> <span class="o">=</span> <span class="n">loss_disc_s</span> <span class="o">+</span> <span class="n">loss_disc_f</span>
+</code></pre></div></td></tr></table></div></p>
+</li>
+</ol>
+
+  <hr>
+<div class="md-source-file">
+  <small>
+    
+      最后更新:
+      2022-06-08
+    
+  </small>
+</div>
+
+              
+
+  <!-- Giscus -->
+  <h2 id="__comments">评论</h2>
+  <!-- Replace with generated snippet -->
+  <script src="https://giscus.app/client.js"
+        data-repo="cnlinxi/blog"
+        data-repo-id="R_kgDOHLI9Jw"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOHLI9J84COkTs"
+        data-mapping="pathname"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="bottom"
+        data-theme="light"
+        data-lang="zh-CN"
+        crossorigin="anonymous"
+        async>
+  </script>
+
+  <!-- Reload on palette change -->
+  <script>
+    var palette = __md_get("__palette")
+    if (palette && typeof palette.color === "object")
+      if (palette.color.scheme === "slate") {
+        var giscus = document.querySelector("script[src*=giscus]")
+        giscus.setAttribute("data-theme", "dark") 
+      }
+
+    /* Register event handlers after documented loaded */
+    document.addEventListener("DOMContentLoaded", function() {
+      var ref = document.querySelector("[data-md-component=palette]")
+      ref.addEventListener("change", function() {
+        var palette = __md_get("__palette")
+        if (palette && typeof palette.color === "object") {
+          var theme = palette.color.scheme === "slate" ? "dark" : "light"
+
+          /* Instruct Giscus to change theme */
+          var frame = document.querySelector(".giscus-frame")
+          frame.contentWindow.postMessage(
+            { giscus: { setConfig: { theme } } },
+            "https://giscus.app"
+          )
+        }
+      })
+    })
+  </script>
+
+            </article>
+            
+          </div>
+        </div>
+        
+          <a href="#" class="md-top md-icon" data-md-component="top" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            回到页面顶部
+          </a>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+    <nav class="md-footer__inner md-grid" aria-label="页脚" >
+      
+        
+        <a href="../%E5%A3%B0%E5%AD%A6%E6%A8%A1%E5%9E%8B/" class="md-footer__link md-footer__link--prev" aria-label="上一页: 声学模型" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                上一页
+              </span>
+              声学模型
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E7%9A%84%E6%80%BB%E4%BD%93%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB/" class="md-footer__link md-footer__link--next" aria-label="下一页: 语音合成的总体知识体系" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                下一页
+              </span>
+              语音合成的总体知识体系
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.expand", "toc.follow", "toc.integrate", "navigation.top", "search.suggest", "search.highlight", "search.share"], "search": "../../assets/javascripts/workers/search.b028fd86.min.js", "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.config.lang": "ja", "search.config.pipeline": "trimmer, stemmer", "search.config.separator": "[\\s\\-\uff0c\u3002]+", "search.placeholder": "\u641c\u7d22", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version.title": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.f758a944.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

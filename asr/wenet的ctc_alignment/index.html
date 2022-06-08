@@ -1,0 +1,2256 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.3.3">
+    
+    
+      
+        <title>wenet的ctc_alignment - 语音与语言处理</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.4a0965b7.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.cbb835fc.min.css">
+        
+      
+      
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#wenetctc_alignment" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../.." title="语音与语言处理" class="md-header__button md-logo" aria-label="语音与语言处理" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            语音与语言处理
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              wenet的ctc_alignment
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" aria-label="分享" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7 0-.24-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91 1.61 0 2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08Z"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="清空当前内容" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/cnlinxi/blog" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    cnlinxi/blog
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-tabs__inner md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        主页
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../paper/%E6%9C%AC%E5%91%A8%E5%80%BC%E5%BE%97%E8%AF%BB_2022_04_23/" class="md-tabs__link">
+        最新论文
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../dsp/%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99/" class="md-tabs__link">
+        信号处理
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../tts/%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E6%A6%82%E8%BF%B0/" class="md-tabs__link">
+        语音合成
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../%E5%8A%A0%E6%9D%83%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/" class="md-tabs__link md-tabs__link--active">
+        语音识别
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../open_source_index/" class="md-tabs__link">
+        开源数据和工具
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../develop/docker/docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" class="md-tabs__link">
+        开发
+      </a>
+    </li>
+  
+
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../leetcode/滑动窗口专题.md" class="md-tabs__link">
+        数据结构
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="语音与语言处理" class="md-nav__button md-logo" aria-label="语音与语言处理" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    语音与语言处理
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/cnlinxi/blog" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    cnlinxi/blog
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_1" type="checkbox" id="__nav_1" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_1">
+          主页
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="主页" data-md-level="1">
+        <label class="md-nav__title" for="__nav_1">
+          <span class="md-nav__icon md-icon"></span>
+          主页
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        语音与语言处理
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          最新论文
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="最新论文" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          最新论文
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../paper/%E6%9C%AC%E5%91%A8%E5%80%BC%E5%BE%97%E8%AF%BB_2022_04_23/" class="md-nav__link">
+        本周值得读-2022_04_23
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          信号处理
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="信号处理" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          信号处理
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dsp/%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99/" class="md-nav__link">
+        参考资料
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dsp/%E8%AF%AD%E9%9F%B3%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/" class="md-nav__link">
+        语音基本概念
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dsp/%E8%AF%AD%E9%9F%B3%E7%89%B9%E5%BE%81%E6%8F%90%E5%8F%96/" class="md-nav__link">
+        语音特征提取
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4">
+          语音合成
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="语音合成" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          语音合成
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tts/%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E6%A6%82%E8%BF%B0/" class="md-nav__link">
+        语音合成概述
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tts/%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E7%9A%84%E8%AF%84%E4%BB%B7%E6%A0%87%E5%87%86%E5%92%8C%E6%96%B9%E6%B3%95/" class="md-nav__link">
+        语音合成的评价标准和方法
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tts/%E8%AF%AD%E8%A8%80%E5%AD%A6/" class="md-nav__link">
+        语言学
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tts/%E9%9F%B3%E5%BA%93%E5%88%B6%E4%BD%9C%E5%92%8C%E6%96%87%E6%9C%AC%E5%89%8D%E7%AB%AF/" class="md-nav__link">
+        音库制作和文本前端
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tts/%E5%A3%B0%E5%AD%A6%E6%A8%A1%E5%9E%8B/" class="md-nav__link">
+        声学模型
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tts/%E5%A3%B0%E7%A0%81%E5%99%A8/" class="md-nav__link">
+        声码器
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tts/%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E7%9A%84%E6%80%BB%E4%BD%93%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB/" class="md-nav__link">
+        语音合成的总体知识体系
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5">
+          语音识别
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="语音识别" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          语音识别
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E5%8A%A0%E6%9D%83%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/" class="md-nav__link">
+        加权有限状态机
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../arpa2fst%E5%B0%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E8%BD%AC%E4%B8%BAWFST/" class="md-nav__link">
+        arpa2fst将语言模型转为WFST
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kaldi%E4%B8%AD%E7%9A%84%E8%A7%A3%E7%A0%81%E8%BF%87%E7%A8%8B/" class="md-nav__link">
+        kaldi中的解码过程
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kaldi%E4%B8%AD%E7%9A%84Simple-Decoder/" class="md-nav__link">
+        kaldi中的Simple-Decoder
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../OpenFST%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" class="md-nav__link">
+        OpenFST基本操作
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../wenet%E6%80%BB%E4%BD%93%E8%A7%A3%E6%9E%90/" class="md-nav__link">
+        wenet总体解析
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../wenet_runtime%E7%9F%A5%E8%AF%86%E7%82%B9/" class="md-nav__link">
+        WeNet runtime知识点
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../wenet_kaitang-ssl-train%E7%9F%A5%E8%AF%86%E7%82%B9/" class="md-nav__link">
+        wenet_kaitang-ssl-train知识点
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          wenet的ctc_alignment
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        wenet的ctc_alignment
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    强制对齐
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    对齐
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    维特比算法
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ctc" class="md-nav__link">
+    CTC维特比算法
+  </a>
+  
+    <nav class="md-nav" aria-label="CTC维特比算法">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    初始化
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    递推
+  </a>
+  
+    <nav class="md-nav" aria-label="递推">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    规则
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    举例
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    终止
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    最优路径回溯
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#wenetctc-alignment" class="md-nav__link">
+    WeNet中CTC alignment的实现
+  </a>
+  
+    <nav class="md-nav" aria-label="WeNet中CTC alignment的实现">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    初始化
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    递推
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    终止
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    回溯
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    输出
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    小结
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../wenet%E7%9A%84ctc_prefix_beam_search/" class="md-nav__link">
+        wenet的ctc_prefix_beam_search
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../wenet%E5%AF%B9onnx%E7%9A%84%E6%94%AF%E6%8C%81/" class="md-nav__link">
+        wenet对onnx的支持
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../wenet%E4%B8%ADendpoint%E6%A3%80%E6%B5%8B/" class="md-nav__link">
+        wenet中endpoint检测
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6">
+          开源数据和工具
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="开源数据和工具" data-md-level="1">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          开源数据和工具
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../open_source_index/" class="md-nav__link">
+        主页
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_7" type="checkbox" id="__nav_7" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_7">
+          开发
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="开发" data-md-level="1">
+        <label class="md-nav__title" for="__nav_7">
+          <span class="md-nav__icon md-icon"></span>
+          开发
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_7_1" type="checkbox" id="__nav_7_1" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_7_1">
+          docker
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="docker" data-md-level="2">
+        <label class="md-nav__title" for="__nav_7_1">
+          <span class="md-nav__icon md-icon"></span>
+          docker
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/docker/docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" class="md-nav__link">
+        docker常用命令
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_7_2" type="checkbox" id="__nav_7_2" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_7_2">
+          python
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="python" data-md-level="2">
+        <label class="md-nav__title" for="__nav_7_2">
+          <span class="md-nav__icon md-icon"></span>
+          python
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/python/python%E7%9A%84%E5%8F%96%E5%8F%8D%E8%BF%90%E7%AE%97%E7%AC%A6/" class="md-nav__link">
+        python的取反运算符
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/python/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/" class="md-nav__link">
+        正则表达式
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/python/conda%E5%92%8Cpip/" class="md-nav__link">
+        conda和pip
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/python/numpy%E5%AD%98%E5%8F%96%E6%95%B0%E6%8D%AE/" class="md-nav__link">
+        numpy存取数据
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/python/__future__%E7%94%A8%E6%B3%95/" class="md-nav__link">
+        __future__用法
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_7_3" type="checkbox" id="__nav_7_3" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_7_3">
+          shell
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="shell" data-md-level="2">
+        <label class="md-nav__title" for="__nav_7_3">
+          <span class="md-nav__icon md-icon"></span>
+          shell
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/shell/Linux%E6%93%8D%E4%BD%9C%E5%9F%BA%E7%A1%80%E5%A4%87%E5%BF%98%E5%BD%95/" class="md-nav__link">
+        Linux操作基础备忘录
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/shell/vim/" class="md-nav__link">
+        vim
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/shell/top_linux%E4%B8%8B%E7%9A%84%E4%BB%BB%E5%8A%A1%E7%AE%A1%E7%90%86%E5%99%A8/" class="md-nav__link">
+        top_linux下的任务管理器
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/shell/shell%E8%B0%83%E8%AF%95/" class="md-nav__link">
+        shell调试
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/shell/cat%E5%92%8CEOF/" class="md-nav__link">
+        cat和EOF
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/shell/tailf/" class="md-nav__link">
+        tailf
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/shell/shell%E8%AF%AD%E6%B3%95%E9%80%9F%E6%9F%A5%E6%89%8B%E5%86%8C/" class="md-nav__link">
+        shell语法速查手册
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_7_4" type="checkbox" id="__nav_7_4" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_7_4">
+          cpp
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="cpp" data-md-level="2">
+        <label class="md-nav__title" for="__nav_7_4">
+          <span class="md-nav__icon md-icon"></span>
+          cpp
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/cpp/stl%E7%9A%84map/" class="md-nav__link">
+        STL的map
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/cpp/cpp%E8%B0%83%E8%AF%95/" class="md-nav__link">
+        cpp调试技巧
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/cpp/cpp%E7%9A%84%E7%B1%BB%E8%AE%BF%E9%97%AE%E4%BF%AE%E9%A5%B0%E7%AC%A6/" class="md-nav__link">
+        cpp的类访问修饰符
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/cpp/cpp%E5%85%B3%E9%94%AE%E5%AD%97const%E4%BF%AE%E9%A5%B0%E5%87%BD%E6%95%B0/" class="md-nav__link">
+        cpp关键字const修饰函数
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/cpp/cpp%E5%AE%BD%E5%AD%97%E7%AC%A6wchar/" class="md-nav__link">
+        cpp宽字符wchar
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/cpp/gcc%E7%9A%84%E5%B8%B8%E7%94%A8%E7%BC%96%E8%AF%91%E9%80%89%E9%A1%B9/" class="md-nav__link">
+        GCC的常用编译选项
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/cpp/c%E6%88%96cpp%E8%BD%AF%E4%BB%B6%E7%BC%96%E8%AF%91/" class="md-nav__link">
+        c或cpp软件编译
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/cpp/stl%E7%9A%84vector/" class="md-nav__link">
+        STL的vector
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/cpp/cpp%E4%B8%AD%E7%9A%84int_t/" class="md-nav__link">
+        cpp中的int_t
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/cpp/stl%E7%9A%84string/" class="md-nav__link">
+        string操作
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/cpp/cpp%E5%8F%B3%E5%80%BC%E5%BC%95%E7%94%A8/" class="md-nav__link">
+        cpp右值引用和std::move
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/cpp/cpp%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" class="md-nav__link">
+        cpp并发编程
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/cpp/c%E5%8F%8Acpp%E7%9A%84%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99/" class="md-nav__link">
+        c及cpp的文件读写
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/cpp/cpp%E5%B8%B8%E7%94%A8%E5%BA%93gflags_glog_gtest/" class="md-nav__link">
+        cpp常用库gflags/glog/gtest
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_7_5" type="checkbox" id="__nav_7_5" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_7_5">
+          git
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="git" data-md-level="2">
+        <label class="md-nav__title" for="__nav_7_5">
+          <span class="md-nav__icon md-icon"></span>
+          git
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/git/git%E4%B8%AD%E7%9A%84HEAD/" class="md-nav__link">
+        git中的HEAD
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/git/git%E5%B8%B8%E7%94%A8%E5%9B%9E%E9%80%80%E6%93%8D%E4%BD%9C/" class="md-nav__link">
+        git常用回退操作
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/git/git%E7%9A%84%E6%8C%87%E9%92%88ref%E5%92%8Creflog/" class="md-nav__link">
+        git的指针ref和reflog
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/git/git%E8%BD%AC%E7%A7%BB%E9%83%A8%E5%88%86%E4%BB%A3%E7%A0%81cherry-pick/" class="md-nav__link">
+        git转移部分代码cherry-pick
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/git/git%E6%97%A5%E5%BF%97/" class="md-nav__link">
+        git日志
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/git/git%E5%88%86%E6%94%AF%E5%90%88%E5%B9%B6/" class="md-nav__link">
+        git分支合并
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/git/git%E7%9A%84fast_forward/" class="md-nav__link">
+        Git的Fast Forward
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/git/git%E4%BF%AE%E6%94%B9%E6%8F%90%E4%BA%A4%E4%BF%A1%E6%81%AF/" class="md-nav__link">
+        git修改提交信息
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/git/git%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%BA%90/" class="md-nav__link">
+        git学习资源
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_8" type="checkbox" id="__nav_8" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_8">
+          数据结构
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="数据结构" data-md-level="1">
+        <label class="md-nav__title" for="__nav_8">
+          <span class="md-nav__icon md-icon"></span>
+          数据结构
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../leetcode/滑动窗口专题.md" class="md-nav__link">
+        None
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../leetcode/DFS回溯算法专题.md" class="md-nav__link">
+        None
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../leetcode/一般二叉树专题.md" class="md-nav__link">
+        None
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../leetcode/二叉搜索树专题.md" class="md-nav__link">
+        None
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+  
+                
+  <a href="https://github.com/cnlinxi/blog/edit/main/docs/asr/wenet的ctc_alignment.md" title="编辑此页" class="md-content__button md-icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25Z"/></svg>
+  </a>
+
+
+
+<h1 id="wenetctc_alignment">wenet的ctc_alignment</h1>
+<h2 id="_1">强制对齐</h2>
+<p>强制对齐（Force alignment）在语音识别、语音合成等任务中应用广泛，同时也是字幕时间轴、口语评测等任务的核心算法。强制对齐和语音识别都需要一个已经训练好的声学模型和输入语音，而强制对齐还需要语音对应的正确标注文本。强制对齐仅输出语音帧和文本之间的对应关系，比如语音有9帧，对应的正确标注文本为“cat”，则强制对齐的一个可能输出为<code>[c,c,c,blank,a,a,t,t,blank]</code>。</p>
+<p>WeNet由于使用了Joint CTC&amp;AED结果，因此可以利用CTC解码器来完成强制对齐。强制对齐的单元与声学模型的建模单元有关，比如WeNet中文模型中采用了字级别的建模，因此强制对齐也是得到字级别的对齐结果，而如果需要音素级别的强制对齐功能，则需要另外训练一个音素级别的模型。</p>
+<h2 id="_2">对齐</h2>
+<p>语音识别是需要将音频序列转换到文本序列，而音频序列长度一般大于文本序列长度，如果能知道每一帧音频对应的文本，就可以将语音识别转换为音频帧级别上的分类任务。为了得到这种对应关系，常常需要对文本序列进行扩展。对这类序列建模任务的扩展方法包括：对输入序列的单元进行复制，以及插入占位符blank两种方法。HMM采用了复制的方式，CTC两者同时使用，RNN-T则只使用插入占位符blank的方法，如图所示。</p>
+<p><img alt="" src="../attachments/Pasted%20image%2020220516235800.png" /></p>
+<p>在使用CTC目标训练时，本质是考虑所有可能的CTC对齐，并把每一种对齐情况下的分类损失加起来作为目标函数。在实际实现时，并不会真的穷举所有对齐，而是利用一种高效算法进行计算。</p>
+<p>对于对齐任务来说，目标是找到一条概率最大的CTC对齐，最简单的方法是使用训练好的模型对所有可能的对齐路径进行打分，选择一条概率最高的CTC对齐路径即可。但是这种穷举算法的时间复杂度是指数级别的，此时可以使用维特比算法降低寻找最优路径的复杂度。</p>
+<h2 id="_3">维特比算法</h2>
+<p><img alt="" src="../attachments/viterbi_1.png" /></p>
+<p>如上图所示，假如边上有值表示长度，需要从S和E之间寻找一条最短的路径，除了穷举之外，更好的方法是，利用维特比（Viterbi）算法搜索最优路径。</p>
+<p>为了寻找S到E之间的最短路径，可以从左向右一列一列推算，起点是S，从S到A列的路径有3条：S-&gt;A1、S-&gt;A2、S-&gt;A3，如下图所示。</p>
+<p><img alt="" src="../attachments/viterbi_2.png" /></p>
+<p>至目前为止S-&gt;A1、S-&gt;A2、S-&gt;A3中的任何一段均可能是全局最短路径的一部分。继续向右到B列，首先分析B1：</p>
+<p><img alt="" src="../attachments/viterbi_3.png" /></p>
+<p>如上图，经过B1的所有路径只有3条：</p>
+<ul>
+<li>S-&gt;A1-&gt;B1</li>
+<li>S-&gt;A2-&gt;B1</li>
+<li>S-&gt;A3-&gt;B1</li>
+</ul>
+<p>以上3条路径中，各节点距离加起来比较一下，就可以知道哪一条是最短路径，假设S-&gt;A3-&gt;B1是最短路径，那么<strong>经过B1的所有路径中S-&gt;A3-&gt;B1是最短的，其它两条路径都绝对不是目标答案，可以大胆删除</strong>。假如全局最短路径真的经过了B1，那么全局最短路径上B1之前一定是A3，而绝对不是A1或A2，否则就与“经过B1的所有路径中S-&gt;A3-&gt;B1是最短的”相矛盾。及时删除不可能的答案是维特比算法的重点，也是维特比算法能够降低复杂度的原因。此时经过B1的所有备选路径就只剩下一条路径了，如下图所示：</p>
+<p><img alt="" src="../attachments/viterbi_4.png" /></p>
+<p>以此类推，经过B2、B3的所有备选路径各自也只剩下一条：</p>
+<p><img alt="" src="../attachments/viterbi_5.png" /></p>
+<p>此时，S-&gt;A3-&gt;B1、S-&gt;A1-&gt;B2、S-&gt;A2-&gt;B3均有可能是全局最短路径的一部分，继续向后迭代，类似于B列，经过C1节点的路径有：</p>
+<p><img alt="" src="../attachments/viterbi_6.png" /></p>
+<p>假设此时经过C1节点的最短路径是S-&gt;A3-&gt;B1-&gt;C1，则及时将其余两条路径删除，如下图所示：</p>
+<p><img alt="" src="../attachments/viterbi_7.png" /></p>
+<p>以此类推，可求得经过C2、C3节点的最短路径，如下图：</p>
+<p><img alt="" src="../attachments/viterbi_8.png" /></p>
+<p>此时仍然无法确定哪一条是全局最短，继续向后迭代，到达E列，到达E节点的路径此时只有3条：</p>
+<p><img alt="" src="../attachments/viterbi_9.png" /></p>
+<p>E节点已是终点，此时比较这3条路径就可以知道哪一条是全局最短路径了，如下图：</p>
+<p><img alt="" src="../attachments/viterbi_10.png" /></p>
+<p>相比于穷举所有路径，维特比算法每到达一个步骤都及时删除不可能答案，从而大大降低时间复杂度。维特比算法可以概况为以下三点：</p>
+<ol>
+<li>如果最优路径经过某点，则从起点到该点的子路径一定是从起点到该点的所有路径中最优的。</li>
+<li>假设第<span class="arithmatex">\(t\)</span>时刻有<span class="arithmatex">\(k\)</span>个状态可供选择，从开始到<span class="arithmatex">\(t\)</span>时刻的<span class="arithmatex">\(k\)</span>个状态有<span class="arithmatex">\(k\)</span>条最短路径，而最终的最短路径必然经过其中一条。</li>
+<li>根据以上性质，在计算第<span class="arithmatex">\(t+1\)</span>时刻的最短路径时，只需要考虑从开始到当前的<span class="arithmatex">\(k\)</span>个状态值的最短路径和当前状态值到第<span class="arithmatex">\(t+1\)</span>时刻的最短路径即可。如求<span class="arithmatex">\(t=3\)</span>时的最短路径，等于求<span class="arithmatex">\(t=2\)</span>时，从起点到当前时刻的所有状态结点的最短路径加上<span class="arithmatex">\(t=2\)</span>到<span class="arithmatex">\(t=3\)</span>的各节点最短路径。</li>
+</ol>
+<p>维特比算法用于求解多步骤，每个步骤多选择的最优选择问题。对于每一步的所有可能选择，维特比算法都保存前序步骤到当前步骤的若干最优路径以及当前代价下前一步骤上的选择，依次计算完所有步骤后，通过回溯不断寻找前一步骤上的选择，从而找到完整的最优选择路径。</p>
+<h2 id="ctc">CTC维特比算法</h2>
+<p>由于CTC引入了占位符blank，因此相比普通的维特比算法，CTC维特比算法求解状态跳转有所不同。定义<code>状态</code>为模型在每个时刻的输出token，比如blank或标注序列中的字符。</p>
+<h3 id="_4">初始化</h3>
+<p>在初始化中，由于CTC引入了blank，因此第一时刻的初始状态可能是blank，也可能是标注序列的第一个token。</p>
+<h3 id="_5">递推</h3>
+<p>根据CTC规则，已知当前<span class="arithmatex">\(t\)</span>时刻的状态<span class="arithmatex">\(s\)</span>，推导该状态可以由上一时刻的哪些状态跳转而来。</p>
+<h4 id="_6">规则</h4>
+<ol>
+<li>如果<span class="arithmatex">\(t\)</span>时刻的状态<span class="arithmatex">\(s\)</span>为blank，则状态<span class="arithmatex">\(s\)</span>可由<span class="arithmatex">\(t-1\)</span>时刻的<span class="arithmatex">\(s\)</span>或<span class="arithmatex">\(s-1\)</span>（两个可能状态）跳转而来。</li>
+<li>如果<span class="arithmatex">\(t\)</span>时刻的状态<span class="arithmatex">\(s\)</span>为非blank，且状态<span class="arithmatex">\(s\)</span>与<span class="arithmatex">\(s-2\)</span>不同，则状态<span class="arithmatex">\(s\)</span>可由<span class="arithmatex">\(t-1\)</span>时刻的<span class="arithmatex">\(s\)</span>或<span class="arithmatex">\(s-1\)</span>或<span class="arithmatex">\(s-2\)</span>（三个可能状态）跳转而来。</li>
+<li>如果<span class="arithmatex">\(t\)</span>时刻的状态<span class="arithmatex">\(s\)</span>为非blank，且状态<span class="arithmatex">\(s\)</span>与<span class="arithmatex">\(s-2\)</span>相同，则状态<span class="arithmatex">\(s\)</span>可由<span class="arithmatex">\(t-1\)</span>时刻的<span class="arithmatex">\(s\)</span>或<span class="arithmatex">\(s-1\)</span>（两个可能状态）跳转而来，而不可能由<span class="arithmatex">\(s-2\)</span>跳转而来，因为此时<span class="arithmatex">\(s\)</span>和<span class="arithmatex">\(s-2\)</span>相同，如果由<span class="arithmatex">\(s-2\)</span>跳转到<span class="arithmatex">\(s\)</span>，按照CTC规则，这两个状态应该合并。与此同时，情况3和情况1的上一时刻可能状态相同，因此代码中可以合并。</li>
+</ol>
+<h4 id="_7">举例</h4>
+<p>假设CTC字符串如下：</p>
+<p><code>&lt;blank1&gt; s &lt;blank2&gt; e1 &lt;blank3&gt; e2 &lt;blank4&gt;</code></p>
+<p>其中，<code>&lt;blank&gt;</code>表示若干个blank字符，为叙述方便数字后缀用于区分不同位置，<code>e1/e2</code>均表示<code>e</code>，数字后缀同样用于区分不同位置，因此该CTC字符串对应的规整串为<code>see</code>。</p>
+<p>根据CTC规则：</p>
+<ol>
+<li><code>&lt;blank2&gt;</code>只可能从<code>&lt;blank2&gt;</code>或者<code>s</code>跳转而来。</li>
+<li><code>e1</code>可能从<code>e1</code>或者<code>&lt;blank2&gt;</code>或者<code>s</code>跳转而来。</li>
+<li><code>e2</code>只可能从<code>e2</code>或者<code>&lt;blank3&gt;</code>跳转而来，而不可能从<code>e1</code>跳转而来，否则<code>e1 e2</code>按照CTC规则最后将被合并为<code>e1</code>。</li>
+</ol>
+<h3 id="_8">终止</h3>
+<p>在CTC维特比算法中，终止状态可以是blank，也可以是标注序列的最后一个token。比较两个终止状态组成的路径，可以获得最优路径上的终止状态。</p>
+<p>HMM中采用的维特比算法只能将标注序列的最后一个token作为终止状态。</p>
+<h3 id="_9">最优路径回溯</h3>
+<p>在最优路径上，每个时刻的状态均保存对应的上一时刻状态，从而能够获得完整的最优选择路径。</p>
+<h2 id="wenetctc-alignment">WeNet中CTC alignment的实现</h2>
+<h3 id="_10">初始化</h3>
+<ol>
+<li>向标注序列每两个token之间插入blank，比如标注序列为“c a t”，则插入blank之后为”ϵ c ϵ a ϵ t ϵ“。</li>
+<li><code>ctc_probs</code>表示CTC解码器输出的概率分布，大小为<code>[vocab_size,]</code>。</li>
+<li><code>log_alpha[t,s]</code>表示<span class="arithmatex">\(t\)</span>时刻跳转到状态<span class="arithmatex">\(s\)</span>所有可能路径中的最高分。</li>
+<li><code>state_path[t,s]</code>表示<span class="arithmatex">\(t\)</span>时刻状态<span class="arithmatex">\(s\)</span>由前一时刻哪个状态跳转而来，由于维特比算法最后的回溯。</li>
+</ol>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-0-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-0-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-0-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-0-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-0-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-0-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-0-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-0-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-0-10">10</a></span>
+<span class="normal"><a href="#__codelineno-0-11">11</a></span>
+<span class="normal"><a href="#__codelineno-0-12">12</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="c1"># wenet/wenet/utils/ctc_util.py</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2"></a><span class="c1"># 标注序列每两个token之间插入blank</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3"></a><span class="n">y_insert_blank</span> <span class="o">=</span> <span class="n">insert_blank</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">blank_id</span><span class="p">)</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4"></a>
+<a id="__codelineno-0-5" name="__codelineno-0-5"></a><span class="c1"># ctc_probs[t,s]：CTC解码器输出的概率分布，[vocab_size,]</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6"></a><span class="c1"># log_alpha[t,s]：t时刻跳转到状态s所有可能路径的最高分</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7"></a><span class="n">log_alpha</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">ctc_probs</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">y_insert_blank</span><span class="p">)))</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8"></a><span class="n">log_alpha</span> <span class="o">=</span> <span class="n">log_alpha</span> <span class="o">-</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)</span>  <span class="c1"># log of zero</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9"></a><span class="c1"># t时刻状态s由前一时刻哪个状态跳转而来</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10"></a><span class="n">state_path</span> <span class="o">=</span> <span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11"></a>    <span class="p">(</span><span class="n">ctc_probs</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">y_insert_blank</span><span class="p">)),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int16</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12"></a><span class="p">)</span>  <span class="c1"># state path</span>
+</code></pre></div></td></tr></table></div>
+<ol>
+<li>初始化<span class="arithmatex">\(t0\)</span>时刻的blank和标注序列第一个token的概率。</li>
+</ol>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1">1</a></span>
+<span class="normal"><a href="#__codelineno-1-2">2</a></span>
+<span class="normal"><a href="#__codelineno-1-3">3</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="c1"># 初始化开始状态</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2"></a><span class="n">log_alpha</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">ctc_probs</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">y_insert_blank</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3"></a><span class="n">log_alpha</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">ctc_probs</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">y_insert_blank</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+</code></pre></div></td></tr></table></div>
+<h3 id="_11">递推</h3>
+<p>根据CTC规则，对当前<span class="arithmatex">\(t\)</span>时刻的状态<span class="arithmatex">\(s\)</span>，找到其由上一时刻的哪些状态跳转而来：</p>
+<ul>
+<li>两个可能状态：分支1</li>
+<li>三个可能状态：分支2</li>
+</ul>
+<p>这些状态由<code>prev_state</code>记录下来，跳转至这些状态对应路径的最高得分由<code>candidates</code>记录。</p>
+<p>然后计算得分，<code>log_alpha[t,s]</code>记录选取的最高得分，<code>state_path[t,s]</code>记录选取的前一时刻状态。</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-2-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-2-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-2-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-2-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-2-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-2-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-2-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-2-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-2-10">10</a></span>
+<span class="normal"><a href="#__codelineno-2-11">11</a></span>
+<span class="normal"><a href="#__codelineno-2-12">12</a></span>
+<span class="normal"><a href="#__codelineno-2-13">13</a></span>
+<span class="normal"><a href="#__codelineno-2-14">14</a></span>
+<span class="normal"><a href="#__codelineno-2-15">15</a></span>
+<span class="normal"><a href="#__codelineno-2-16">16</a></span>
+<span class="normal"><a href="#__codelineno-2-17">17</a></span>
+<span class="normal"><a href="#__codelineno-2-18">18</a></span>
+<span class="normal"><a href="#__codelineno-2-19">19</a></span>
+<span class="normal"><a href="#__codelineno-2-20">20</a></span>
+<span class="normal"><a href="#__codelineno-2-21">21</a></span>
+<span class="normal"><a href="#__codelineno-2-22">22</a></span>
+<span class="normal"><a href="#__codelineno-2-23">23</a></span>
+<span class="normal"><a href="#__codelineno-2-24">24</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">ctc_probs</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)):</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2"></a>    <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y_insert_blank</span><span class="p">)):</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3"></a>        <span class="c1"># 只能由上一时刻的相同状态、前一状态跳转而来的情况</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4"></a>        <span class="k">if</span> <span class="n">y_insert_blank</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="o">==</span> <span class="n">blank_id</span> <span class="ow">or</span> <span class="n">s</span> <span class="o">&lt;</span> <span class="mi">2</span> <span class="ow">or</span> <span class="n">y_insert_blank</span><span class="p">[</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5"></a>                <span class="n">s</span><span class="p">]</span> <span class="o">==</span> <span class="n">y_insert_blank</span><span class="p">[</span><span class="n">s</span> <span class="o">-</span> <span class="mi">2</span><span class="p">]:</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6"></a>            <span class="c1"># 跳转至前一时刻状态们的候选路径得分</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7"></a>            <span class="n">candidates</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8"></a>                <span class="p">[</span><span class="n">log_alpha</span><span class="p">[</span><span class="n">t</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">s</span><span class="p">],</span> <span class="n">log_alpha</span><span class="p">[</span><span class="n">t</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">s</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]])</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9"></a>            <span class="c1"># 候选的前一时刻状态</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10"></a>            <span class="n">prev_state</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span><span class="p">,</span> <span class="n">s</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+<a id="__codelineno-2-11" name="__codelineno-2-11"></a>        <span class="k">else</span><span class="p">:</span>  <span class="c1"># 可由上一时刻的相同状态、前一状态、前前状态跳转而来的情况</span>
+<a id="__codelineno-2-12" name="__codelineno-2-12"></a>            <span class="c1"># 跳转至前一时刻状态们的候选路径得分</span>
+<a id="__codelineno-2-13" name="__codelineno-2-13"></a>            <span class="n">candidates</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span>
+<a id="__codelineno-2-14" name="__codelineno-2-14"></a>                <span class="n">log_alpha</span><span class="p">[</span><span class="n">t</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">s</span><span class="p">],</span>
+<a id="__codelineno-2-15" name="__codelineno-2-15"></a>                <span class="n">log_alpha</span><span class="p">[</span><span class="n">t</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">s</span> <span class="o">-</span> <span class="mi">1</span><span class="p">],</span>
+<a id="__codelineno-2-16" name="__codelineno-2-16"></a>                <span class="n">log_alpha</span><span class="p">[</span><span class="n">t</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">s</span> <span class="o">-</span> <span class="mi">2</span><span class="p">],</span>
+<a id="__codelineno-2-17" name="__codelineno-2-17"></a>            <span class="p">])</span>
+<a id="__codelineno-2-18" name="__codelineno-2-18"></a>            <span class="c1"># 候选的前一时刻状态</span>
+<a id="__codelineno-2-19" name="__codelineno-2-19"></a>            <span class="n">prev_state</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span><span class="p">,</span> <span class="n">s</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">s</span> <span class="o">-</span> <span class="mi">2</span><span class="p">]</span>
+<a id="__codelineno-2-20" name="__codelineno-2-20"></a>        <span class="c1"># 记录可能跳转至s的路径最高得分</span>
+<a id="__codelineno-2-21" name="__codelineno-2-21"></a>        <span class="n">log_alpha</span><span class="p">[</span><span class="n">t</span><span class="p">,</span> <span class="n">s</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">candidates</span><span class="p">)</span> <span class="o">+</span> <span class="n">ctc_probs</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">y_insert_blank</span><span class="p">[</span><span class="n">s</span><span class="p">]]</span>
+<a id="__codelineno-2-22" name="__codelineno-2-22"></a>        <span class="c1"># 剪枝，及时抛弃不可能路径</span>
+<a id="__codelineno-2-23" name="__codelineno-2-23"></a>        <span class="c1"># 只保留最可能跳转到当前状态的前一时刻状态, 用于回溯</span>
+<a id="__codelineno-2-24" name="__codelineno-2-24"></a>        <span class="n">state_path</span><span class="p">[</span><span class="n">t</span><span class="p">,</span> <span class="n">s</span><span class="p">]</span> <span class="o">=</span> <span class="n">prev_state</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">candidates</span><span class="p">)]</span>
+</code></pre></div></td></tr></table></div>
+<h3 id="_12">终止</h3>
+<p>终止字符可以为blank或标注序列的最后一个token，比较最终时刻跳转至blank所有路径的最高分<code>log_alpha[-1, len(y_insert_blank) - 1]</code>，最终时刻跳转至标注序列最后一个token的最高分<code>log_alpha[-1, len(y_insert_blank) - 2]</code>，两者较高分对应的状态即为终止状态。<code>state_seq[t,0]</code>记录最优路径上的token id。</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-3-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-3-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-3-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-3-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-3-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-3-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-3-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-3-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-3-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-3-10">10</a></span>
+<span class="normal"><a href="#__codelineno-3-11">11</a></span>
+<span class="normal"><a href="#__codelineno-3-12">12</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1"></a><span class="c1"># CTC中由于引入了blank，因此“最优终点”有可能是blank，也有可能是标注序列的最后一个token</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2"></a><span class="c1"># 终点阶段的比较，此时比较这2条路径就可以知道哪一条是全局最优路径了</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3"></a>
+<a id="__codelineno-3-4" name="__codelineno-3-4"></a><span class="c1"># state_seq用于记录最优路径上的token id</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5"></a><span class="n">state_seq</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">ctc_probs</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int16</span><span class="p">)</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6"></a>
+<a id="__codelineno-3-7" name="__codelineno-3-7"></a><span class="n">candidates</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8"></a>    <span class="n">log_alpha</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">y_insert_blank</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">],</span>
+<a id="__codelineno-3-9" name="__codelineno-3-9"></a>    <span class="n">log_alpha</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">y_insert_blank</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span><span class="p">]</span>
+<a id="__codelineno-3-10" name="__codelineno-3-10"></a><span class="p">])</span>
+<a id="__codelineno-3-11" name="__codelineno-3-11"></a><span class="n">prev_state</span> <span class="o">=</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">y_insert_blank</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">y_insert_blank</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span><span class="p">]</span>
+<a id="__codelineno-3-12" name="__codelineno-3-12"></a><span class="n">state_seq</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">prev_state</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">candidates</span><span class="p">)]</span>
+</code></pre></div></td></tr></table></div>
+<h3 id="_13">回溯</h3>
+<p>通过上一步确定的最后时刻状态，不断回溯找到前一时刻的状态，直至找到第一时刻，结束。</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-4-1">1</a></span>
+<span class="normal"><a href="#__codelineno-4-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ctc_probs</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2"></a>    <span class="n">state_seq</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">state_path</span><span class="p">[</span><span class="n">t</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">state_seq</span><span class="p">[</span><span class="n">t</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]</span>
+</code></pre></div></td></tr></table></div>
+<h3 id="_14">输出</h3>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-5-1">1</a></span>
+<span class="normal"><a href="#__codelineno-5-2">2</a></span>
+<span class="normal"><a href="#__codelineno-5-3">3</a></span>
+<span class="normal"><a href="#__codelineno-5-4">4</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1"></a><span class="c1"># 假设语音有9帧，则output_alignment的一个可能结果是[c,c,c,blank,a,a,t,t,blank]</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2"></a><span class="n">output_alignment</span> <span class="o">=</span> <span class="p">[]</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3"></a><span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">ctc_probs</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)):</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4"></a>    <span class="n">output_alignment</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y_insert_blank</span><span class="p">[</span><span class="n">state_seq</span><span class="p">[</span><span class="n">t</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+</code></pre></div></td></tr></table></div>
+<h2 id="_15">小结</h2>
+<ol>
+<li>CTC可帮助模型学习语音和label之间的alignment。</li>
+<li>CTC可以做到帧同步解码，因此非常适合做流式模型。</li>
+<li>CTC输出是相互独立的，相对于Seq2Seq建模能力较差，一般需要外挂语言模型才能得到较好的效果。</li>
+</ol>
+<blockquote>
+<p><a href="https://www.zhihu.com/question/20136144">如何通俗地讲解 viterbi 算法？</a>
+<a href="https://www.bilibili.com/video/BV1hM4y157xX?p=6">李宏毅NLP(自然语言处理)-P6</a>
+<a href="https://mp.weixin.qq.com/s/4aGehNN7PpIvCh03qTT5oA">WeNet更新：支持 CTC alignment</a></p>
+</blockquote>
+
+  <hr>
+<div class="md-source-file">
+  <small>
+    
+      最后更新:
+      2022-06-08
+    
+  </small>
+</div>
+
+              
+
+  <!-- Giscus -->
+  <h2 id="__comments">评论</h2>
+  <!-- Replace with generated snippet -->
+  <script src="https://giscus.app/client.js"
+        data-repo="cnlinxi/blog"
+        data-repo-id="R_kgDOHLI9Jw"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOHLI9J84COkTs"
+        data-mapping="pathname"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="bottom"
+        data-theme="light"
+        data-lang="zh-CN"
+        crossorigin="anonymous"
+        async>
+  </script>
+
+  <!-- Reload on palette change -->
+  <script>
+    var palette = __md_get("__palette")
+    if (palette && typeof palette.color === "object")
+      if (palette.color.scheme === "slate") {
+        var giscus = document.querySelector("script[src*=giscus]")
+        giscus.setAttribute("data-theme", "dark") 
+      }
+
+    /* Register event handlers after documented loaded */
+    document.addEventListener("DOMContentLoaded", function() {
+      var ref = document.querySelector("[data-md-component=palette]")
+      ref.addEventListener("change", function() {
+        var palette = __md_get("__palette")
+        if (palette && typeof palette.color === "object") {
+          var theme = palette.color.scheme === "slate" ? "dark" : "light"
+
+          /* Instruct Giscus to change theme */
+          var frame = document.querySelector(".giscus-frame")
+          frame.contentWindow.postMessage(
+            { giscus: { setConfig: { theme } } },
+            "https://giscus.app"
+          )
+        }
+      })
+    })
+  </script>
+
+            </article>
+            
+          </div>
+        </div>
+        
+          <a href="#" class="md-top md-icon" data-md-component="top" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            回到页面顶部
+          </a>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+    <nav class="md-footer__inner md-grid" aria-label="页脚" >
+      
+        
+        <a href="../wenet_kaitang-ssl-train%E7%9F%A5%E8%AF%86%E7%82%B9/" class="md-footer__link md-footer__link--prev" aria-label="上一页: wenet_kaitang-ssl-train知识点" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                上一页
+              </span>
+              wenet_kaitang-ssl-train知识点
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../wenet%E7%9A%84ctc_prefix_beam_search/" class="md-footer__link md-footer__link--next" aria-label="下一页: wenet的ctc_prefix_beam_search" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                下一页
+              </span>
+              wenet的ctc_prefix_beam_search
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.expand", "toc.follow", "toc.integrate", "navigation.top", "search.suggest", "search.highlight", "search.share"], "search": "../../assets/javascripts/workers/search.b028fd86.min.js", "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.config.lang": "ja", "search.config.pipeline": "trimmer, stemmer", "search.config.separator": "[\\s\\-\uff0c\u3002]+", "search.placeholder": "\u641c\u7d22", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version.title": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.f758a944.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

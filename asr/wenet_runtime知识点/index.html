@@ -1,0 +1,3074 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.3.3">
+    
+    
+      
+        <title>WeNet runtime知识点 - 语音与语言处理</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.4a0965b7.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.cbb835fc.min.css">
+        
+      
+      
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#wenet-runtime" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../.." title="语音与语言处理" class="md-header__button md-logo" aria-label="语音与语言处理" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            语音与语言处理
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              WeNet runtime知识点
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" aria-label="分享" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7 0-.24-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91 1.61 0 2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08Z"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="清空当前内容" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/cnlinxi/blog" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    cnlinxi/blog
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-tabs__inner md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        主页
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../paper/%E6%9C%AC%E5%91%A8%E5%80%BC%E5%BE%97%E8%AF%BB_2022_04_23/" class="md-tabs__link">
+        最新论文
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../dsp/%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99/" class="md-tabs__link">
+        信号处理
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../tts/%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E6%A6%82%E8%BF%B0/" class="md-tabs__link">
+        语音合成
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../%E5%8A%A0%E6%9D%83%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/" class="md-tabs__link md-tabs__link--active">
+        语音识别
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../open_source_index/" class="md-tabs__link">
+        开源数据和工具
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../develop/docker/docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" class="md-tabs__link">
+        开发
+      </a>
+    </li>
+  
+
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../leetcode/滑动窗口专题.md" class="md-tabs__link">
+        数据结构
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="语音与语言处理" class="md-nav__button md-logo" aria-label="语音与语言处理" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    语音与语言处理
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/cnlinxi/blog" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    cnlinxi/blog
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_1" type="checkbox" id="__nav_1" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_1">
+          主页
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="主页" data-md-level="1">
+        <label class="md-nav__title" for="__nav_1">
+          <span class="md-nav__icon md-icon"></span>
+          主页
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        语音与语言处理
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          最新论文
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="最新论文" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          最新论文
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../paper/%E6%9C%AC%E5%91%A8%E5%80%BC%E5%BE%97%E8%AF%BB_2022_04_23/" class="md-nav__link">
+        本周值得读-2022_04_23
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          信号处理
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="信号处理" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          信号处理
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dsp/%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99/" class="md-nav__link">
+        参考资料
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dsp/%E8%AF%AD%E9%9F%B3%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/" class="md-nav__link">
+        语音基本概念
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dsp/%E8%AF%AD%E9%9F%B3%E7%89%B9%E5%BE%81%E6%8F%90%E5%8F%96/" class="md-nav__link">
+        语音特征提取
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4">
+          语音合成
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="语音合成" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          语音合成
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tts/%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E6%A6%82%E8%BF%B0/" class="md-nav__link">
+        语音合成概述
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tts/%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E7%9A%84%E8%AF%84%E4%BB%B7%E6%A0%87%E5%87%86%E5%92%8C%E6%96%B9%E6%B3%95/" class="md-nav__link">
+        语音合成的评价标准和方法
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tts/%E8%AF%AD%E8%A8%80%E5%AD%A6/" class="md-nav__link">
+        语言学
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tts/%E9%9F%B3%E5%BA%93%E5%88%B6%E4%BD%9C%E5%92%8C%E6%96%87%E6%9C%AC%E5%89%8D%E7%AB%AF/" class="md-nav__link">
+        音库制作和文本前端
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tts/%E5%A3%B0%E5%AD%A6%E6%A8%A1%E5%9E%8B/" class="md-nav__link">
+        声学模型
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tts/%E5%A3%B0%E7%A0%81%E5%99%A8/" class="md-nav__link">
+        声码器
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tts/%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E7%9A%84%E6%80%BB%E4%BD%93%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB/" class="md-nav__link">
+        语音合成的总体知识体系
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5">
+          语音识别
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="语音识别" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          语音识别
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E5%8A%A0%E6%9D%83%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/" class="md-nav__link">
+        加权有限状态机
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../arpa2fst%E5%B0%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E8%BD%AC%E4%B8%BAWFST/" class="md-nav__link">
+        arpa2fst将语言模型转为WFST
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kaldi%E4%B8%AD%E7%9A%84%E8%A7%A3%E7%A0%81%E8%BF%87%E7%A8%8B/" class="md-nav__link">
+        kaldi中的解码过程
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kaldi%E4%B8%AD%E7%9A%84Simple-Decoder/" class="md-nav__link">
+        kaldi中的Simple-Decoder
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../OpenFST%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" class="md-nav__link">
+        OpenFST基本操作
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../wenet%E6%80%BB%E4%BD%93%E8%A7%A3%E6%9E%90/" class="md-nav__link">
+        wenet总体解析
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          WeNet runtime知识点
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        WeNet runtime知识点
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#define" class="md-nav__link">
+    头文件中的define
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gemm" class="md-nav__link">
+    GEMM
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tlgfst" class="md-nav__link">
+    TLG.fst
+  </a>
+  
+    <nav class="md-nav" aria-label="TLG.fst">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#token" class="md-nav__link">
+    Token
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lexicon" class="md-nav__link">
+    Lexicon
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#grammer" class="md-nav__link">
+    Grammer
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    解码选项
+  </a>
+  
+    <nav class="md-nav" aria-label="解码选项">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#chunk_size" class="md-nav__link">
+    chunk_size
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#final_score" class="md-nav__link">
+    final_score
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#wenet" class="md-nav__link">
+    WeNet中的哈希函数
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cpp" class="md-nav__link">
+    cpp纯虚函数和抽象类
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cppdefaultdelete" class="md-nav__link">
+    cpp类的特殊成员函数及default和delete特性
+  </a>
+  
+    <nav class="md-nav" aria-label="cpp类的特殊成员函数及default和delete特性">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    类的特殊成员函数
+  </a>
+  
+    <nav class="md-nav" aria-label="类的特殊成员函数">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    构造函数和拷贝构造函数
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    拷贝赋值函数
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c11defaultdelete" class="md-nav__link">
+    C++11特性之default和delete
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cpp_1" class="md-nav__link">
+    cpp的智能指针
+  </a>
+  
+    <nav class="md-nav" aria-label="cpp的智能指针">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#unique_ptr" class="md-nav__link">
+    unique_ptr
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#shared_ptr" class="md-nav__link">
+    shared_ptr
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#weak_ptr" class="md-nav__link">
+    weak_ptr
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cppexplicit" class="md-nav__link">
+    cpp关键字explicit
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#torchjit" class="md-nav__link">
+    torch.jit加载模型
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#wenet_1" class="md-nav__link">
+    WeNet推断时每次一个样本
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#wenetctcn-best" class="md-nav__link">
+    WeNet对CTC输出N-best进行重打分
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#wenet-runtime_1" class="md-nav__link">
+    WeNet runtime数据队列
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#wenet_2" class="md-nav__link">
+    WeNet数据队列并发逻辑
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    解码配置项
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#wenet_3" class="md-nav__link">
+    wenet词表
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#wenetcontext-biasing" class="md-nav__link">
+    wenet的上下文偏置（context biasing）
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#wenetwenetctc_prefix_beam_search" class="md-nav__link">
+    WeNet时间戳的后处理策略（”wenet的ctc_prefix_beam_search“补充，待合并）
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#asrmodelasrdecoder" class="md-nav__link">
+    AsrModel和AsrDecoder的调用关系
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#wenet_4" class="md-nav__link">
+    WeNet对空格的处理
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../wenet_kaitang-ssl-train%E7%9F%A5%E8%AF%86%E7%82%B9/" class="md-nav__link">
+        wenet_kaitang-ssl-train知识点
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../wenet%E7%9A%84ctc_alignment/" class="md-nav__link">
+        wenet的ctc_alignment
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../wenet%E7%9A%84ctc_prefix_beam_search/" class="md-nav__link">
+        wenet的ctc_prefix_beam_search
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../wenet%E5%AF%B9onnx%E7%9A%84%E6%94%AF%E6%8C%81/" class="md-nav__link">
+        wenet对onnx的支持
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../wenet%E4%B8%ADendpoint%E6%A3%80%E6%B5%8B/" class="md-nav__link">
+        wenet中endpoint检测
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6">
+          开源数据和工具
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="开源数据和工具" data-md-level="1">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          开源数据和工具
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../open_source_index/" class="md-nav__link">
+        主页
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_7" type="checkbox" id="__nav_7" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_7">
+          开发
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="开发" data-md-level="1">
+        <label class="md-nav__title" for="__nav_7">
+          <span class="md-nav__icon md-icon"></span>
+          开发
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_7_1" type="checkbox" id="__nav_7_1" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_7_1">
+          docker
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="docker" data-md-level="2">
+        <label class="md-nav__title" for="__nav_7_1">
+          <span class="md-nav__icon md-icon"></span>
+          docker
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/docker/docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" class="md-nav__link">
+        docker常用命令
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_7_2" type="checkbox" id="__nav_7_2" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_7_2">
+          python
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="python" data-md-level="2">
+        <label class="md-nav__title" for="__nav_7_2">
+          <span class="md-nav__icon md-icon"></span>
+          python
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/python/python%E7%9A%84%E5%8F%96%E5%8F%8D%E8%BF%90%E7%AE%97%E7%AC%A6/" class="md-nav__link">
+        python的取反运算符
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/python/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/" class="md-nav__link">
+        正则表达式
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/python/conda%E5%92%8Cpip/" class="md-nav__link">
+        conda和pip
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/python/numpy%E5%AD%98%E5%8F%96%E6%95%B0%E6%8D%AE/" class="md-nav__link">
+        numpy存取数据
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/python/__future__%E7%94%A8%E6%B3%95/" class="md-nav__link">
+        __future__用法
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_7_3" type="checkbox" id="__nav_7_3" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_7_3">
+          shell
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="shell" data-md-level="2">
+        <label class="md-nav__title" for="__nav_7_3">
+          <span class="md-nav__icon md-icon"></span>
+          shell
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/shell/Linux%E6%93%8D%E4%BD%9C%E5%9F%BA%E7%A1%80%E5%A4%87%E5%BF%98%E5%BD%95/" class="md-nav__link">
+        Linux操作基础备忘录
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/shell/vim/" class="md-nav__link">
+        vim
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/shell/top_linux%E4%B8%8B%E7%9A%84%E4%BB%BB%E5%8A%A1%E7%AE%A1%E7%90%86%E5%99%A8/" class="md-nav__link">
+        top_linux下的任务管理器
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/shell/shell%E8%B0%83%E8%AF%95/" class="md-nav__link">
+        shell调试
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/shell/cat%E5%92%8CEOF/" class="md-nav__link">
+        cat和EOF
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/shell/tailf/" class="md-nav__link">
+        tailf
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/shell/shell%E8%AF%AD%E6%B3%95%E9%80%9F%E6%9F%A5%E6%89%8B%E5%86%8C/" class="md-nav__link">
+        shell语法速查手册
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_7_4" type="checkbox" id="__nav_7_4" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_7_4">
+          cpp
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="cpp" data-md-level="2">
+        <label class="md-nav__title" for="__nav_7_4">
+          <span class="md-nav__icon md-icon"></span>
+          cpp
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/cpp/stl%E7%9A%84map/" class="md-nav__link">
+        STL的map
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/cpp/cpp%E8%B0%83%E8%AF%95/" class="md-nav__link">
+        cpp调试技巧
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/cpp/cpp%E7%9A%84%E7%B1%BB%E8%AE%BF%E9%97%AE%E4%BF%AE%E9%A5%B0%E7%AC%A6/" class="md-nav__link">
+        cpp的类访问修饰符
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/cpp/cpp%E5%85%B3%E9%94%AE%E5%AD%97const%E4%BF%AE%E9%A5%B0%E5%87%BD%E6%95%B0/" class="md-nav__link">
+        cpp关键字const修饰函数
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/cpp/cpp%E5%AE%BD%E5%AD%97%E7%AC%A6wchar/" class="md-nav__link">
+        cpp宽字符wchar
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/cpp/gcc%E7%9A%84%E5%B8%B8%E7%94%A8%E7%BC%96%E8%AF%91%E9%80%89%E9%A1%B9/" class="md-nav__link">
+        GCC的常用编译选项
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/cpp/c%E6%88%96cpp%E8%BD%AF%E4%BB%B6%E7%BC%96%E8%AF%91/" class="md-nav__link">
+        c或cpp软件编译
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/cpp/stl%E7%9A%84vector/" class="md-nav__link">
+        STL的vector
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/cpp/cpp%E4%B8%AD%E7%9A%84int_t/" class="md-nav__link">
+        cpp中的int_t
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/cpp/stl%E7%9A%84string/" class="md-nav__link">
+        string操作
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/cpp/cpp%E5%8F%B3%E5%80%BC%E5%BC%95%E7%94%A8/" class="md-nav__link">
+        cpp右值引用和std::move
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/cpp/cpp%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" class="md-nav__link">
+        cpp并发编程
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/cpp/c%E5%8F%8Acpp%E7%9A%84%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99/" class="md-nav__link">
+        c及cpp的文件读写
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/cpp/cpp%E5%B8%B8%E7%94%A8%E5%BA%93gflags_glog_gtest/" class="md-nav__link">
+        cpp常用库gflags/glog/gtest
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_7_5" type="checkbox" id="__nav_7_5" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_7_5">
+          git
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="git" data-md-level="2">
+        <label class="md-nav__title" for="__nav_7_5">
+          <span class="md-nav__icon md-icon"></span>
+          git
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/git/git%E4%B8%AD%E7%9A%84HEAD/" class="md-nav__link">
+        git中的HEAD
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/git/git%E5%B8%B8%E7%94%A8%E5%9B%9E%E9%80%80%E6%93%8D%E4%BD%9C/" class="md-nav__link">
+        git常用回退操作
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/git/git%E7%9A%84%E6%8C%87%E9%92%88ref%E5%92%8Creflog/" class="md-nav__link">
+        git的指针ref和reflog
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/git/git%E8%BD%AC%E7%A7%BB%E9%83%A8%E5%88%86%E4%BB%A3%E7%A0%81cherry-pick/" class="md-nav__link">
+        git转移部分代码cherry-pick
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/git/git%E6%97%A5%E5%BF%97/" class="md-nav__link">
+        git日志
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/git/git%E5%88%86%E6%94%AF%E5%90%88%E5%B9%B6/" class="md-nav__link">
+        git分支合并
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/git/git%E7%9A%84fast_forward/" class="md-nav__link">
+        Git的Fast Forward
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/git/git%E4%BF%AE%E6%94%B9%E6%8F%90%E4%BA%A4%E4%BF%A1%E6%81%AF/" class="md-nav__link">
+        git修改提交信息
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../develop/git/git%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%BA%90/" class="md-nav__link">
+        git学习资源
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_8" type="checkbox" id="__nav_8" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_8">
+          数据结构
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="数据结构" data-md-level="1">
+        <label class="md-nav__title" for="__nav_8">
+          <span class="md-nav__icon md-icon"></span>
+          数据结构
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../leetcode/滑动窗口专题.md" class="md-nav__link">
+        None
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../leetcode/DFS回溯算法专题.md" class="md-nav__link">
+        None
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../leetcode/一般二叉树专题.md" class="md-nav__link">
+        None
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../leetcode/二叉搜索树专题.md" class="md-nav__link">
+        None
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+  
+                
+  <a href="https://github.com/cnlinxi/blog/edit/main/docs/asr/wenet_runtime知识点.md" title="编辑此页" class="md-content__button md-icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25Z"/></svg>
+  </a>
+
+
+
+<h1 id="wenet-runtime">WeNet runtime知识点</h1>
+<h2 id="define">头文件中的define</h2>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1">1</a></span>
+<span class="normal"><a href="#__codelineno-0-2">2</a></span>
+<span class="normal"><a href="#__codelineno-0-3">3</a></span>
+<span class="normal"><a href="#__codelineno-0-4">4</a></span>
+<span class="normal"><a href="#__codelineno-0-5">5</a></span>
+<span class="normal"><a href="#__codelineno-0-6">6</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="cp">#ifndef DECODER_PARAMS_H_</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2"></a><span class="cp">#define DECODER_PARAMS_H_</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3"></a>
+<a id="__codelineno-0-4" name="__codelineno-0-4"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;memory&gt;</span><span class="cp"></span>
+<a id="__codelineno-0-5" name="__codelineno-0-5"></a><span class="p">...</span><span class="w"></span>
+<a id="__codelineno-0-6" name="__codelineno-0-6"></a><span class="cp">#endif  </span><span class="c1">// DECODER_PARAMS_H_</span>
+</code></pre></div></td></tr></table></div>
+<p>这是C++项目中头文件的惯常做法，<code>#ifndef/#define/#endif</code>防止重复定义错误。</p>
+<p><code>#define</code>预处理指令用于创建宏。指令的一般形式是：</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="cp">#define macro-name replacement-text </span>
+</code></pre></div></td></tr></table></div>
+<p>所有头文件都应该有<code>#define</code>保护来防止头文件被多重包含，并且为了为保证唯一性，命名格式当是：<code>&lt;PROJECT&gt;_&lt;PATH&gt;_&lt;FILE&gt;_H_</code> 。当然WeNet没有完全遵从C++代码规范，WeNet采用的头文件命名格式为<code>&lt;PATH&gt;_H_</code>。</p>
+<blockquote>
+<p><a href="https://zh-google-styleguide.readthedocs.io/en/latest/google-cpp-styleguide/headers/#define">C++风格指南-#define保护</a>
+<a href="https://oi-wiki.org/lang/basic/">C++语法基础</a></p>
+</blockquote>
+<h2 id="gemm">GEMM</h2>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="n">DEFINE_int32</span><span class="p">(</span><span class="n">num_threads</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="s">&quot;num threads for GEMM&quot;</span><span class="p">);</span><span class="w"></span>
+</code></pre></div></td></tr></table></div>
+<p><code>GEMM</code>应为Kaldi中矩阵乘法加速库。</p>
+<blockquote>
+<p><a href="https://kaldi-asr.org/doc/namespacekaldi.html">kaldi Namespace Reference</a></p>
+</blockquote>
+<h2 id="tlgfst">TLG.fst</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>输入</th>
+<th>输出</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>T(token)</td>
+<td>帧级别的CTC标签序列</td>
+<td>lexicon建模单元</td>
+</tr>
+<tr>
+<td>L(lexicon)</td>
+<td>lexicon建模单元</td>
+<td>词</td>
+</tr>
+<tr>
+<td>G(grammer)</td>
+<td>词</td>
+<td>词</td>
+</tr>
+</tbody>
+</table>
+<h3 id="token">Token</h3>
+<p>将帧级别的CTC标签映射到单个lexicon单元。比如，有如下几个标签序列：</p>
+<ul>
+<li><span class="arithmatex">\(A\ A\ A\ A\ A\)</span></li>
+<li><span class="arithmatex">\(\phi\ \phi\ A\ A\ \phi\)</span></li>
+<li><span class="arithmatex">\(\phi\ A\ A\ A\ \phi\)</span></li>
+</ul>
+<p>token WFST将这几个标签序列均映射到单个lexicon单元，也就是<code>A</code>。搜索图<span class="arithmatex">\(S\)</span>可以表示为：</p>
+<div class="arithmatex">\[
+S=T\circ{\rm min}({\rm det}(L\circ G))
+\]</div>
+<p>其中，<span class="arithmatex">\(\circ\)</span>表示合并，<span class="arithmatex">\({\rm min}\)</span>表示最小化，<span class="arithmatex">\({\rm det}\)</span>表示确定化。搜索图的输入是帧级别的CTC标签序列，输出是lexicon建模单元。</p>
+<h3 id="lexicon">Lexicon</h3>
+<p>将lexicon建模单元序列（字符）映射为词，对于端到端声学模型而言，lexicon WFST就是把lexicon unit（字符）拼成word（词）。</p>
+<p><img alt="" src="../attachments/Pasted%20image%2020220510110816.png" /></p>
+<h3 id="grammer">Grammer</h3>
+<p>将单词组合成可能的词序列，也就是词级别的语言模型。</p>
+<p><img alt="" src="../attachments/Pasted%20image%2020220510110740.png" /></p>
+<blockquote>
+<p><a href="https://blog.csdn.net/qq_39354864/article/details/117453497">小白的WFST之路</a>
+<a href="https://arxiv.org/pdf/1507.08240">EESEN: End-to-End Speech Recognition using Deep RNN Models and WFST-based Decoding</a></p>
+</blockquote>
+<h2 id="_1">解码选项</h2>
+<h3 id="chunk_size"><code>chunk_size</code></h3>
+<p>结构体<code>DecodeOptions</code>中的<code>chunk_size</code>选项指的是经过下采样之后，解码帧的大小。</p>
+<h3 id="final_score"><code>final_score</code></h3>
+<div class="arithmatex">\[
+final\_score = rescoring\_weight \times rescoring\_score + ctc\_weight \times ctc\_score
+\]</div>
+<p>其中，</p>
+<div class="arithmatex">\[
+rescoring\_score = left\_to\_right\_score \times (1 - reverse\_weight) + right\_to\_left\_score \times reverse\_weight
+\]</div>
+<p><code>ctc_score</code>在下面两种搜索方法中是不同的：</p>
+<ul>
+<li><code>CtcPrefixBeamSearch</code>: <span class="arithmatex">\(ctc\_score={\rm sum}(prefix)\)</span></li>
+<li><code>CtcWfstBeamSearch</code>: <span class="arithmatex">\(ctc\_score={\rm max}(viterbi\_path)\)</span></li>
+</ul>
+<p>因此要根据搜索方法设置<code>ctc_weight</code>。</p>
+<h2 id="wenet">WeNet中的哈希函数</h2>
+<p>在CTC Prefix Beam Search算法中，采用HashMap保存解码过程中产生的前缀串及其对应的分数信息，并利用BK&amp;DR算法求哈希值以减少碰撞。</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-3-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-3-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-3-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-3-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-3-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-3-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-3-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-3-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-3-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-3-10">10</a></span>
+<span class="normal"><a href="#__codelineno-3-11">11</a></span>
+<span class="normal"><a href="#__codelineno-3-12">12</a></span>
+<span class="normal"><a href="#__codelineno-3-13">13</a></span>
+<span class="normal"><a href="#__codelineno-3-14">14</a></span>
+<span class="normal"><a href="#__codelineno-3-15">15</a></span>
+<span class="normal"><a href="#__codelineno-3-16">16</a></span>
+<span class="normal"><a href="#__codelineno-3-17">17</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1"></a><span class="c1">// 利用BK&amp;DR算法求哈希值以减少碰撞</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2"></a><span class="c1">// wenet/runtime/core/decoder/ctc_prefix_beam_search.h</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3"></a><span class="k">struct</span><span class="w"> </span><span class="nc">PrefixHash</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<a id="__codelineno-3-4" name="__codelineno-3-4"></a><span class="w">  </span><span class="kt">size_t</span><span class="w"> </span><span class="nf">operator</span><span class="p">()(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">prefix</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<a id="__codelineno-3-5" name="__codelineno-3-5"></a><span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">hash_code</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-3-6" name="__codelineno-3-6"></a><span class="w">    </span><span class="c1">// 此处注释有误，应为BK&amp;DR hash code</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7"></a><span class="w">    </span><span class="c1">// here we use KB&amp;DR hash code</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8"></a><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">prefix</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<a id="__codelineno-3-9" name="__codelineno-3-9"></a><span class="w">      </span><span class="n">hash_code</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">31</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">hash_code</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-3-10" name="__codelineno-3-10"></a><span class="w">    </span><span class="p">}</span><span class="w"></span>
+<a id="__codelineno-3-11" name="__codelineno-3-11"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">hash_code</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-3-12" name="__codelineno-3-12"></a><span class="w">  </span><span class="p">}</span><span class="w"></span>
+<a id="__codelineno-3-13" name="__codelineno-3-13"></a><span class="p">};</span><span class="w"></span>
+<a id="__codelineno-3-14" name="__codelineno-3-14"></a>
+<a id="__codelineno-3-15" name="__codelineno-3-15"></a><span class="c1">// 使用PrefixHash</span>
+<a id="__codelineno-3-16" name="__codelineno-3-16"></a><span class="c1">// wenet/runtime/core/decoder/ctc_prefix_beam_search.cc</span>
+<a id="__codelineno-3-17" name="__codelineno-3-17"></a><span class="n">std</span><span class="o">::</span><span class="n">unordered_map</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">PrefixScore</span><span class="p">,</span><span class="w"> </span><span class="n">PrefixHash</span><span class="o">&gt;</span><span class="w"> </span><span class="n">next_hyps</span><span class="p">;</span><span class="w"></span>
+</code></pre></div></td></tr></table></div>
+<blockquote>
+<p><a href="https://blog.csdn.net/wanglx_/article/details/40400693">哈希表之bkdrhash算法解析及扩展</a>
+<a href="https://github.com/TempoJiJi/BKDR-hash/blob/master/BKDRhash.c">BKDRhash.c</a></p>
+</blockquote>
+<h2 id="cpp">cpp纯虚函数和抽象类</h2>
+<p>在WeNet中，解码搜索算法都继承自抽象类<code>SearchInterface</code>，向外提供统一接口。抽象类<code>SearchInterface</code>定义为：</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-4-1">1</a></span>
+<span class="normal"><a href="#__codelineno-4-2">2</a></span>
+<span class="normal"><a href="#__codelineno-4-3">3</a></span>
+<span class="normal"><a href="#__codelineno-4-4">4</a></span>
+<span class="normal"><a href="#__codelineno-4-5">5</a></span>
+<span class="normal"><a href="#__codelineno-4-6">6</a></span>
+<span class="normal"><a href="#__codelineno-4-7">7</a></span>
+<span class="normal"><a href="#__codelineno-4-8">8</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">SearchInterface</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<a id="__codelineno-4-2" name="__codelineno-4-2"></a><span class="w"> </span><span class="k">public</span><span class="o">:</span><span class="w"></span>
+<a id="__codelineno-4-3" name="__codelineno-4-3"></a><span class="w">  </span><span class="k">virtual</span><span class="w"> </span><span class="o">~</span><span class="n">SearchInterface</span><span class="p">()</span><span class="w"> </span><span class="p">{}</span><span class="w"></span>
+<a id="__codelineno-4-4" name="__codelineno-4-4"></a><span class="w">  </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">Search</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">torch</span><span class="o">::</span><span class="n">Tensor</span><span class="o">&amp;</span><span class="w"> </span><span class="n">logp</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-4-5" name="__codelineno-4-5"></a><span class="w">  </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">Reset</span><span class="p">()</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-4-6" name="__codelineno-4-6"></a><span class="w">  </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">FinalizeSearch</span><span class="p">()</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-4-7" name="__codelineno-4-7"></a><span class="w">  </span><span class="p">...</span><span class="w"></span>
+<a id="__codelineno-4-8" name="__codelineno-4-8"></a><span class="p">};</span><span class="w"></span>
+</code></pre></div></td></tr></table></div>
+<p>在C++中，可以将虚函数声明为纯虚函数，语法格式为：</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-5-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1"></a><span class="k">virtual</span><span class="w"> </span><span class="n">返回值类型</span><span class="w"> </span><span class="nf">函数名</span><span class="w"> </span><span class="p">(</span><span class="n">函数参数</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+</code></pre></div></td></tr></table></div>
+<p>包含纯虚函数的类称为抽象类（Abstract Class）。抽象类通常是作为基类，让派生类去实现纯虚函数。<strong>派生类必须实现纯虚函数才能被实例化。</strong></p>
+<p>定义虚函数只是为了允许基类指针调用子类的这个函数。</p>
+<blockquote>
+<p><a href="http://c.biancheng.net/view/2299.html">C++纯虚函数和抽象类详解</a></p>
+</blockquote>
+<h2 id="cppdefaultdelete">cpp类的特殊成员函数及default和delete特性</h2>
+<h3 id="_2">类的特殊成员函数</h3>
+<p>C++类有四种特殊成员函数，分别是：</p>
+<ul>
+<li>默认构造函数：创建新对象。</li>
+<li>析构函数：销毁对象。</li>
+<li>拷贝构造函数：创建新对象并利用类对象初始化。</li>
+<li>拷贝赋值函数：利用类对象对一个已存在的对象赋值。</li>
+</ul>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-6-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-6-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-6-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-6-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-6-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-6-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-6-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-6-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-6-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-6-10">10</a></span>
+<span class="normal"><a href="#__codelineno-6-11">11</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1"></a><span class="c1">// sample class</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2"></a><span class="k">class</span><span class="w"> </span><span class="nc">Test</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<a id="__codelineno-6-3" name="__codelineno-6-3"></a><span class="k">private</span><span class="o">:</span><span class="w"></span>
+<a id="__codelineno-6-4" name="__codelineno-6-4"></a><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">_val</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-6-5" name="__codelineno-6-5"></a>
+<a id="__codelineno-6-6" name="__codelineno-6-6"></a><span class="k">public</span><span class="o">:</span><span class="w"></span>
+<a id="__codelineno-6-7" name="__codelineno-6-7"></a><span class="w">  </span><span class="n">Test</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">val</span><span class="p">);</span><span class="w">                     </span><span class="c1">// 构造函数</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8"></a><span class="w">  </span><span class="o">~</span><span class="n">Test</span><span class="p">();</span><span class="w">                           </span><span class="c1">// 析构函数</span>
+<a id="__codelineno-6-9" name="__codelineno-6-9"></a><span class="w">  </span><span class="n">Test</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Test</span><span class="w"> </span><span class="o">&amp;</span><span class="n">test</span><span class="p">);</span><span class="w">            </span><span class="c1">// 拷贝构造函数</span>
+<a id="__codelineno-6-10" name="__codelineno-6-10"></a><span class="w">  </span><span class="n">Test</span><span class="w"> </span><span class="o">&amp;</span><span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Test</span><span class="w"> </span><span class="o">&amp;</span><span class="n">test</span><span class="p">);</span><span class="w"> </span><span class="c1">// 拷贝赋值函数</span>
+<a id="__codelineno-6-11" name="__codelineno-6-11"></a><span class="p">};</span><span class="w"></span>
+</code></pre></div></td></tr></table></div>
+<p>这四种特殊成员函数如果没有显式为一个类定义，而又需要用到该特殊成员函数时，则编译器会隐式为这个类生成一个默认的特殊成员函数，并且隐式创建比显式创建的执行效率高。</p>
+<h4 id="_3">构造函数和拷贝构造函数</h4>
+<p>构造函数和拷贝构造函数都是用来进行类实例化，C++类进行初始化有如下两种方式：</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-7-1">1</a></span>
+<span class="normal"><a href="#__codelineno-7-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1"></a><span class="n">Test</span><span class="w"> </span><span class="nf">t1</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span><span class="w">  </span><span class="c1">// 调用实参匹配的构造函数</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2"></a><span class="n">Test</span><span class="w"> </span><span class="n">t2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">t1</span><span class="p">;</span><span class="w"> </span><span class="c1">// 调用拷贝构造函数，利用t1对t2进行初始化</span>
+</code></pre></div></td></tr></table></div>
+<p>其中，调用拷贝构造函数的作用主要是复制对象，调用拷贝构造函数的情况有：</p>
+<ol>
+<li>复制对象，并通过函数返回复制后的对象。</li>
+<li>一个对象以<code>值传递</code>的方式传入函数，此时必定调用拷贝构造函数。</li>
+<li>一个对象通过另一个对象进行初始化，比如<code>Test t2 = t1;</code></li>
+</ol>
+<p>拷贝时尤其需要注意指针和动态分配的资源，否则很容易造成拷贝变成<strong>浅拷贝</strong>，也就是复制前后的对象都指向同一块内存区域。因此如果类的成员变量中包含指针类型，或者对象存在构造函数中分配的其它资源，此时必须显式定义拷贝构造函数。</p>
+<h4 id="_4">拷贝赋值函数</h4>
+<p>通过定义<code>拷贝赋值运算符</code>实现类对象之间的拷贝运算。定义拷贝赋值运算符的通常形式为：</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-8-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1"></a><span class="n">classname</span><span class="o">&amp;</span><span class="w"> </span><span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">classname</span><span class="o">&amp;</span><span class="w"> </span><span class="n">a</span><span class="p">)</span><span class="w"></span>
+</code></pre></div></td></tr></table></div>
+<p><code>拷贝构造函数</code>和<code>拷贝赋值函数</code>的不同之处如下：</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-9-1">1</a></span>
+<span class="normal"><a href="#__codelineno-9-2">2</a></span>
+<span class="normal"><a href="#__codelineno-9-3">3</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1"></a><span class="n">Test</span><span class="w"> </span><span class="n">t2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">t1</span><span class="p">;</span><span class="w"> </span><span class="c1">// 拷贝构造函数，即创建时进行初始化</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2"></a><span class="n">Test</span><span class="w"> </span><span class="n">t3</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-9-3" name="__codelineno-9-3"></a><span class="n">t3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">t1</span><span class="p">;</span><span class="w">      </span><span class="c1">// 拷贝赋值函数，因为并不是实例化类对象时进行初始化</span>
+</code></pre></div></td></tr></table></div>
+<h3 id="c11defaultdelete">C++11特性之default和delete</h3>
+<p>只需在函数声明后加上<code>=default;</code>就可以将该函数声明为<code>default</code>函数，编译器将为显式声明<code>=default;</code>的函数自动生成函数体，以获得更高的执行效率。</p>
+<p>但有些时候，可以通过<code>=delete;</code>禁用某些函数，将该函数变得不可调用。<code>=delete;</code>不仅可以禁用类内的特殊成员函数，也可以禁用一般函数。</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-10-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-10-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-10-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-10-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-10-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-10-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-10-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-10-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-10-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-10-10">10</a></span>
+<span class="normal"><a href="#__codelineno-10-11">11</a></span>
+<span class="normal"><a href="#__codelineno-10-12">12</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1"></a><span class="c1">// sample class</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2"></a><span class="k">class</span><span class="w"> </span><span class="nc">Test</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<a id="__codelineno-10-3" name="__codelineno-10-3"></a><span class="k">private</span><span class="o">:</span><span class="w"></span>
+<a id="__codelineno-10-4" name="__codelineno-10-4"></a><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">_val</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-10-5" name="__codelineno-10-5"></a>
+<a id="__codelineno-10-6" name="__codelineno-10-6"></a><span class="k">public</span><span class="o">:</span><span class="w"></span>
+<a id="__codelineno-10-7" name="__codelineno-10-7"></a><span class="w">  </span><span class="n">Test</span><span class="p">()</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">default</span><span class="p">;</span><span class="w">                  </span><span class="c1">// 定义默认构造函数</span>
+<a id="__codelineno-10-8" name="__codelineno-10-8"></a><span class="w">  </span><span class="n">Test</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">val</span><span class="p">);</span><span class="w">                     </span><span class="c1">// 构造函数</span>
+<a id="__codelineno-10-9" name="__codelineno-10-9"></a><span class="w">  </span><span class="o">~</span><span class="n">Test</span><span class="p">();</span><span class="w">                           </span><span class="c1">// 析构函数</span>
+<a id="__codelineno-10-10" name="__codelineno-10-10"></a><span class="w">  </span><span class="n">Test</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Test</span><span class="w"> </span><span class="o">&amp;</span><span class="n">test</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">delete</span><span class="p">;</span><span class="w">   </span><span class="c1">// 不可调用拷贝构造函数，Test t2=t1;将不可用</span>
+<a id="__codelineno-10-11" name="__codelineno-10-11"></a><span class="w">  </span><span class="n">Test</span><span class="w"> </span><span class="o">&amp;</span><span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Test</span><span class="w"> </span><span class="o">&amp;</span><span class="n">test</span><span class="p">);</span><span class="w"> </span><span class="c1">// 拷贝赋值函数</span>
+<a id="__codelineno-10-12" name="__codelineno-10-12"></a><span class="p">};</span><span class="w"></span>
+</code></pre></div></td></tr></table></div>
+<p>在C++11标准之前，为了阻止拷贝构造函数和拷贝赋值运算符，可将其声明为<code>private</code>来阻止拷贝。如下，由于拷贝构造函数和拷贝赋值运算符都被定义为<code>private</code>，这两个函数无法被外部访问，因此也就无法进行类之间的拷贝了：</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-11-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-11-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-11-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-11-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-11-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-11-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-11-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-11-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-11-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-11-10">10</a></span>
+<span class="normal"><a href="#__codelineno-11-11">11</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1"></a><span class="c1">// sample class</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2"></a><span class="k">class</span><span class="w"> </span><span class="nc">Test</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<a id="__codelineno-11-3" name="__codelineno-11-3"></a><span class="k">private</span><span class="o">:</span><span class="w"></span>
+<a id="__codelineno-11-4" name="__codelineno-11-4"></a><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">_val</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-11-5" name="__codelineno-11-5"></a><span class="w">  </span><span class="n">Test</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Test</span><span class="w"> </span><span class="o">&amp;</span><span class="n">test</span><span class="p">);</span><span class="w">            </span><span class="c1">// 拷贝构造函数</span>
+<a id="__codelineno-11-6" name="__codelineno-11-6"></a><span class="w">  </span><span class="n">Test</span><span class="w"> </span><span class="o">&amp;</span><span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Test</span><span class="w"> </span><span class="o">&amp;</span><span class="n">test</span><span class="p">);</span><span class="w"> </span><span class="c1">// 拷贝赋值函数</span>
+<a id="__codelineno-11-7" name="__codelineno-11-7"></a>
+<a id="__codelineno-11-8" name="__codelineno-11-8"></a><span class="k">public</span><span class="o">:</span><span class="w"></span>
+<a id="__codelineno-11-9" name="__codelineno-11-9"></a><span class="w">  </span><span class="n">Test</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">val</span><span class="p">);</span><span class="w">                     </span><span class="c1">// 构造函数</span>
+<a id="__codelineno-11-10" name="__codelineno-11-10"></a><span class="w">  </span><span class="o">~</span><span class="n">Test</span><span class="p">();</span><span class="w">                           </span><span class="c1">// 析构函数</span>
+<a id="__codelineno-11-11" name="__codelineno-11-11"></a><span class="p">};</span><span class="w"></span>
+</code></pre></div></td></tr></table></div>
+<p>当然，如果使用C++11标准，<strong>希望阻止拷贝的类</strong>推荐使用<code>=delete</code>定义自己的拷贝构造函数和拷贝赋值运算符，而不是将其声明为<code>private</code>。</p>
+<blockquote>
+<p><a href="https://zhuanlan.zhihu.com/p/77806109">C++类的特殊成员函数及default/delete特性</a>
+<a href="https://blog.csdn.net/qq_41453285/article/details/100606913">C++:73---C++11标准（类的删除函数：=delete关键字、阻止构造、阻止拷贝、private阻止拷贝控制）</a></p>
+</blockquote>
+<h2 id="cpp_1">cpp的智能指针</h2>
+<p>传统C++中需要使用<code>new</code>和<code>delete</code>手动申请和释放资源，C++11中引入智能指针，使用引用计数，可“自动”管理资源。智能指针包括<code>std::unique_ptr</code>/<code>std::shared_ptr</code>/<code>std::weak_ptr</code>，使用时需要包括头文件<code>&lt;memory&gt;</code>。</p>
+<h3 id="unique_ptr">unique_ptr</h3>
+<p>独占指针，由<code>unique_ptr</code>管理的内存，只能被一个对象持有。</p>
+<p>unique_ptr只有移动构造函数，因此只能移动（转移内部对象所有权，或称浅拷贝），不能拷贝（深拷贝）。因此<code>unique_ptr</code>不支持复制和赋值，只支持移动。</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-12-1">1</a></span>
+<span class="normal"><a href="#__codelineno-12-2">2</a></span>
+<span class="normal"><a href="#__codelineno-12-3">3</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1"></a><span class="k">auto</span><span class="w"> </span><span class="n">w</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_unique</span><span class="o">&lt;</span><span class="n">MyClass</span><span class="o">&gt;</span><span class="p">();</span><span class="w"></span>
+<a id="__codelineno-12-2" name="__codelineno-12-2"></a><span class="k">auto</span><span class="w"> </span><span class="n">w2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">w</span><span class="p">;</span><span class="w"> </span><span class="c1">// 编译错误</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3"></a><span class="k">auto</span><span class="w"> </span><span class="n">w2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">w</span><span class="p">);</span><span class="w"> </span><span class="c1">// 使用std::move转移对象所有权，执行后w变为nullptr</span>
+</code></pre></div></td></tr></table></div>
+<p><code>shared_ptr</code>需要额外维护引用计数，因此内存占用较高；并且引用计数必须是原子操作，而原子操作性能较低。当符合移动语义时，可以采用<code>std::move</code>转移所有权，避免复制，从而提高性能。</p>
+<h3 id="shared_ptr">shared_ptr</h3>
+<p>共享指针，<code>shared_ptr</code>能够记录有多少个共享指针指向一个对象，<code>shared_ptr</code>内部使用引用计数实现内存的自动管理，每当复制一个<code>shared_ptr</code>，引用计数就会加一，当引用计数变为零后就会将对象自动删除。可以通过<code>use_count()</code>查看一个对象的引用计数，<code>get()</code>获取原始指针，<code>reset()</code>减少一个引用计数。</p>
+<p>其中，调用<code>reset()</code>会使引用计数减1。如果向<code>reset()</code>传入类对象，比如<code>reset(new xxx())</code>时，智能指针首先生成新对象，然后将就对象的引用计数减1，如果发现引用计数为0时，则析构旧对象，最后将新对象的指针交给智能指针保管。</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-13-1">1</a></span>
+<span class="normal"><a href="#__codelineno-13-2">2</a></span>
+<span class="normal"><a href="#__codelineno-13-3">3</a></span>
+<span class="normal"><a href="#__codelineno-13-4">4</a></span>
+<span class="normal"><a href="#__codelineno-13-5">5</a></span>
+<span class="normal"><a href="#__codelineno-13-6">6</a></span>
+<span class="normal"><a href="#__codelineno-13-7">7</a></span>
+<span class="normal"><a href="#__codelineno-13-8">8</a></span>
+<span class="normal"><a href="#__codelineno-13-9">9</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1"></a><span class="k">auto</span><span class="w"> </span><span class="n">w</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">MyClass</span><span class="o">&gt;</span><span class="p">();</span><span class="w"></span>
+<a id="__codelineno-13-2" name="__codelineno-13-2"></a><span class="p">{</span><span class="w"></span>
+<a id="__codelineno-13-3" name="__codelineno-13-3"></a><span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">w2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">w</span><span class="p">;</span><span class="w"> </span><span class="c1">// shared_pt允许复制</span>
+<a id="__codelineno-13-4" name="__codelineno-13-4"></a><span class="w">    </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">w</span><span class="p">.</span><span class="n">use_count</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span><span class="w">  </span><span class="c1">// 此时，对象w的引用计数为2</span>
+<a id="__codelineno-13-5" name="__codelineno-13-5"></a><span class="p">}</span><span class="w"></span>
+<a id="__codelineno-13-6" name="__codelineno-13-6"></a><span class="c1">// 离开作用域，引用计数减一，此时输出为1，当引用计数为0时，delete内存</span>
+<a id="__codelineno-13-7" name="__codelineno-13-7"></a><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">w</span><span class="p">.</span><span class="n">use_count</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-13-8" name="__codelineno-13-8"></a><span class="c1">// shared_ptr支持移动，执行后w为nullptr，w3.use_count()等于1</span>
+<a id="__codelineno-13-9" name="__codelineno-13-9"></a><span class="k">auto</span><span class="w"> </span><span class="n">w3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">w</span><span class="p">);</span><span class="w"></span>
+</code></pre></div></td></tr></table></div>
+<h3 id="weak_ptr">weak_ptr</h3>
+<p><code>weak_ptr</code>用于解决<code>shared_ptr</code>循环引用的问题。<code>weak_ptr</code>不会增加引用计数，因此可以打破<code>shared_ptr</code>的循环引用。一般父类持有子类的<code>shared_ptr</code>，子类持有父类的<code>weak_ptr</code>。</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-14-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-14-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-14-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-14-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-14-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-14-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-14-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-14-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-14-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-14-10">10</a></span>
+<span class="normal"><a href="#__codelineno-14-11">11</a></span>
+<span class="normal"><a href="#__codelineno-14-12">12</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">B</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-14-2" name="__codelineno-14-2"></a><span class="k">struct</span><span class="w"> </span><span class="nc">A</span><span class="p">{</span><span class="w"></span>
+<a id="__codelineno-14-3" name="__codelineno-14-3"></a><span class="w">    </span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">B</span><span class="o">&gt;</span><span class="w"> </span><span class="n">b</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-14-4" name="__codelineno-14-4"></a><span class="p">};</span><span class="w"></span>
+<a id="__codelineno-14-5" name="__codelineno-14-5"></a><span class="k">struct</span><span class="w"> </span><span class="nc">B</span><span class="p">{</span><span class="w"></span>
+<a id="__codelineno-14-6" name="__codelineno-14-6"></a><span class="w">    </span><span class="n">weak_ptr</span><span class="o">&lt;</span><span class="n">A</span><span class="o">&gt;</span><span class="w"> </span><span class="n">a</span><span class="p">;</span><span class="w"> </span><span class="c1">// 不可以采用shared&lt;A&gt; a; 否则会造成循环引用</span>
+<a id="__codelineno-14-7" name="__codelineno-14-7"></a><span class="p">};</span><span class="w"></span>
+<a id="__codelineno-14-8" name="__codelineno-14-8"></a><span class="k">auto</span><span class="w"> </span><span class="n">pa</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">A</span><span class="o">&gt;</span><span class="p">();</span><span class="w"></span>
+<a id="__codelineno-14-9" name="__codelineno-14-9"></a><span class="k">auto</span><span class="w"> </span><span class="n">pb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">B</span><span class="o">&gt;</span><span class="p">();</span><span class="w"></span>
+<a id="__codelineno-14-10" name="__codelineno-14-10"></a><span class="c1">// 循环引用时，pa和pb都无法正常释放</span>
+<a id="__codelineno-14-11" name="__codelineno-14-11"></a><span class="n">pa</span><span class="o">-&gt;</span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pb</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-14-12" name="__codelineno-14-12"></a><span class="n">pb</span><span class="o">-&gt;</span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pa</span><span class="p">;</span><span class="w"></span>
+</code></pre></div></td></tr></table></div>
+<blockquote>
+<p><a href="https://www.cyhone.com/articles/right-way-to-use-cpp-smart-pointer/">C++ 智能指针的正确使用方式</a>
+<a href="https://changkun.de/modern-cpp/zh-cn/05-pointers/">第 5 章 智能指针与内存管理</a></p>
+</blockquote>
+<h2 id="cppexplicit">cpp关键字explicit</h2>
+<p>在C++中，<code>explicit</code>关键字用来修饰类的构造函数，阻止隐式类型转换。</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-15-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-15-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-15-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-15-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-15-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-15-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-15-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-15-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-15-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-15-10">10</a></span>
+<span class="normal"><a href="#__codelineno-15-11">11</a></span>
+<span class="normal"><a href="#__codelineno-15-12">12</a></span>
+<span class="normal"><a href="#__codelineno-15-13">13</a></span>
+<span class="normal"><a href="#__codelineno-15-14">14</a></span>
+<span class="normal"><a href="#__codelineno-15-15">15</a></span>
+<span class="normal"><a href="#__codelineno-15-16">16</a></span>
+<span class="normal"><a href="#__codelineno-15-17">17</a></span>
+<span class="normal"><a href="#__codelineno-15-18">18</a></span>
+<span class="normal"><a href="#__codelineno-15-19">19</a></span>
+<span class="normal"><a href="#__codelineno-15-20">20</a></span>
+<span class="normal"><a href="#__codelineno-15-21">21</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">MyClass</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<a id="__codelineno-15-2" name="__codelineno-15-2"></a><span class="k">public</span><span class="o">:</span><span class="w"></span>
+<a id="__codelineno-15-3" name="__codelineno-15-3"></a><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">size_</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-15-4" name="__codelineno-15-4"></a><span class="w">  </span><span class="kt">char</span><span class="w"> </span><span class="n">p_</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-15-5" name="__codelineno-15-5"></a><span class="w">  </span><span class="c1">// 构造函数一个参数，且没有使用explicit修饰，默认支持隐式类型转换</span>
+<a id="__codelineno-15-6" name="__codelineno-15-6"></a><span class="w">  </span><span class="n">MyClass</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">size</span><span class="p">)</span><span class="o">:</span><span class="n">size_</span><span class="p">(</span><span class="n">size</span><span class="p">){}</span><span class="w"></span>
+<a id="__codelineno-15-7" name="__codelineno-15-7"></a><span class="w">  </span><span class="c1">// 构造函数两个参数，不管是否使用explicit，都无法进行隐式类型转换</span>
+<a id="__codelineno-15-8" name="__codelineno-15-8"></a><span class="w">  </span><span class="n">MyClass</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">size</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">p</span><span class="p">)</span><span class="o">:</span><span class="n">size_</span><span class="p">(</span><span class="n">size</span><span class="p">),</span><span class="n">p_</span><span class="p">(</span><span class="n">p</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span><span class="w"></span>
+<a id="__codelineno-15-9" name="__codelineno-15-9"></a><span class="p">};</span><span class="w"></span>
+<a id="__codelineno-15-10" name="__codelineno-15-10"></a>
+<a id="__codelineno-15-11" name="__codelineno-15-11"></a><span class="k">class</span><span class="w"> </span><span class="nc">MyClass2</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<a id="__codelineno-15-12" name="__codelineno-15-12"></a><span class="k">public</span><span class="o">:</span><span class="w"></span>
+<a id="__codelineno-15-13" name="__codelineno-15-13"></a><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">size_</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-15-14" name="__codelineno-15-14"></a><span class="w">  </span><span class="c1">// 构造函数一个参数，并使用explicit修饰，阻止隐式类型转换</span>
+<a id="__codelineno-15-15" name="__codelineno-15-15"></a><span class="w">  </span><span class="n">MyClass2</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">size</span><span class="p">)</span><span class="o">:</span><span class="n">size_</span><span class="p">(</span><span class="n">size</span><span class="p">){}</span><span class="w"></span>
+<a id="__codelineno-15-16" name="__codelineno-15-16"></a><span class="p">};</span><span class="w"></span>
+<a id="__codelineno-15-17" name="__codelineno-15-17"></a>
+<a id="__codelineno-15-18" name="__codelineno-15-18"></a><span class="c1">// 使用</span>
+<a id="__codelineno-15-19" name="__codelineno-15-19"></a><span class="n">MyClass</span><span class="w"> </span><span class="nf">c1</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span><span class="w"> </span><span class="c1">// 编译通过，显式调用</span>
+<a id="__codelineno-15-20" name="__codelineno-15-20"></a><span class="n">MyClass</span><span class="w"> </span><span class="n">c2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w"> </span><span class="c1">// 编译通过，隐式类型转换</span>
+<a id="__codelineno-15-21" name="__codelineno-15-21"></a><span class="n">MyClass2</span><span class="w"> </span><span class="n">c3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w"> </span><span class="c1">// 编译失败，explicit阻止MyClass2进行隐式类型转换</span>
+</code></pre></div></td></tr></table></div>
+<blockquote>
+<p><a href="https://www.cnblogs.com/this-543273659/archive/2011/08/02/2124596.html">C++ explicit的作用</a>
+<a href="https://blog.csdn.net/xiezhongyuan07/article/details/80257420">详解 c++ 关键字 explicit</a></p>
+</blockquote>
+<h2 id="torchjit">torch.jit加载模型</h2>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-16-1">1</a></span>
+<span class="normal"><a href="#__codelineno-16-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1"></a><span class="c1">// wenet/runtime/core/decoder/torch_asr_model.cc</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2"></a><span class="n">torch</span><span class="o">::</span><span class="n">jit</span><span class="o">::</span><span class="n">script</span><span class="o">::</span><span class="n">Module</span><span class="w"> </span><span class="n">model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">torch</span><span class="o">::</span><span class="n">jit</span><span class="o">::</span><span class="n">load</span><span class="p">(</span><span class="n">model_path</span><span class="p">);</span><span class="w"></span>
+</code></pre></div></td></tr></table></div>
+<h2 id="wenet_1">WeNet推断时每次一个样本</h2>
+<p>WeNet runtime每次输入一个样本进行推理：</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-17-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-17-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-17-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-17-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-17-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-17-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-17-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-17-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-17-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-17-10">10</a></span>
+<span class="normal"><a href="#__codelineno-17-11">11</a></span>
+<span class="normal"><a href="#__codelineno-17-12">12</a></span>
+<span class="normal"><a href="#__codelineno-17-13">13</a></span>
+<span class="normal"><a href="#__codelineno-17-14">14</a></span>
+<span class="normal"><a href="#__codelineno-17-15">15</a></span>
+<span class="normal"><a href="#__codelineno-17-16">16</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1"></a><span class="c1">// wenet/runtime/core/decoder/torch_asr_model.cc</span>
+<a id="__codelineno-17-2" name="__codelineno-17-2"></a><span class="kt">void</span><span class="w"> </span><span class="nf">TorchAsrModel::ForwardEncoderFunc</span><span class="p">(</span><span class="w"></span>
+<a id="__codelineno-17-3" name="__codelineno-17-3"></a><span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;&gt;&amp;</span><span class="w"> </span><span class="n">chunk_feats</span><span class="p">,</span><span class="w"></span>
+<a id="__codelineno-17-4" name="__codelineno-17-4"></a><span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="o">*</span><span class="n">out_prob</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<a id="__codelineno-17-5" name="__codelineno-17-5"></a><span class="w">  </span><span class="c1">// 执行编码器chunk级别的一次推断，每次输入一条音频的若干帧组成的chunk</span>
+<a id="__codelineno-17-6" name="__codelineno-17-6"></a><span class="w">  </span><span class="c1">// 输入参数chunk_feats：[frames,feature_dim]，和缓存cached_feature_共同组成输入</span>
+<a id="__codelineno-17-7" name="__codelineno-17-7"></a><span class="w">  </span><span class="c1">// 输出参数out_prob：[num_frames,vocab_size]，log softmax之后CTC之前的编码器输出</span>
+<a id="__codelineno-17-8" name="__codelineno-17-8"></a>
+<a id="__codelineno-17-9" name="__codelineno-17-9"></a><span class="w">  </span><span class="c1">// 1. Prepare libtorch required data, splice cached_feature_ and chunk_feats</span>
+<a id="__codelineno-17-10" name="__codelineno-17-10"></a><span class="w">  </span><span class="c1">// The first dimension is for batchsize, which is 1.</span>
+<a id="__codelineno-17-11" name="__codelineno-17-11"></a><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">num_frames</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cached_feature_</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">chunk_feats</span><span class="p">.</span><span class="n">size</span><span class="p">();</span><span class="w"></span>
+<a id="__codelineno-17-12" name="__codelineno-17-12"></a><span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">feature_dim</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">chunk_feats</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">size</span><span class="p">();</span><span class="w"></span>
+<a id="__codelineno-17-13" name="__codelineno-17-13"></a><span class="w">  </span><span class="n">torch</span><span class="o">::</span><span class="n">Tensor</span><span class="w"> </span><span class="n">feats</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<a id="__codelineno-17-14" name="__codelineno-17-14"></a><span class="w">      </span><span class="n">torch</span><span class="o">::</span><span class="n">zeros</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">num_frames</span><span class="p">,</span><span class="w"> </span><span class="n">feature_dim</span><span class="p">},</span><span class="w"> </span><span class="n">torch</span><span class="o">::</span><span class="n">kFloat</span><span class="p">);</span><span class="w"></span>
+<a id="__codelineno-17-15" name="__codelineno-17-15"></a><span class="p">...</span><span class="w"></span>
+<a id="__codelineno-17-16" name="__codelineno-17-16"></a><span class="p">}</span><span class="w"></span>
+</code></pre></div></td></tr></table></div>
+<h2 id="wenetctcn-best">WeNet对CTC输出N-best进行重打分</h2>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-18-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-18-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-18-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-18-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-18-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-18-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-18-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-18-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-18-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-18-10">10</a></span>
+<span class="normal"><a href="#__codelineno-18-11">11</a></span>
+<span class="normal"><a href="#__codelineno-18-12">12</a></span>
+<span class="normal"><a href="#__codelineno-18-13">13</a></span>
+<span class="normal"><a href="#__codelineno-18-14">14</a></span>
+<span class="normal"><a href="#__codelineno-18-15">15</a></span>
+<span class="normal"><a href="#__codelineno-18-16">16</a></span>
+<span class="normal"><a href="#__codelineno-18-17">17</a></span>
+<span class="normal"><a href="#__codelineno-18-18">18</a></span>
+<span class="normal"><a href="#__codelineno-18-19">19</a></span>
+<span class="normal"><a href="#__codelineno-18-20">20</a></span>
+<span class="normal"><a href="#__codelineno-18-21">21</a></span>
+<span class="normal"><a href="#__codelineno-18-22">22</a></span>
+<span class="normal"><a href="#__codelineno-18-23">23</a></span>
+<span class="normal"><a href="#__codelineno-18-24">24</a></span>
+<span class="normal"><a href="#__codelineno-18-25">25</a></span>
+<span class="normal"><a href="#__codelineno-18-26">26</a></span>
+<span class="normal"><a href="#__codelineno-18-27">27</a></span>
+<span class="normal"><a href="#__codelineno-18-28">28</a></span>
+<span class="normal"><a href="#__codelineno-18-29">29</a></span>
+<span class="normal"><a href="#__codelineno-18-30">30</a></span>
+<span class="normal"><a href="#__codelineno-18-31">31</a></span>
+<span class="normal"><a href="#__codelineno-18-32">32</a></span>
+<span class="normal"><a href="#__codelineno-18-33">33</a></span>
+<span class="normal"><a href="#__codelineno-18-34">34</a></span>
+<span class="normal"><a href="#__codelineno-18-35">35</a></span>
+<span class="normal"><a href="#__codelineno-18-36">36</a></span>
+<span class="normal"><a href="#__codelineno-18-37">37</a></span>
+<span class="normal"><a href="#__codelineno-18-38">38</a></span>
+<span class="normal"><a href="#__codelineno-18-39">39</a></span>
+<span class="normal"><a href="#__codelineno-18-40">40</a></span>
+<span class="normal"><a href="#__codelineno-18-41">41</a></span>
+<span class="normal"><a href="#__codelineno-18-42">42</a></span>
+<span class="normal"><a href="#__codelineno-18-43">43</a></span>
+<span class="normal"><a href="#__codelineno-18-44">44</a></span>
+<span class="normal"><a href="#__codelineno-18-45">45</a></span>
+<span class="normal"><a href="#__codelineno-18-46">46</a></span>
+<span class="normal"><a href="#__codelineno-18-47">47</a></span>
+<span class="normal"><a href="#__codelineno-18-48">48</a></span>
+<span class="normal"><a href="#__codelineno-18-49">49</a></span>
+<span class="normal"><a href="#__codelineno-18-50">50</a></span>
+<span class="normal"><a href="#__codelineno-18-51">51</a></span>
+<span class="normal"><a href="#__codelineno-18-52">52</a></span>
+<span class="normal"><a href="#__codelineno-18-53">53</a></span>
+<span class="normal"><a href="#__codelineno-18-54">54</a></span>
+<span class="normal"><a href="#__codelineno-18-55">55</a></span>
+<span class="normal"><a href="#__codelineno-18-56">56</a></span>
+<span class="normal"><a href="#__codelineno-18-57">57</a></span>
+<span class="normal"><a href="#__codelineno-18-58">58</a></span>
+<span class="normal"><a href="#__codelineno-18-59">59</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1"></a><span class="c1">// wenet/wenet/transformer/decoder.py</span>
+<a id="__codelineno-18-2" name="__codelineno-18-2"></a><span class="n">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="w"></span>
+<a id="__codelineno-18-3" name="__codelineno-18-3"></a><span class="w">        </span><span class="n">self</span><span class="p">,</span><span class="w"></span>
+<a id="__codelineno-18-4" name="__codelineno-18-4"></a><span class="w">        </span><span class="nl">memory</span><span class="p">:</span><span class="w"> </span><span class="n">torch</span><span class="p">.</span><span class="n">Tensor</span><span class="p">,</span><span class="w"></span>
+<a id="__codelineno-18-5" name="__codelineno-18-5"></a><span class="w">        </span><span class="nl">memory_mask</span><span class="p">:</span><span class="w"> </span><span class="n">torch</span><span class="p">.</span><span class="n">Tensor</span><span class="p">,</span><span class="w"></span>
+<a id="__codelineno-18-6" name="__codelineno-18-6"></a><span class="w">        </span><span class="nl">ys_in_pad</span><span class="p">:</span><span class="w"> </span><span class="n">torch</span><span class="p">.</span><span class="n">Tensor</span><span class="p">,</span><span class="w"></span>
+<a id="__codelineno-18-7" name="__codelineno-18-7"></a><span class="w">        </span><span class="nl">ys_in_lens</span><span class="p">:</span><span class="w"> </span><span class="n">torch</span><span class="p">.</span><span class="n">Tensor</span><span class="p">,</span><span class="w"></span>
+<a id="__codelineno-18-8" name="__codelineno-18-8"></a><span class="w">        </span><span class="nl">r_ys_in_pad</span><span class="p">:</span><span class="w"> </span><span class="n">torch</span><span class="p">.</span><span class="n">Tensor</span><span class="p">,</span><span class="w"></span>
+<a id="__codelineno-18-9" name="__codelineno-18-9"></a><span class="w">        </span><span class="nl">reverse_weight</span><span class="p">:</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span><span class="w"></span>
+<a id="__codelineno-18-10" name="__codelineno-18-10"></a><span class="w">    </span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">Tuple</span><span class="p">[</span><span class="n">torch</span><span class="p">.</span><span class="n">Tensor</span><span class="p">,</span><span class="w"> </span><span class="n">torch</span><span class="p">.</span><span class="n">Tensor</span><span class="p">,</span><span class="w"> </span><span class="n">torch</span><span class="p">.</span><span class="n">Tensor</span><span class="p">]</span><span class="o">:</span><span class="w"></span>
+<a id="__codelineno-18-11" name="__codelineno-18-11"></a><span class="w">        </span><span class="s">&quot;&quot;&quot;Forward decoder.</span>
+<a id="__codelineno-18-12" name="__codelineno-18-12"></a><span class="w">        </span><span class="nl">Args</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-18-13" name="__codelineno-18-13"></a><span class="w">            </span><span class="nl">memory</span><span class="p">:</span><span class="w"> </span><span class="n">encoded</span><span class="w"> </span><span class="n">memory</span><span class="p">,</span><span class="w"> </span><span class="n">float32</span><span class="w">  </span><span class="p">(</span><span class="n">batch</span><span class="p">,</span><span class="w"> </span><span class="n">maxlen_in</span><span class="p">,</span><span class="w"> </span><span class="n">feat</span><span class="p">)</span><span class="w"></span>
+<a id="__codelineno-18-14" name="__codelineno-18-14"></a><span class="w">            </span><span class="nl">memory_mask</span><span class="p">:</span><span class="w"> </span><span class="n">encoder</span><span class="w"> </span><span class="n">memory</span><span class="w"> </span><span class="n">mask</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">batch</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">maxlen_in</span><span class="p">)</span><span class="w"></span>
+<a id="__codelineno-18-15" name="__codelineno-18-15"></a><span class="w">            </span><span class="nl">ys_in_pad</span><span class="p">:</span><span class="w"> </span><span class="n">padded</span><span class="w"> </span><span class="n">input</span><span class="w"> </span><span class="n">token</span><span class="w"> </span><span class="n">ids</span><span class="p">,</span><span class="w"> </span><span class="n">int64</span><span class="w"> </span><span class="p">(</span><span class="n">batch</span><span class="p">,</span><span class="w"> </span><span class="n">maxlen_out</span><span class="p">)</span><span class="w"></span>
+<a id="__codelineno-18-16" name="__codelineno-18-16"></a><span class="w">            </span><span class="nl">ys_in_lens</span><span class="p">:</span><span class="w"> </span><span class="n">input</span><span class="w"> </span><span class="n">lengths</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="k">this</span><span class="w"> </span><span class="n">batch</span><span class="w"> </span><span class="p">(</span><span class="n">batch</span><span class="p">)</span><span class="w"></span>
+<a id="__codelineno-18-17" name="__codelineno-18-17"></a><span class="w">            </span><span class="nl">r_ys_in_pad</span><span class="p">:</span><span class="w"> </span><span class="n">padded</span><span class="w"> </span><span class="n">input</span><span class="w"> </span><span class="n">token</span><span class="w"> </span><span class="n">ids</span><span class="p">,</span><span class="w"> </span><span class="n">int64</span><span class="w"> </span><span class="p">(</span><span class="n">batch</span><span class="p">,</span><span class="w"> </span><span class="n">maxlen_out</span><span class="p">),</span><span class="w"></span>
+<a id="__codelineno-18-18" name="__codelineno-18-18"></a><span class="w">                </span><span class="n">used</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">right</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">left</span><span class="w"> </span><span class="n">decoder</span><span class="w"></span>
+<a id="__codelineno-18-19" name="__codelineno-18-19"></a><span class="w">            </span><span class="nl">reverse_weight</span><span class="p">:</span><span class="w"> </span><span class="n">used</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">right</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">left</span><span class="w"> </span><span class="n">decoder</span><span class="w"></span>
+<a id="__codelineno-18-20" name="__codelineno-18-20"></a><span class="w">        </span><span class="nl">Returns</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-18-21" name="__codelineno-18-21"></a><span class="w">            </span><span class="p">(</span><span class="n">tuple</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="n">tuple</span><span class="w"> </span><span class="n">containing</span><span class="o">:</span><span class="w"></span>
+<a id="__codelineno-18-22" name="__codelineno-18-22"></a><span class="w">                </span><span class="nl">x</span><span class="p">:</span><span class="w"> </span><span class="n">decoded</span><span class="w"> </span><span class="n">token</span><span class="w"> </span><span class="n">score</span><span class="w"> </span><span class="n">before</span><span class="w"> </span><span class="n">softmax</span><span class="w"> </span><span class="p">(</span><span class="n">batch</span><span class="p">,</span><span class="w"> </span><span class="n">maxlen_out</span><span class="p">,</span><span class="w"></span>
+<a id="__codelineno-18-23" name="__codelineno-18-23"></a><span class="w">                    </span><span class="n">vocab_size</span><span class="p">)</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">use_output_layer</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">True</span><span class="p">,</span><span class="w"></span>
+<a id="__codelineno-18-24" name="__codelineno-18-24"></a><span class="w">                </span><span class="nl">r_x</span><span class="p">:</span><span class="w"> </span><span class="n">x</span><span class="o">:</span><span class="w"> </span><span class="n">decoded</span><span class="w"> </span><span class="n">token</span><span class="w"> </span><span class="n">score</span><span class="w"> </span><span class="p">(</span><span class="n">right</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">left</span><span class="w"> </span><span class="n">decoder</span><span class="p">)</span><span class="w"></span>
+<a id="__codelineno-18-25" name="__codelineno-18-25"></a><span class="w">                    </span><span class="n">before</span><span class="w"> </span><span class="n">softmax</span><span class="w"> </span><span class="p">(</span><span class="n">batch</span><span class="p">,</span><span class="w"> </span><span class="n">maxlen_out</span><span class="p">,</span><span class="w"> </span><span class="n">vocab_size</span><span class="p">)</span><span class="w"></span>
+<a id="__codelineno-18-26" name="__codelineno-18-26"></a><span class="w">                    </span><span class="k">if</span><span class="w"> </span><span class="n">use_output_layer</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">True</span><span class="p">,</span><span class="w"></span>
+<a id="__codelineno-18-27" name="__codelineno-18-27"></a><span class="w">                </span><span class="nl">olens</span><span class="p">:</span><span class="w"> </span><span class="p">(</span><span class="n">batch</span><span class="p">,</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+<a id="__codelineno-18-28" name="__codelineno-18-28"></a><span class="w">        </span><span class="s">&quot;&quot;&quot;</span>
+<a id="__codelineno-18-29" name="__codelineno-18-29"></a><span class="w">        </span><span class="p">...</span><span class="w"></span>
+<a id="__codelineno-18-30" name="__codelineno-18-30"></a>
+<a id="__codelineno-18-31" name="__codelineno-18-31"></a><span class="c1">// wenet/runtime/core/decoder/torch_asr_model.cc</span>
+<a id="__codelineno-18-32" name="__codelineno-18-32"></a><span class="kt">float</span><span class="w"> </span><span class="n">TorchAsrModel</span><span class="o">::</span><span class="n">ComputeAttentionScore</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">torch</span><span class="o">::</span><span class="n">Tensor</span><span class="o">&amp;</span><span class="w"> </span><span class="n">prob</span><span class="p">,</span><span class="w"></span>
+<a id="__codelineno-18-33" name="__codelineno-18-33"></a><span class="w">                                           </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">hyp</span><span class="p">,</span><span class="w"></span>
+<a id="__codelineno-18-34" name="__codelineno-18-34"></a><span class="w">                                           </span><span class="kt">int</span><span class="w"> </span><span class="n">eos</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<a id="__codelineno-18-35" name="__codelineno-18-35"></a><span class="w">  </span><span class="c1">// 对hyp表示的一条解码路径进行打分</span>
+<a id="__codelineno-18-36" name="__codelineno-18-36"></a><span class="w">  </span><span class="c1">// 分数为Attention解码器输出的，解码路径对应的log softmax概率之和</span>
+<a id="__codelineno-18-37" name="__codelineno-18-37"></a><span class="w">  </span><span class="c1">// 输入参数prob：[max_text_len,vocab_size]，Attention解码器输出分数</span>
+<a id="__codelineno-18-38" name="__codelineno-18-38"></a><span class="w">  </span><span class="c1">// 输入参数hyp：[text_len,]，CTC解码结果</span>
+<a id="__codelineno-18-39" name="__codelineno-18-39"></a><span class="w">  </span><span class="c1">// 输出：Attention解码器对hyp表示的解码路径的打分</span>
+<a id="__codelineno-18-40" name="__codelineno-18-40"></a><span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="n">score</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-18-41" name="__codelineno-18-41"></a><span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">accessor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">prob</span><span class="p">.</span><span class="n">accessor</span><span class="o">&lt;</span><span class="kt">float</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="o">&gt;</span><span class="p">();</span><span class="w"></span>
+<a id="__codelineno-18-42" name="__codelineno-18-42"></a><span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">hyp</span><span class="p">.</span><span class="n">size</span><span class="p">();</span><span class="w"> </span><span class="o">++</span><span class="n">j</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<a id="__codelineno-18-43" name="__codelineno-18-43"></a><span class="w">    </span><span class="n">score</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">accessor</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">hyp</span><span class="p">[</span><span class="n">j</span><span class="p">]];</span><span class="w"></span>
+<a id="__codelineno-18-44" name="__codelineno-18-44"></a><span class="w">  </span><span class="p">}</span><span class="w"></span>
+<a id="__codelineno-18-45" name="__codelineno-18-45"></a><span class="w">  </span><span class="n">score</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">accessor</span><span class="p">[</span><span class="n">hyp</span><span class="p">.</span><span class="n">size</span><span class="p">()][</span><span class="n">eos</span><span class="p">];</span><span class="w"></span>
+<a id="__codelineno-18-46" name="__codelineno-18-46"></a><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">score</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-18-47" name="__codelineno-18-47"></a><span class="p">}</span><span class="w"></span>
+<a id="__codelineno-18-48" name="__codelineno-18-48"></a>
+<a id="__codelineno-18-49" name="__codelineno-18-49"></a><span class="c1">// wenet/runtime/core/decoder/torch_asr_model.cc</span>
+<a id="__codelineno-18-50" name="__codelineno-18-50"></a><span class="kt">void</span><span class="w"> </span><span class="nf">TorchAsrModel::AttentionRescoring</span><span class="p">(</span><span class="w"></span>
+<a id="__codelineno-18-51" name="__codelineno-18-51"></a><span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;&amp;</span><span class="w"> </span><span class="n">hyps</span><span class="p">,</span><span class="w"></span>
+<a id="__codelineno-18-52" name="__codelineno-18-52"></a><span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">reverse_weight</span><span class="p">,</span><span class="w"></span>
+<a id="__codelineno-18-53" name="__codelineno-18-53"></a><span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;*</span><span class="w"> </span><span class="n">rescoring_score</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<a id="__codelineno-18-54" name="__codelineno-18-54"></a><span class="w">    </span><span class="c1">// 对CTC输出的N-best解码结果进行重打分</span>
+<a id="__codelineno-18-55" name="__codelineno-18-55"></a><span class="w">    </span><span class="c1">// 输入参数hyps: [num_best,text_len]，CTC输出的解码结果，存储token id</span>
+<a id="__codelineno-18-56" name="__codelineno-18-56"></a><span class="w">    </span><span class="c1">// 输入参数reverse_weight：scaler，如果采用双向解码器才有效，表示逆向解码器权重</span>
+<a id="__codelineno-18-57" name="__codelineno-18-57"></a><span class="w">    </span><span class="c1">// 输出参数rescoring_score：[num_best,]，对CTC输出N-best的打分</span>
+<a id="__codelineno-18-58" name="__codelineno-18-58"></a><span class="w">    </span><span class="p">...</span><span class="w"></span>
+<a id="__codelineno-18-59" name="__codelineno-18-59"></a><span class="p">}</span><span class="w"></span>
+</code></pre></div></td></tr></table></div>
+<h2 id="wenet-runtime_1">WeNet runtime数据队列</h2>
+<p>WeNet runtime使用<code>FeaturePipeline</code>计算梅尔频谱，并将其送入模型。通常情况下，两个线程执行<code>FeaturePipeline</code>：线程A调用<code>AcceptWaveform()</code>添加原始音频数据并通过<code>set_input_finished()</code>通知输入音频的结束；线程B（解码器线程）调用<code>Read()</code>消费声学特征。因此<code>BlockingQueue</code>用来确保类<code>FeaturePipeline</code>的线程安全。</p>
+<p>当队列<code>feature_queue_</code>中没有声学特征并且输入尚未结束时，<code>Read()</code>将会阻塞。</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-19-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-19-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-19-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-19-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-19-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-19-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-19-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-19-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-19-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-19-10">10</a></span>
+<span class="normal"><a href="#__codelineno-19-11">11</a></span>
+<span class="normal"><a href="#__codelineno-19-12">12</a></span>
+<span class="normal"><a href="#__codelineno-19-13">13</a></span>
+<span class="normal"><a href="#__codelineno-19-14">14</a></span>
+<span class="normal"><a href="#__codelineno-19-15">15</a></span>
+<span class="normal"><a href="#__codelineno-19-16">16</a></span>
+<span class="normal"><a href="#__codelineno-19-17">17</a></span>
+<span class="normal"><a href="#__codelineno-19-18">18</a></span>
+<span class="normal"><a href="#__codelineno-19-19">19</a></span>
+<span class="normal"><a href="#__codelineno-19-20">20</a></span>
+<span class="normal"><a href="#__codelineno-19-21">21</a></span>
+<span class="normal"><a href="#__codelineno-19-22">22</a></span>
+<span class="normal"><a href="#__codelineno-19-23">23</a></span>
+<span class="normal"><a href="#__codelineno-19-24">24</a></span>
+<span class="normal"><a href="#__codelineno-19-25">25</a></span>
+<span class="normal"><a href="#__codelineno-19-26">26</a></span>
+<span class="normal"><a href="#__codelineno-19-27">27</a></span>
+<span class="normal"><a href="#__codelineno-19-28">28</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1"></a><span class="c1">// wenet/runtime/core/frontend/feature_pipline.h</span>
+<a id="__codelineno-19-2" name="__codelineno-19-2"></a><span class="k">class</span><span class="w"> </span><span class="nc">FeaturePipeline</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<a id="__codelineno-19-3" name="__codelineno-19-3"></a><span class="w"> </span><span class="k">public</span><span class="o">:</span><span class="w"></span>
+<a id="__codelineno-19-4" name="__codelineno-19-4"></a><span class="w">  </span><span class="k">explicit</span><span class="w"> </span><span class="n">FeaturePipeline</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">FeaturePipelineConfig</span><span class="o">&amp;</span><span class="w"> </span><span class="n">config</span><span class="p">);</span><span class="w"></span>
+<a id="__codelineno-19-5" name="__codelineno-19-5"></a>
+<a id="__codelineno-19-6" name="__codelineno-19-6"></a><span class="w">  </span><span class="c1">// The feature extraction is done in AcceptWaveform().</span>
+<a id="__codelineno-19-7" name="__codelineno-19-7"></a><span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">AcceptWaveform</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="o">*</span><span class="w"> </span><span class="n">pcm</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">size</span><span class="p">);</span><span class="w"></span>
+<a id="__codelineno-19-8" name="__codelineno-19-8"></a><span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">AcceptWaveform</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">int16_t</span><span class="o">*</span><span class="w"> </span><span class="n">pcm</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">size</span><span class="p">);</span><span class="w"></span>
+<a id="__codelineno-19-9" name="__codelineno-19-9"></a>
+<a id="__codelineno-19-10" name="__codelineno-19-10"></a><span class="p">...</span><span class="w"></span>
+<a id="__codelineno-19-11" name="__codelineno-19-11"></a>
+<a id="__codelineno-19-12" name="__codelineno-19-12"></a><span class="w">  </span><span class="c1">// The caller should call this method when speech input is end.</span>
+<a id="__codelineno-19-13" name="__codelineno-19-13"></a><span class="w">  </span><span class="c1">// Never call AcceptWaveform() after calling set_input_finished() !</span>
+<a id="__codelineno-19-14" name="__codelineno-19-14"></a><span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="n">set_input_finished</span><span class="p">();</span><span class="w"></span>
+<a id="__codelineno-19-15" name="__codelineno-19-15"></a><span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="nf">input_finished</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">input_finished_</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+<a id="__codelineno-19-16" name="__codelineno-19-16"></a>
+<a id="__codelineno-19-17" name="__codelineno-19-17"></a><span class="p">...</span><span class="w"></span>
+<a id="__codelineno-19-18" name="__codelineno-19-18"></a>
+<a id="__codelineno-19-19" name="__codelineno-19-19"></a><span class="w">  </span><span class="c1">// Read #num_frames frame features.</span>
+<a id="__codelineno-19-20" name="__codelineno-19-20"></a><span class="w">  </span><span class="c1">// Return False if less then #num_frames features are read and the</span>
+<a id="__codelineno-19-21" name="__codelineno-19-21"></a><span class="w">  </span><span class="c1">// input is finished.</span>
+<a id="__codelineno-19-22" name="__codelineno-19-22"></a><span class="w">  </span><span class="c1">// Return True if #num_frames features are read.</span>
+<a id="__codelineno-19-23" name="__codelineno-19-23"></a><span class="w">  </span><span class="c1">// This function is a blocking method when there is no feature</span>
+<a id="__codelineno-19-24" name="__codelineno-19-24"></a><span class="w">  </span><span class="c1">// in feature_queue_ and the input is not finished.</span>
+<a id="__codelineno-19-25" name="__codelineno-19-25"></a><span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="n">Read</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">num_frames</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;&gt;*</span><span class="w"> </span><span class="n">feats</span><span class="p">);</span><span class="w"></span>
+<a id="__codelineno-19-26" name="__codelineno-19-26"></a>
+<a id="__codelineno-19-27" name="__codelineno-19-27"></a><span class="p">...</span><span class="w"></span>
+<a id="__codelineno-19-28" name="__codelineno-19-28"></a><span class="p">};</span><span class="w"></span>
+</code></pre></div></td></tr></table></div>
+<h2 id="wenet_2">WeNet数据队列并发逻辑</h2>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-20-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-20-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-20-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-20-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-20-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-20-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-20-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-20-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-20-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-20-10">10</a></span>
+<span class="normal"><a href="#__codelineno-20-11">11</a></span>
+<span class="normal"><a href="#__codelineno-20-12">12</a></span>
+<span class="normal"><a href="#__codelineno-20-13">13</a></span>
+<span class="normal"><a href="#__codelineno-20-14">14</a></span>
+<span class="normal"><a href="#__codelineno-20-15">15</a></span>
+<span class="normal"><a href="#__codelineno-20-16">16</a></span>
+<span class="normal"><a href="#__codelineno-20-17">17</a></span>
+<span class="normal"><a href="#__codelineno-20-18">18</a></span>
+<span class="normal"><a href="#__codelineno-20-19">19</a></span>
+<span class="normal"><a href="#__codelineno-20-20">20</a></span>
+<span class="normal"><a href="#__codelineno-20-21">21</a></span>
+<span class="normal"><a href="#__codelineno-20-22">22</a></span>
+<span class="normal"><a href="#__codelineno-20-23">23</a></span>
+<span class="normal"><a href="#__codelineno-20-24">24</a></span>
+<span class="normal"><a href="#__codelineno-20-25">25</a></span>
+<span class="normal"><a href="#__codelineno-20-26">26</a></span>
+<span class="normal"><a href="#__codelineno-20-27">27</a></span>
+<span class="normal"><a href="#__codelineno-20-28">28</a></span>
+<span class="normal"><a href="#__codelineno-20-29">29</a></span>
+<span class="normal"><a href="#__codelineno-20-30">30</a></span>
+<span class="normal"><a href="#__codelineno-20-31">31</a></span>
+<span class="normal"><a href="#__codelineno-20-32">32</a></span>
+<span class="normal"><a href="#__codelineno-20-33">33</a></span>
+<span class="normal"><a href="#__codelineno-20-34">34</a></span>
+<span class="normal"><a href="#__codelineno-20-35">35</a></span>
+<span class="normal"><a href="#__codelineno-20-36">36</a></span>
+<span class="normal"><a href="#__codelineno-20-37">37</a></span>
+<span class="normal"><a href="#__codelineno-20-38">38</a></span>
+<span class="normal"><a href="#__codelineno-20-39">39</a></span>
+<span class="normal"><a href="#__codelineno-20-40">40</a></span>
+<span class="normal"><a href="#__codelineno-20-41">41</a></span>
+<span class="normal"><a href="#__codelineno-20-42">42</a></span>
+<span class="normal"><a href="#__codelineno-20-43">43</a></span>
+<span class="normal"><a href="#__codelineno-20-44">44</a></span>
+<span class="normal"><a href="#__codelineno-20-45">45</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1"></a><span class="c1">// wenet/runtime/core/frontend/feature_pipeline.cc</span>
+<a id="__codelineno-20-2" name="__codelineno-20-2"></a><span class="kt">bool</span><span class="w"> </span><span class="nf">FeaturePipeline::ReadOne</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;*</span><span class="w"> </span><span class="n">feat</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<a id="__codelineno-20-3" name="__codelineno-20-3"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">feature_queue_</span><span class="p">.</span><span class="n">Empty</span><span class="p">())</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<a id="__codelineno-20-4" name="__codelineno-20-4"></a><span class="w">    </span><span class="c1">// 最普遍的情形，数据队列不为空，直接从队列中取出一帧声学特征返回</span>
+<a id="__codelineno-20-5" name="__codelineno-20-5"></a><span class="w">    </span><span class="o">*</span><span class="n">feat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">feature_queue_</span><span class="p">.</span><span class="n">Pop</span><span class="p">());</span><span class="w"></span>
+<a id="__codelineno-20-6" name="__codelineno-20-6"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-20-7" name="__codelineno-20-7"></a><span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<a id="__codelineno-20-8" name="__codelineno-20-8"></a><span class="w">    </span><span class="c1">// 数据队列为空，加锁挂起本线程，等待数据存入队列</span>
+<a id="__codelineno-20-9" name="__codelineno-20-9"></a><span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">unique_lock</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">mutex</span><span class="o">&gt;</span><span class="w"> </span><span class="n">lock</span><span class="p">(</span><span class="n">mutex_</span><span class="p">);</span><span class="w"></span>
+<a id="__codelineno-20-10" name="__codelineno-20-10"></a><span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">input_finished_</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<a id="__codelineno-20-11" name="__codelineno-20-11"></a><span class="w">      </span><span class="c1">// 此时输入尚未结束，释放互斥锁，等待condition_variable通知并唤醒本线程</span>
+<a id="__codelineno-20-12" name="__codelineno-20-12"></a><span class="w">      </span><span class="c1">// This will release the lock and wait for notify_one()</span>
+<a id="__codelineno-20-13" name="__codelineno-20-13"></a><span class="w">      </span><span class="c1">// from AcceptWaveform() or set_input_finished()</span>
+<a id="__codelineno-20-14" name="__codelineno-20-14"></a><span class="w">      </span><span class="n">finish_condition_</span><span class="p">.</span><span class="n">wait</span><span class="p">(</span><span class="n">lock</span><span class="p">);</span><span class="w"></span>
+<a id="__codelineno-20-15" name="__codelineno-20-15"></a><span class="w">      </span><span class="c1">// 本线程被唤醒，查看此时数据队列是否为空</span>
+<a id="__codelineno-20-16" name="__codelineno-20-16"></a><span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">feature_queue_</span><span class="p">.</span><span class="n">Empty</span><span class="p">())</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<a id="__codelineno-20-17" name="__codelineno-20-17"></a><span class="w">        </span><span class="c1">// 不为空则从队列中取出一帧声学特征并返回</span>
+<a id="__codelineno-20-18" name="__codelineno-20-18"></a><span class="w">        </span><span class="o">*</span><span class="n">feat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">feature_queue_</span><span class="p">.</span><span class="n">Pop</span><span class="p">());</span><span class="w"></span>
+<a id="__codelineno-20-19" name="__codelineno-20-19"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-20-20" name="__codelineno-20-20"></a><span class="w">      </span><span class="p">}</span><span class="w"></span>
+<a id="__codelineno-20-21" name="__codelineno-20-21"></a><span class="w">    </span><span class="p">}</span><span class="w"></span>
+<a id="__codelineno-20-22" name="__codelineno-20-22"></a><span class="w">    </span><span class="n">CHECK</span><span class="p">(</span><span class="n">input_finished_</span><span class="p">);</span><span class="w"></span>
+<a id="__codelineno-20-23" name="__codelineno-20-23"></a><span class="w">    </span><span class="c1">// 原始代码如下：</span>
+<a id="__codelineno-20-24" name="__codelineno-20-24"></a>
+<a id="__codelineno-20-25" name="__codelineno-20-25"></a><span class="w">    </span><span class="c1">// CHECK(feature_queue_.Empty());</span>
+<a id="__codelineno-20-26" name="__codelineno-20-26"></a><span class="w">    </span><span class="c1">// return false;</span>
+<a id="__codelineno-20-27" name="__codelineno-20-27"></a>
+<a id="__codelineno-20-28" name="__codelineno-20-28"></a><span class="w">    </span><span class="c1">// 上述代码在如下时序时会发生问题：</span>
+<a id="__codelineno-20-29" name="__codelineno-20-29"></a><span class="w">    </span><span class="c1">// 1. 读线程判断feature_queue_.Empty()为true，进入else，读线程挂起</span>
+<a id="__codelineno-20-30" name="__codelineno-20-30"></a><span class="w">    </span><span class="c1">// 2. 写线程执行AcceptWaveform并设置input_finished_为true</span>
+<a id="__codelineno-20-31" name="__codelineno-20-31"></a><span class="w">    </span><span class="c1">// 3. 读线程开始执行else部分，此时input_finished_为true，因此不会执行while循环体，</span>
+<a id="__codelineno-20-32" name="__codelineno-20-32"></a><span class="w">    </span><span class="c1">// 此时CHECK(feature_queue_.Empty())失败</span>
+<a id="__codelineno-20-33" name="__codelineno-20-33"></a><span class="w">    </span><span class="c1">// 也就是写线程写入最后一帧，并将input_finished_设置为true，此时队列实际还有数据，</span>
+<a id="__codelineno-20-34" name="__codelineno-20-34"></a><span class="w">    </span><span class="c1">// 但读线程根据input_finished_判断此时已经结束，直接无法进入while</span>
+<a id="__codelineno-20-35" name="__codelineno-20-35"></a><span class="w">    </span><span class="c1">// 因此不能CHECK(feature_queue_.Empty())，并且double check数据队列是否为空</span>
+<a id="__codelineno-20-36" name="__codelineno-20-36"></a><span class="w">    </span><span class="c1">// Double check queue.empty, see issue#893 for detailed discussions.</span>
+<a id="__codelineno-20-37" name="__codelineno-20-37"></a><span class="w">    </span><span class="c1">// https://github.com/wenet-e2e/wenet/issues/893</span>
+<a id="__codelineno-20-38" name="__codelineno-20-38"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">feature_queue_</span><span class="p">.</span><span class="n">Empty</span><span class="p">())</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<a id="__codelineno-20-39" name="__codelineno-20-39"></a><span class="w">      </span><span class="o">*</span><span class="n">feat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">feature_queue_</span><span class="p">.</span><span class="n">Pop</span><span class="p">());</span><span class="w"></span>
+<a id="__codelineno-20-40" name="__codelineno-20-40"></a><span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-20-41" name="__codelineno-20-41"></a><span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<a id="__codelineno-20-42" name="__codelineno-20-42"></a><span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-20-43" name="__codelineno-20-43"></a><span class="w">    </span><span class="p">}</span><span class="w"></span>
+<a id="__codelineno-20-44" name="__codelineno-20-44"></a><span class="w">  </span><span class="p">}</span><span class="w"></span>
+<a id="__codelineno-20-45" name="__codelineno-20-45"></a><span class="p">}</span><span class="w"></span>
+</code></pre></div></td></tr></table></div>
+<h2 id="_5">解码配置项</h2>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-21-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-21-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-21-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-21-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-21-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-21-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-21-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-21-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-21-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-21-10">10</a></span>
+<span class="normal"><a href="#__codelineno-21-11">11</a></span>
+<span class="normal"><a href="#__codelineno-21-12">12</a></span>
+<span class="normal"><a href="#__codelineno-21-13">13</a></span>
+<span class="normal"><a href="#__codelineno-21-14">14</a></span>
+<span class="normal"><a href="#__codelineno-21-15">15</a></span>
+<span class="normal"><a href="#__codelineno-21-16">16</a></span>
+<span class="normal"><a href="#__codelineno-21-17">17</a></span>
+<span class="normal"><a href="#__codelineno-21-18">18</a></span>
+<span class="normal"><a href="#__codelineno-21-19">19</a></span>
+<span class="normal"><a href="#__codelineno-21-20">20</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1"></a><span class="k">struct</span><span class="w"> </span><span class="nc">DecodeOptions</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<a id="__codelineno-21-2" name="__codelineno-21-2"></a><span class="w">  </span><span class="c1">// chunk_size为经过下采样之后的解码帧帧数，而非原始音频帧</span>
+<a id="__codelineno-21-3" name="__codelineno-21-3"></a><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">chunk_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">16</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-21-4" name="__codelineno-21-4"></a><span class="w">  </span><span class="c1">// 左侧全视野</span>
+<a id="__codelineno-21-5" name="__codelineno-21-5"></a><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">num_left_chunks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-21-6" name="__codelineno-21-6"></a>
+<a id="__codelineno-21-7" name="__codelineno-21-7"></a><span class="w">  </span><span class="c1">// final_score = rescoring_weight * rescoring_score + ctc_weight * ctc_score;</span>
+<a id="__codelineno-21-8" name="__codelineno-21-8"></a><span class="w">  </span><span class="c1">// rescoring_score = left_to_right_score * (1 - reverse_weight) +</span>
+<a id="__codelineno-21-9" name="__codelineno-21-9"></a><span class="w">  </span><span class="c1">// right_to_left_score * reverse_weight</span>
+<a id="__codelineno-21-10" name="__codelineno-21-10"></a><span class="w">  </span><span class="c1">// ctc_score在不同的搜索方式中含义不同：</span>
+<a id="__codelineno-21-11" name="__codelineno-21-11"></a><span class="w">  </span><span class="c1">// CtcPrefixBeamSearch: ctc_score = sum(prefix) score + context score</span>
+<a id="__codelineno-21-12" name="__codelineno-21-12"></a><span class="w">  </span><span class="c1">// CtcWfstBeamSearch: ctc_score = a max(viterbi) path score + context score</span>
+<a id="__codelineno-21-13" name="__codelineno-21-13"></a><span class="w">  </span><span class="c1">// 因此需要根据搜索方式设置ctc_weight</span>
+<a id="__codelineno-21-14" name="__codelineno-21-14"></a><span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="n">ctc_weight</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.5</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-21-15" name="__codelineno-21-15"></a><span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="n">rescoring_weight</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.0</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-21-16" name="__codelineno-21-16"></a><span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="n">reverse_weight</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-21-17" name="__codelineno-21-17"></a><span class="w">  </span><span class="n">CtcEndpointConfig</span><span class="w"> </span><span class="n">ctc_endpoint_config</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-21-18" name="__codelineno-21-18"></a><span class="w">  </span><span class="n">CtcPrefixBeamSearchOptions</span><span class="w"> </span><span class="n">ctc_prefix_search_opts</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-21-19" name="__codelineno-21-19"></a><span class="w">  </span><span class="n">CtcWfstBeamSearchOptions</span><span class="w"> </span><span class="n">ctc_wfst_search_opts</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-21-20" name="__codelineno-21-20"></a><span class="p">};</span><span class="w"></span>
+</code></pre></div></td></tr></table></div>
+<h2 id="wenet_3">wenet词表</h2>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-22-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-22-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-22-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-22-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-22-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-22-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-22-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-22-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-22-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-22-10">10</a></span>
+<span class="normal"><a href="#__codelineno-22-11">11</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">AsrDecoder</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<a id="__codelineno-22-2" name="__codelineno-22-2"></a><span class="p">...</span><span class="w"></span>
+<a id="__codelineno-22-3" name="__codelineno-22-3"></a><span class="w"> </span><span class="k">private</span><span class="o">:</span><span class="w"></span>
+<a id="__codelineno-22-4" name="__codelineno-22-4"></a><span class="w">   </span><span class="c1">// 输出词表</span>
+<a id="__codelineno-22-5" name="__codelineno-22-5"></a><span class="w">  </span><span class="c1">// output symbol table</span>
+<a id="__codelineno-22-6" name="__codelineno-22-6"></a><span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">fst</span><span class="o">::</span><span class="n">SymbolTable</span><span class="o">&gt;</span><span class="w"> </span><span class="n">symbol_table_</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-22-7" name="__codelineno-22-7"></a><span class="w">  </span><span class="c1">// 端到端声学模型词表</span>
+<a id="__codelineno-22-8" name="__codelineno-22-8"></a><span class="w">  </span><span class="c1">// e2e unit symbol table</span>
+<a id="__codelineno-22-9" name="__codelineno-22-9"></a><span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">fst</span><span class="o">::</span><span class="n">SymbolTable</span><span class="o">&gt;</span><span class="w"> </span><span class="n">unit_table_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-22-10" name="__codelineno-22-10"></a><span class="p">...</span><span class="w"></span>
+<a id="__codelineno-22-11" name="__codelineno-22-11"></a><span class="p">};</span><span class="w"></span>
+</code></pre></div></td></tr></table></div>
+<h2 id="wenetcontext-biasing">wenet的上下文偏置（context biasing）</h2>
+<p>在ASR的实际应用中，常用词的识别效果较好，但对于一些特殊的词，识别精度可能会降低。上下文偏差（Context Biasing）是指在推理过程中将先验知识注入ASR，例如用户喜欢的歌曲、联系人、应用程序或位置。传统的ASR通过从偏置短语列表中构建一个n-gram有限状态转录机（Finite State Transducer，FST）来进行上下文偏置，该偏置短语列表在解码过程中与解码图动态组合，这有助于将识别结果偏向于上下文有限状态转录机中包含的n-gram，从而提高特定场景中的识别准确性。</p>
+<p>无论是CTC Prefix Beam Search还是CTC WFST Beam Search都可以引入上下文偏置（context biasing），以便适用特殊场景：</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-23-1">1</a></span>
+<span class="normal"><a href="#__codelineno-23-2">2</a></span>
+<span class="normal"><a href="#__codelineno-23-3">3</a></span>
+<span class="normal"><a href="#__codelineno-23-4">4</a></span>
+<span class="normal"><a href="#__codelineno-23-5">5</a></span>
+<span class="normal"><a href="#__codelineno-23-6">6</a></span>
+<span class="normal"><a href="#__codelineno-23-7">7</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1"></a><span class="c1">// wenet/runtime/core/decoder/asr_decoder.cc</span>
+<a id="__codelineno-23-2" name="__codelineno-23-2"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="k">nullptr</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">fst_</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<a id="__codelineno-23-3" name="__codelineno-23-3"></a><span class="n">searcher_</span><span class="p">.</span><span class="n">reset</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">CtcPrefixBeamSearch</span><span class="p">(</span><span class="n">opts</span><span class="p">.</span><span class="n">ctc_prefix_search_opts</span><span class="p">,</span><span class="w"></span>
+<a id="__codelineno-23-4" name="__codelineno-23-4"></a><span class="w">                                        </span><span class="n">resource</span><span class="o">-&gt;</span><span class="n">context_graph</span><span class="p">));</span><span class="w"></span>
+<a id="__codelineno-23-5" name="__codelineno-23-5"></a><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<a id="__codelineno-23-6" name="__codelineno-23-6"></a><span class="n">searcher_</span><span class="p">.</span><span class="n">reset</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">CtcWfstBeamSearch</span><span class="p">(</span><span class="o">*</span><span class="n">fst_</span><span class="p">,</span><span class="w"> </span><span class="n">opts</span><span class="p">.</span><span class="n">ctc_wfst_search_opts</span><span class="p">,</span><span class="w"></span>
+<a id="__codelineno-23-7" name="__codelineno-23-7"></a><span class="w">                                      </span><span class="n">resource</span><span class="o">-&gt;</span><span class="n">context_graph</span><span class="p">));</span><span class="w"></span>
+</code></pre></div></td></tr></table></div>
+<p>注意，上下文偏置不同于语言模型，只不过偏置短语列表和语言模型都是用有限状态转录机（FST）实现，语言模型只适用于CTC WFST Beam Search。</p>
+<blockquote>
+<p><a href="https://github.com/wenet-e2e/wenet/blob/main/docs/context.md">wenet/context.md at main · wenet-e2e/wenet · GitHub</a></p>
+</blockquote>
+<h2 id="wenetwenetctc_prefix_beam_search">WeNet时间戳的后处理策略（”wenet的ctc_prefix_beam_search“补充，待合并）</h2>
+<p>为了避免输出的单词时间戳都黏连在一起，引入最小单词间隔，两个词时间戳之间的间隔至少大于该值，默认100ms。</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-24-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-24-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-24-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-24-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-24-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-24-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-24-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-24-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-24-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-24-10">10</a></span>
+<span class="normal"><a href="#__codelineno-24-11">11</a></span>
+<span class="normal"><a href="#__codelineno-24-12">12</a></span>
+<span class="normal"><a href="#__codelineno-24-13">13</a></span>
+<span class="normal"><a href="#__codelineno-24-14">14</a></span>
+<span class="normal"><a href="#__codelineno-24-15">15</a></span>
+<span class="normal"><a href="#__codelineno-24-16">16</a></span>
+<span class="normal"><a href="#__codelineno-24-17">17</a></span>
+<span class="normal"><a href="#__codelineno-24-18">18</a></span>
+<span class="normal"><a href="#__codelineno-24-19">19</a></span>
+<span class="normal"><a href="#__codelineno-24-20">20</a></span>
+<span class="normal"><a href="#__codelineno-24-21">21</a></span>
+<span class="normal"><a href="#__codelineno-24-22">22</a></span>
+<span class="normal"><a href="#__codelineno-24-23">23</a></span>
+<span class="normal"><a href="#__codelineno-24-24">24</a></span>
+<span class="normal"><a href="#__codelineno-24-25">25</a></span>
+<span class="normal"><a href="#__codelineno-24-26">26</a></span>
+<span class="normal"><a href="#__codelineno-24-27">27</a></span>
+<span class="normal"><a href="#__codelineno-24-28">28</a></span>
+<span class="normal"><a href="#__codelineno-24-29">29</a></span>
+<span class="normal"><a href="#__codelineno-24-30">30</a></span>
+<span class="normal"><a href="#__codelineno-24-31">31</a></span>
+<span class="normal"><a href="#__codelineno-24-32">32</a></span>
+<span class="normal"><a href="#__codelineno-24-33">33</a></span>
+<span class="normal"><a href="#__codelineno-24-34">34</a></span>
+<span class="normal"><a href="#__codelineno-24-35">35</a></span>
+<span class="normal"><a href="#__codelineno-24-36">36</a></span>
+<span class="normal"><a href="#__codelineno-24-37">37</a></span>
+<span class="normal"><a href="#__codelineno-24-38">38</a></span>
+<span class="normal"><a href="#__codelineno-24-39">39</a></span>
+<span class="normal"><a href="#__codelineno-24-40">40</a></span>
+<span class="normal"><a href="#__codelineno-24-41">41</a></span>
+<span class="normal"><a href="#__codelineno-24-42">42</a></span>
+<span class="normal"><a href="#__codelineno-24-43">43</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1"></a><span class="c1">// wenet/runtime/core/decoder/asr_decoder.h</span>
+<a id="__codelineno-24-2" name="__codelineno-24-2"></a><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">time_stamp_gap_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span><span class="p">;</span><span class="w">  </span><span class="c1">// timestamp gap between words in a sentence</span>
+<a id="__codelineno-24-3" name="__codelineno-24-3"></a>
+<a id="__codelineno-24-4" name="__codelineno-24-4"></a><span class="c1">// wenet/runtime/core/decoder/asr_decoder.cc</span>
+<a id="__codelineno-24-5" name="__codelineno-24-5"></a><span class="c1">// 时间戳仅在输入完毕，准备输出最终结果时产生</span>
+<a id="__codelineno-24-6" name="__codelineno-24-6"></a><span class="c1">// 采用声学模型解码时产生的时间戳，同时此处也需要e2e模型的词表</span>
+<a id="__codelineno-24-7" name="__codelineno-24-7"></a><span class="c1">// TimeStamp is only supported in final result</span>
+<a id="__codelineno-24-8" name="__codelineno-24-8"></a><span class="c1">// TimeStamp of the output of CtcWfstBeamSearch may be inaccurate due to</span>
+<a id="__codelineno-24-9" name="__codelineno-24-9"></a><span class="c1">// various FST operations when building the decoding graph. So here we use</span>
+<a id="__codelineno-24-10" name="__codelineno-24-10"></a><span class="c1">// time stamp of the input(e2e model unit), which is more accurate, and it</span>
+<a id="__codelineno-24-11" name="__codelineno-24-11"></a><span class="c1">// requires the symbol table of the e2e model used in training.</span>
+<a id="__codelineno-24-12" name="__codelineno-24-12"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">unit_table_</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="k">nullptr</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">finish</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<a id="__codelineno-24-13" name="__codelineno-24-13"></a><span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">input</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">inputs</span><span class="p">[</span><span class="n">i</span><span class="p">];</span><span class="w"></span>
+<a id="__codelineno-24-14" name="__codelineno-24-14"></a><span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">time_stamp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">times</span><span class="p">[</span><span class="n">i</span><span class="p">];</span><span class="w"></span>
+<a id="__codelineno-24-15" name="__codelineno-24-15"></a><span class="w">  </span><span class="n">CHECK_EQ</span><span class="p">(</span><span class="n">input</span><span class="p">.</span><span class="n">size</span><span class="p">(),</span><span class="w"> </span><span class="n">time_stamp</span><span class="p">.</span><span class="n">size</span><span class="p">());</span><span class="w"></span>
+<a id="__codelineno-24-16" name="__codelineno-24-16"></a><span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">input</span><span class="p">.</span><span class="n">size</span><span class="p">();</span><span class="w"> </span><span class="n">j</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<a id="__codelineno-24-17" name="__codelineno-24-17"></a><span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">word</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">unit_table_</span><span class="o">-&gt;</span><span class="n">Find</span><span class="p">(</span><span class="n">input</span><span class="p">[</span><span class="n">j</span><span class="p">]);</span><span class="w"></span>
+<a id="__codelineno-24-18" name="__codelineno-24-18"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">start</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">time_stamp</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">frame_shift_in_ms</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">time_stamp_gap_</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="w"></span>
+<a id="__codelineno-24-19" name="__codelineno-24-19"></a><span class="w">                    </span><span class="o">?</span><span class="w"> </span><span class="n">time_stamp</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">frame_shift_in_ms</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">time_stamp_gap_</span><span class="w"></span>
+<a id="__codelineno-24-20" name="__codelineno-24-20"></a><span class="w">                    </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-24-21" name="__codelineno-24-21"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">j</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<a id="__codelineno-24-22" name="__codelineno-24-22"></a><span class="w">      </span><span class="c1">// 如果本时刻单词与上一个时刻单词的时间间隔小于“最小单词间隔”（time_stamp_gap_），</span>
+<a id="__codelineno-24-23" name="__codelineno-24-23"></a><span class="w">      </span><span class="c1">// 则该单词的开始时刻start取上一个单词和本时刻单词的中间时刻</span>
+<a id="__codelineno-24-24" name="__codelineno-24-24"></a><span class="w">      </span><span class="n">start</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">time_stamp</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">time_stamp</span><span class="p">[</span><span class="n">j</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">])</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">frame_shift_in_ms</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;</span><span class="w"></span>
+<a id="__codelineno-24-25" name="__codelineno-24-25"></a><span class="w">                      </span><span class="n">time_stamp_gap_</span><span class="w"></span>
+<a id="__codelineno-24-26" name="__codelineno-24-26"></a><span class="w">                  </span><span class="o">?</span><span class="w"> </span><span class="p">(</span><span class="n">time_stamp</span><span class="p">[</span><span class="n">j</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">time_stamp</span><span class="p">[</span><span class="n">j</span><span class="p">])</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">*</span><span class="w"></span>
+<a id="__codelineno-24-27" name="__codelineno-24-27"></a><span class="w">                        </span><span class="n">frame_shift_in_ms</span><span class="p">()</span><span class="w"></span>
+<a id="__codelineno-24-28" name="__codelineno-24-28"></a><span class="w">                  </span><span class="o">:</span><span class="w"> </span><span class="n">start</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-24-29" name="__codelineno-24-29"></a><span class="w">    </span><span class="p">}</span><span class="w"></span>
+<a id="__codelineno-24-30" name="__codelineno-24-30"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">end</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">time_stamp</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">frame_shift_in_ms</span><span class="p">();</span><span class="w"></span>
+<a id="__codelineno-24-31" name="__codelineno-24-31"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">input</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<a id="__codelineno-24-32" name="__codelineno-24-32"></a><span class="w">      </span><span class="c1">// 如果本时刻单词与下一时刻单词的时间间隔小于“最小单词间隔”（time_stamp_gap_），</span>
+<a id="__codelineno-24-33" name="__codelineno-24-33"></a><span class="w">      </span><span class="c1">// 则该单词的结束时刻end取下一个单词和本时刻单词的中间时刻</span>
+<a id="__codelineno-24-34" name="__codelineno-24-34"></a><span class="w">      </span><span class="n">end</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">time_stamp</span><span class="p">[</span><span class="n">j</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">time_stamp</span><span class="p">[</span><span class="n">j</span><span class="p">])</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">frame_shift_in_ms</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;</span><span class="w"></span>
+<a id="__codelineno-24-35" name="__codelineno-24-35"></a><span class="w">                    </span><span class="n">time_stamp_gap_</span><span class="w"></span>
+<a id="__codelineno-24-36" name="__codelineno-24-36"></a><span class="w">                </span><span class="o">?</span><span class="w"> </span><span class="p">(</span><span class="n">time_stamp</span><span class="p">[</span><span class="n">j</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">time_stamp</span><span class="p">[</span><span class="n">j</span><span class="p">])</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">*</span><span class="w"></span>
+<a id="__codelineno-24-37" name="__codelineno-24-37"></a><span class="w">                      </span><span class="n">frame_shift_in_ms</span><span class="p">()</span><span class="w"></span>
+<a id="__codelineno-24-38" name="__codelineno-24-38"></a><span class="w">                </span><span class="o">:</span><span class="w"> </span><span class="n">end</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-24-39" name="__codelineno-24-39"></a><span class="w">    </span><span class="p">}</span><span class="w"></span>
+<a id="__codelineno-24-40" name="__codelineno-24-40"></a><span class="w">    </span><span class="n">WordPiece</span><span class="w"> </span><span class="n">word_piece</span><span class="p">(</span><span class="n">word</span><span class="p">,</span><span class="w"> </span><span class="n">offset</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">start</span><span class="p">,</span><span class="w"> </span><span class="n">offset</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">end</span><span class="p">);</span><span class="w"></span>
+<a id="__codelineno-24-41" name="__codelineno-24-41"></a><span class="w">    </span><span class="n">path</span><span class="p">.</span><span class="n">word_pieces</span><span class="p">.</span><span class="n">emplace_back</span><span class="p">(</span><span class="n">word_piece</span><span class="p">);</span><span class="w"></span>
+<a id="__codelineno-24-42" name="__codelineno-24-42"></a><span class="w">  </span><span class="p">}</span><span class="w"></span>
+<a id="__codelineno-24-43" name="__codelineno-24-43"></a><span class="p">}</span><span class="w"></span>
+</code></pre></div></td></tr></table></div>
+<h2 id="asrmodelasrdecoder">AsrModel和AsrDecoder的调用关系</h2>
+<ul>
+<li><code>AsrModel</code>管理声学模型、语言模型的资源、配置等，调用编解码器实现推理。</li>
+<li><code>AsrDecoder</code>通过<code>FeaturePipeline</code>输入数据，调用<code>AsrModel</code>产生解码结果。计算推理耗时，产生最终的时间戳，后处理解码结果等。</li>
+</ul>
+<p><code>CtcPrefixBeamSearch/CtcPrefixBeamSearch</code>-&gt;<code>TorchAsrModel/OnnxAsrModel</code>(<code>AsrModel</code>的子类)-&gt;<code>AsrDecoder</code></p>
+<h2 id="wenet_4">WeNet对空格的处理</h2>
+<ol>
+<li>无语言模型的解码。训练时，<code>_</code>表示空格，因此直接拼接输出单元并将<code>_</code>替换为空格，等同于：<code>detokenized = ''.join(pieces).replace('_', ' ')</code>。</li>
+<li>有语言模型的解码。此时输出中没有<code>_</code>，输出单位为字，因此用空格拼接输出单元，等同于<code>detokenized = ' '.join(pieces)</code>。 </li>
+</ol>
+<p>最后，WeNet通过后处理策略<code>PostProcessor</code>统一去除不需要的空格。</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-25-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-25-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-25-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-25-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-25-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-25-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-25-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-25-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-25-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-25-10">10</a></span>
+<span class="normal"><a href="#__codelineno-25-11">11</a></span>
+<span class="normal"><a href="#__codelineno-25-12">12</a></span>
+<span class="normal"><a href="#__codelineno-25-13">13</a></span>
+<span class="normal"><a href="#__codelineno-25-14">14</a></span>
+<span class="normal"><a href="#__codelineno-25-15">15</a></span>
+<span class="normal"><a href="#__codelineno-25-16">16</a></span>
+<span class="normal"><a href="#__codelineno-25-17">17</a></span>
+<span class="normal"><a href="#__codelineno-25-18">18</a></span>
+<span class="normal"><a href="#__codelineno-25-19">19</a></span>
+<span class="normal"><a href="#__codelineno-25-20">20</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1"></a><span class="c1">// wenet/runtime/core/decoder/asr_decoder.cc</span>
+<a id="__codelineno-25-2" name="__codelineno-25-2"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">hypothesis</span><span class="p">.</span><span class="n">size</span><span class="p">();</span><span class="w"> </span><span class="n">j</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<a id="__codelineno-25-3" name="__codelineno-25-3"></a><span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">word</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">symbol_table_</span><span class="o">-&gt;</span><span class="n">Find</span><span class="p">(</span><span class="n">hypothesis</span><span class="p">[</span><span class="n">j</span><span class="p">]);</span><span class="w"></span>
+<a id="__codelineno-25-4" name="__codelineno-25-4"></a><span class="w">  </span><span class="c1">// A detailed explanation of this if-else branch can be found in</span>
+<a id="__codelineno-25-5" name="__codelineno-25-5"></a><span class="w">  </span><span class="c1">// https://github.com/wenet-e2e/wenet/issues/583#issuecomment-907994058</span>
+<a id="__codelineno-25-6" name="__codelineno-25-6"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">searcher_</span><span class="o">-&gt;</span><span class="n">Type</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">kWfstBeamSearch</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<a id="__codelineno-25-7" name="__codelineno-25-7"></a><span class="w">    </span><span class="n">path</span><span class="p">.</span><span class="n">sentence</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="p">(</span><span class="sc">&#39; &#39;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">word</span><span class="p">);</span><span class="w"></span>
+<a id="__codelineno-25-8" name="__codelineno-25-8"></a><span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<a id="__codelineno-25-9" name="__codelineno-25-9"></a><span class="w">    </span><span class="n">path</span><span class="p">.</span><span class="n">sentence</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="p">(</span><span class="n">word</span><span class="p">);</span><span class="w"></span>
+<a id="__codelineno-25-10" name="__codelineno-25-10"></a><span class="w">  </span><span class="p">}</span><span class="w"></span>
+<a id="__codelineno-25-11" name="__codelineno-25-11"></a><span class="p">}</span><span class="w"></span>
+<a id="__codelineno-25-12" name="__codelineno-25-12"></a><span class="p">...</span><span class="w"></span>
+<a id="__codelineno-25-13" name="__codelineno-25-13"></a><span class="c1">// 后处理策略，目前主要功能是去除不需要的空格。</span>
+<a id="__codelineno-25-14" name="__codelineno-25-14"></a><span class="c1">// example1:  “我 爱 你”==&gt; “我爱你”</span>
+<a id="__codelineno-25-15" name="__codelineno-25-15"></a><span class="c1">// example2: “ i love wenet” ==&gt; “i love wenet”</span>
+<a id="__codelineno-25-16" name="__codelineno-25-16"></a><span class="c1">// example3: “我 爱 wenet very much” ==&gt; “我爱wenet very much”</span>
+<a id="__codelineno-25-17" name="__codelineno-25-17"></a><span class="c1">// example4: “aa ää xx yy” ==&gt; “aa ää xx yy”</span>
+<a id="__codelineno-25-18" name="__codelineno-25-18"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">post_processor_</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<a id="__codelineno-25-19" name="__codelineno-25-19"></a><span class="w">  </span><span class="n">path</span><span class="p">.</span><span class="n">sentence</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">post_processor_</span><span class="o">-&gt;</span><span class="n">Process</span><span class="p">(</span><span class="n">path</span><span class="p">.</span><span class="n">sentence</span><span class="p">,</span><span class="w"> </span><span class="n">finish</span><span class="p">);</span><span class="w"></span>
+<a id="__codelineno-25-20" name="__codelineno-25-20"></a><span class="p">}</span><span class="w"></span>
+</code></pre></div></td></tr></table></div>
+<blockquote>
+<p><a href="https://github.com/wenet-e2e/wenet/issues/583#issuecomment-907994058">Runtime: words containing non-ASCII characters are concatenated without space · Issue #583 · wenet-e2e/wenet · GitHub</a></p>
+</blockquote>
+
+  <hr>
+<div class="md-source-file">
+  <small>
+    
+      最后更新:
+      2022-06-08
+    
+  </small>
+</div>
+
+              
+
+  <!-- Giscus -->
+  <h2 id="__comments">评论</h2>
+  <!-- Replace with generated snippet -->
+  <script src="https://giscus.app/client.js"
+        data-repo="cnlinxi/blog"
+        data-repo-id="R_kgDOHLI9Jw"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOHLI9J84COkTs"
+        data-mapping="pathname"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="bottom"
+        data-theme="light"
+        data-lang="zh-CN"
+        crossorigin="anonymous"
+        async>
+  </script>
+
+  <!-- Reload on palette change -->
+  <script>
+    var palette = __md_get("__palette")
+    if (palette && typeof palette.color === "object")
+      if (palette.color.scheme === "slate") {
+        var giscus = document.querySelector("script[src*=giscus]")
+        giscus.setAttribute("data-theme", "dark") 
+      }
+
+    /* Register event handlers after documented loaded */
+    document.addEventListener("DOMContentLoaded", function() {
+      var ref = document.querySelector("[data-md-component=palette]")
+      ref.addEventListener("change", function() {
+        var palette = __md_get("__palette")
+        if (palette && typeof palette.color === "object") {
+          var theme = palette.color.scheme === "slate" ? "dark" : "light"
+
+          /* Instruct Giscus to change theme */
+          var frame = document.querySelector(".giscus-frame")
+          frame.contentWindow.postMessage(
+            { giscus: { setConfig: { theme } } },
+            "https://giscus.app"
+          )
+        }
+      })
+    })
+  </script>
+
+            </article>
+            
+          </div>
+        </div>
+        
+          <a href="#" class="md-top md-icon" data-md-component="top" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            回到页面顶部
+          </a>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+    <nav class="md-footer__inner md-grid" aria-label="页脚" >
+      
+        
+        <a href="../wenet%E6%80%BB%E4%BD%93%E8%A7%A3%E6%9E%90/" class="md-footer__link md-footer__link--prev" aria-label="上一页: wenet总体解析" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                上一页
+              </span>
+              wenet总体解析
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../wenet_kaitang-ssl-train%E7%9F%A5%E8%AF%86%E7%82%B9/" class="md-footer__link md-footer__link--next" aria-label="下一页: wenet_kaitang-ssl-train知识点" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                下一页
+              </span>
+              wenet_kaitang-ssl-train知识点
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.expand", "toc.follow", "toc.integrate", "navigation.top", "search.suggest", "search.highlight", "search.share"], "search": "../../assets/javascripts/workers/search.b028fd86.min.js", "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.config.lang": "ja", "search.config.pipeline": "trimmer, stemmer", "search.config.separator": "[\\s\\-\uff0c\u3002]+", "search.placeholder": "\u641c\u7d22", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version.title": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.f758a944.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

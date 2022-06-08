@@ -1,0 +1,2492 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.3.3">
+    
+    
+      
+        <title>c或cpp软件编译 - 语音与语言处理</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.4a0965b7.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.cbb835fc.min.css">
+        
+      
+      
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#ccpp" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../../.." title="语音与语言处理" class="md-header__button md-logo" aria-label="语音与语言处理" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            语音与语言处理
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              c或cpp软件编译
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" aria-label="分享" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7 0-.24-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91 1.61 0 2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08Z"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="清空当前内容" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/cnlinxi/blog" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    cnlinxi/blog
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-tabs__inner md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        主页
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../paper/%E6%9C%AC%E5%91%A8%E5%80%BC%E5%BE%97%E8%AF%BB_2022_04_23/" class="md-tabs__link">
+        最新论文
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../dsp/%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99/" class="md-tabs__link">
+        信号处理
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../tts/%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E6%A6%82%E8%BF%B0/" class="md-tabs__link">
+        语音合成
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../asr/%E5%8A%A0%E6%9D%83%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/" class="md-tabs__link">
+        语音识别
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../open_source_index/" class="md-tabs__link">
+        开源数据和工具
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+
+
+  
+  
+  
+    
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../docker/docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" class="md-tabs__link md-tabs__link--active">
+        开发
+      </a>
+    </li>
+  
+
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../leetcode/滑动窗口专题.md" class="md-tabs__link">
+        数据结构
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="语音与语言处理" class="md-nav__button md-logo" aria-label="语音与语言处理" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    语音与语言处理
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/cnlinxi/blog" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    cnlinxi/blog
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_1" type="checkbox" id="__nav_1" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_1">
+          主页
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="主页" data-md-level="1">
+        <label class="md-nav__title" for="__nav_1">
+          <span class="md-nav__icon md-icon"></span>
+          主页
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        语音与语言处理
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          最新论文
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="最新论文" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          最新论文
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../paper/%E6%9C%AC%E5%91%A8%E5%80%BC%E5%BE%97%E8%AF%BB_2022_04_23/" class="md-nav__link">
+        本周值得读-2022_04_23
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          信号处理
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="信号处理" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          信号处理
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dsp/%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99/" class="md-nav__link">
+        参考资料
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dsp/%E8%AF%AD%E9%9F%B3%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/" class="md-nav__link">
+        语音基本概念
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dsp/%E8%AF%AD%E9%9F%B3%E7%89%B9%E5%BE%81%E6%8F%90%E5%8F%96/" class="md-nav__link">
+        语音特征提取
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4">
+          语音合成
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="语音合成" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          语音合成
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../tts/%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E6%A6%82%E8%BF%B0/" class="md-nav__link">
+        语音合成概述
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../tts/%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E7%9A%84%E8%AF%84%E4%BB%B7%E6%A0%87%E5%87%86%E5%92%8C%E6%96%B9%E6%B3%95/" class="md-nav__link">
+        语音合成的评价标准和方法
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../tts/%E8%AF%AD%E8%A8%80%E5%AD%A6/" class="md-nav__link">
+        语言学
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../tts/%E9%9F%B3%E5%BA%93%E5%88%B6%E4%BD%9C%E5%92%8C%E6%96%87%E6%9C%AC%E5%89%8D%E7%AB%AF/" class="md-nav__link">
+        音库制作和文本前端
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../tts/%E5%A3%B0%E5%AD%A6%E6%A8%A1%E5%9E%8B/" class="md-nav__link">
+        声学模型
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../tts/%E5%A3%B0%E7%A0%81%E5%99%A8/" class="md-nav__link">
+        声码器
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../tts/%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E7%9A%84%E6%80%BB%E4%BD%93%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB/" class="md-nav__link">
+        语音合成的总体知识体系
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5">
+          语音识别
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="语音识别" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          语音识别
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../asr/%E5%8A%A0%E6%9D%83%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/" class="md-nav__link">
+        加权有限状态机
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../asr/arpa2fst%E5%B0%86%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E8%BD%AC%E4%B8%BAWFST/" class="md-nav__link">
+        arpa2fst将语言模型转为WFST
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../asr/kaldi%E4%B8%AD%E7%9A%84%E8%A7%A3%E7%A0%81%E8%BF%87%E7%A8%8B/" class="md-nav__link">
+        kaldi中的解码过程
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../asr/kaldi%E4%B8%AD%E7%9A%84Simple-Decoder/" class="md-nav__link">
+        kaldi中的Simple-Decoder
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../asr/OpenFST%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" class="md-nav__link">
+        OpenFST基本操作
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../asr/wenet%E6%80%BB%E4%BD%93%E8%A7%A3%E6%9E%90/" class="md-nav__link">
+        wenet总体解析
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../asr/wenet_runtime%E7%9F%A5%E8%AF%86%E7%82%B9/" class="md-nav__link">
+        WeNet runtime知识点
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../asr/wenet_kaitang-ssl-train%E7%9F%A5%E8%AF%86%E7%82%B9/" class="md-nav__link">
+        wenet_kaitang-ssl-train知识点
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../asr/wenet%E7%9A%84ctc_alignment/" class="md-nav__link">
+        wenet的ctc_alignment
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../asr/wenet%E7%9A%84ctc_prefix_beam_search/" class="md-nav__link">
+        wenet的ctc_prefix_beam_search
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../asr/wenet%E5%AF%B9onnx%E7%9A%84%E6%94%AF%E6%8C%81/" class="md-nav__link">
+        wenet对onnx的支持
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../asr/wenet%E4%B8%ADendpoint%E6%A3%80%E6%B5%8B/" class="md-nav__link">
+        wenet中endpoint检测
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6">
+          开源数据和工具
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="开源数据和工具" data-md-level="1">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          开源数据和工具
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../open_source_index/" class="md-nav__link">
+        主页
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7" type="checkbox" id="__nav_7" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_7">
+          开发
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="开发" data-md-level="1">
+        <label class="md-nav__title" for="__nav_7">
+          <span class="md-nav__icon md-icon"></span>
+          开发
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_7_1" type="checkbox" id="__nav_7_1" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_7_1">
+          docker
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="docker" data-md-level="2">
+        <label class="md-nav__title" for="__nav_7_1">
+          <span class="md-nav__icon md-icon"></span>
+          docker
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../docker/docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" class="md-nav__link">
+        docker常用命令
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_7_2" type="checkbox" id="__nav_7_2" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_7_2">
+          python
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="python" data-md-level="2">
+        <label class="md-nav__title" for="__nav_7_2">
+          <span class="md-nav__icon md-icon"></span>
+          python
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../python/python%E7%9A%84%E5%8F%96%E5%8F%8D%E8%BF%90%E7%AE%97%E7%AC%A6/" class="md-nav__link">
+        python的取反运算符
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../python/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/" class="md-nav__link">
+        正则表达式
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../python/conda%E5%92%8Cpip/" class="md-nav__link">
+        conda和pip
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../python/numpy%E5%AD%98%E5%8F%96%E6%95%B0%E6%8D%AE/" class="md-nav__link">
+        numpy存取数据
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../python/__future__%E7%94%A8%E6%B3%95/" class="md-nav__link">
+        __future__用法
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_7_3" type="checkbox" id="__nav_7_3" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_7_3">
+          shell
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="shell" data-md-level="2">
+        <label class="md-nav__title" for="__nav_7_3">
+          <span class="md-nav__icon md-icon"></span>
+          shell
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../shell/Linux%E6%93%8D%E4%BD%9C%E5%9F%BA%E7%A1%80%E5%A4%87%E5%BF%98%E5%BD%95/" class="md-nav__link">
+        Linux操作基础备忘录
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../shell/vim/" class="md-nav__link">
+        vim
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../shell/top_linux%E4%B8%8B%E7%9A%84%E4%BB%BB%E5%8A%A1%E7%AE%A1%E7%90%86%E5%99%A8/" class="md-nav__link">
+        top_linux下的任务管理器
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../shell/shell%E8%B0%83%E8%AF%95/" class="md-nav__link">
+        shell调试
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../shell/cat%E5%92%8CEOF/" class="md-nav__link">
+        cat和EOF
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../shell/tailf/" class="md-nav__link">
+        tailf
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../shell/shell%E8%AF%AD%E6%B3%95%E9%80%9F%E6%9F%A5%E6%89%8B%E5%86%8C/" class="md-nav__link">
+        shell语法速查手册
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7_4" type="checkbox" id="__nav_7_4" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_7_4">
+          cpp
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="cpp" data-md-level="2">
+        <label class="md-nav__title" for="__nav_7_4">
+          <span class="md-nav__icon md-icon"></span>
+          cpp
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../stl%E7%9A%84map/" class="md-nav__link">
+        STL的map
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cpp%E8%B0%83%E8%AF%95/" class="md-nav__link">
+        cpp调试技巧
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cpp%E7%9A%84%E7%B1%BB%E8%AE%BF%E9%97%AE%E4%BF%AE%E9%A5%B0%E7%AC%A6/" class="md-nav__link">
+        cpp的类访问修饰符
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cpp%E5%85%B3%E9%94%AE%E5%AD%97const%E4%BF%AE%E9%A5%B0%E5%87%BD%E6%95%B0/" class="md-nav__link">
+        cpp关键字const修饰函数
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cpp%E5%AE%BD%E5%AD%97%E7%AC%A6wchar/" class="md-nav__link">
+        cpp宽字符wchar
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gcc%E7%9A%84%E5%B8%B8%E7%94%A8%E7%BC%96%E8%AF%91%E9%80%89%E9%A1%B9/" class="md-nav__link">
+        GCC的常用编译选项
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          c或cpp软件编译
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        c或cpp软件编译
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    整体流程
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#makefile" class="md-nav__link">
+    makefile
+  </a>
+  
+    <nav class="md-nav" aria-label="makefile">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ccpp_1" class="md-nav__link">
+    c/cpp编译和链接
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#makefile_1" class="md-nav__link">
+    makefile规则
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    示例
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cmake" class="md-nav__link">
+    CMake
+  </a>
+  
+    <nav class="md-nav" aria-label="CMake">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    语法速查
+  </a>
+  
+    <nav class="md-nav" aria-label="语法速查">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cmake_1" class="md-nav__link">
+    指定cmake最小版本
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    设置项目名称
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    设置编译类型
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    指定编译包含的源文件
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    查找指定的包
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    查找指定的库文件
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmake_2" class="md-nav__link">
+    载入CMake预定义模块
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    设置包含的目录
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    设置需要链接的库
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cmake_3" class="md-nav__link">
+    cmake中的变量
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    设置变量
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    用户传参控制变量的值
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    常见内置变量
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    打印
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../stl%E7%9A%84vector/" class="md-nav__link">
+        STL的vector
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cpp%E4%B8%AD%E7%9A%84int_t/" class="md-nav__link">
+        cpp中的int_t
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../stl%E7%9A%84string/" class="md-nav__link">
+        string操作
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cpp%E5%8F%B3%E5%80%BC%E5%BC%95%E7%94%A8/" class="md-nav__link">
+        cpp右值引用和std::move
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cpp%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" class="md-nav__link">
+        cpp并发编程
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../c%E5%8F%8Acpp%E7%9A%84%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99/" class="md-nav__link">
+        c及cpp的文件读写
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cpp%E5%B8%B8%E7%94%A8%E5%BA%93gflags_glog_gtest/" class="md-nav__link">
+        cpp常用库gflags/glog/gtest
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_7_5" type="checkbox" id="__nav_7_5" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_7_5">
+          git
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="git" data-md-level="2">
+        <label class="md-nav__title" for="__nav_7_5">
+          <span class="md-nav__icon md-icon"></span>
+          git
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../git/git%E4%B8%AD%E7%9A%84HEAD/" class="md-nav__link">
+        git中的HEAD
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../git/git%E5%B8%B8%E7%94%A8%E5%9B%9E%E9%80%80%E6%93%8D%E4%BD%9C/" class="md-nav__link">
+        git常用回退操作
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../git/git%E7%9A%84%E6%8C%87%E9%92%88ref%E5%92%8Creflog/" class="md-nav__link">
+        git的指针ref和reflog
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../git/git%E8%BD%AC%E7%A7%BB%E9%83%A8%E5%88%86%E4%BB%A3%E7%A0%81cherry-pick/" class="md-nav__link">
+        git转移部分代码cherry-pick
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../git/git%E6%97%A5%E5%BF%97/" class="md-nav__link">
+        git日志
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../git/git%E5%88%86%E6%94%AF%E5%90%88%E5%B9%B6/" class="md-nav__link">
+        git分支合并
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../git/git%E7%9A%84fast_forward/" class="md-nav__link">
+        Git的Fast Forward
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../git/git%E4%BF%AE%E6%94%B9%E6%8F%90%E4%BA%A4%E4%BF%A1%E6%81%AF/" class="md-nav__link">
+        git修改提交信息
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../git/git%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%BA%90/" class="md-nav__link">
+        git学习资源
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_8" type="checkbox" id="__nav_8" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_8">
+          数据结构
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="数据结构" data-md-level="1">
+        <label class="md-nav__title" for="__nav_8">
+          <span class="md-nav__icon md-icon"></span>
+          数据结构
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../leetcode/滑动窗口专题.md" class="md-nav__link">
+        None
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../leetcode/DFS回溯算法专题.md" class="md-nav__link">
+        None
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../leetcode/一般二叉树专题.md" class="md-nav__link">
+        None
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../leetcode/二叉搜索树专题.md" class="md-nav__link">
+        None
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+  
+                
+  <a href="https://github.com/cnlinxi/blog/edit/main/docs/develop/cpp/c或cpp软件编译.md" title="编辑此页" class="md-content__button md-icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25Z"/></svg>
+  </a>
+
+
+
+<h1 id="ccpp">c或cpp软件编译</h1>
+<h2 id="_1">整体流程</h2>
+<ol>
+<li><strong>编辑器</strong>编写源代码，如<code>*.c/*.cpp</code>文件。</li>
+<li><strong>编译器</strong>编译代码，生成目标文件，如<code>*.o</code>文件。</li>
+<li><strong>链接器</strong>链接目标代码，生成可执行文件，如<code>*.exe</code>文件。</li>
+</ol>
+<p>如果项目较大，步骤2和3就非常麻烦，因此就产生类似批处理的程序，批处理编译和链接源文件，这就是make/makefile/cmake/CMakeLists.txt/configure等工具或文件。</p>
+<ul>
+<li><code>make</code>是一个批处理工具，根据<code>makefile</code>文件进行编译和链接。<code>makefile</code>文件内就包含了<code>gcc/g++</code>等编译命令。</li>
+<li><code>makefile</code>文件本身比较复杂，并且无法跨平台。因此产生了<code>cmake</code>利用<code>CMakeLists.txt</code>跨平台产生<code>makefile</code>。</li>
+<li><code>CMakeLists.txt</code>无法自动生成，是最终需要手动编写的脚本。</li>
+</ul>
+<p>当然，如果对<code>makefile</code>语法熟悉，当然可以手动编写<code>makefile</code>文件；如果项目较小，可以不编写<code>makefile/CMakeLists.txt</code>，手动使用<code>gcc/g++</code>进行编译和链接。</p>
+<p><img alt="" src="../vnote_images/make_cmake_gcc.png" /></p>
+<h2 id="makefile">makefile</h2>
+<h3 id="ccpp_1">c/cpp编译和链接</h3>
+<p>一个示例代码<code>hello.c</code>如下：</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1">1</a></span>
+<span class="normal"><a href="#__codelineno-0-2">2</a></span>
+<span class="normal"><a href="#__codelineno-0-3">3</a></span>
+<span class="normal"><a href="#__codelineno-0-4">4</a></span>
+<span class="normal"><a href="#__codelineno-0-5">5</a></span>
+<span class="normal"><a href="#__codelineno-0-6">6</a></span>
+<span class="normal"><a href="#__codelineno-0-7">7</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="c1">// hello.c</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<a id="__codelineno-0-3" name="__codelineno-0-3"></a>
+<a id="__codelineno-0-4" name="__codelineno-0-4"></a><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<a id="__codelineno-0-5" name="__codelineno-0-5"></a><span class="w">  </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Hello!&quot;</span><span class="p">);</span><span class="w"></span>
+<a id="__codelineno-0-6" name="__codelineno-0-6"></a><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-0-7" name="__codelineno-0-7"></a><span class="p">}</span><span class="w"></span>
+</code></pre></div></td></tr></table></div>
+<p>生成hello可执行文件所需要的命令为：<code>gcc -v -o hello hello.c</code></p>
+<p>该过程可分解为4个步骤：预处理、编译、汇编、链接。大部分情况下，一般来说，无论是C还是C++，首先要把源文件编译成中间代码文件，在Windows下也就是<code>*.obj</code>文件，UNIX下是<code>*.o</code>文件，即Object File，这个动作叫做编译（compile），一般来说每个源文件都对应一个Object File。然后再把大量的Object File组合成执行文件，也就是打包，这个动作叫作链接（link），可以链接成可执行文件，或者动态库<code>*.so/*.dll</code>，或者静态库<code>*.a/*.lib</code>。</p>
+<p>在编译时，编译器只检查程序语法和函数、变量是否被<code>声明</code>，如果函数未声明，编译器会给出警告，但可以生成Object File。在链接时，链接器会在所有的Object File中寻找函数<code>实现</code>，如果找不到，就会报链接错误，在VC下，这种错误一般是<code>Link 2001错误</code>，也就是说链接器未找到函数的实现，需要指定函数的Object File。</p>
+<p><img alt="" src="../attachments/Pasted%20image%2020220506171335.png" /></p>
+<h3 id="makefile_1">makefile规则</h3>
+<p>makefile大致是先处理一些环境变量或参数，然后从某一个位置开始执行命令集。</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1">1</a></span>
+<span class="normal"><a href="#__codelineno-1-2">2</a></span>
+<span class="normal"><a href="#__codelineno-1-3">3</a></span>
+<span class="normal"><a href="#__codelineno-1-4">4</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1"></a>target ... : prerequisites ...
+<a id="__codelineno-1-2" name="__codelineno-1-2"></a>    <span class="nb">command</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3"></a>    ...
+<a id="__codelineno-1-4" name="__codelineno-1-4"></a>    ...
+</code></pre></div></td></tr></table></div>
+<ul>
+<li>target：可以是一个Object File（目标文件），也可以是一个执行文件，还可以是一个标签（label）。</li>
+<li>prerequisites：生成该target所依赖的文件或target。</li>
+<li>command：该target要执行的命令（任意的shell命令）。</li>
+</ul>
+<p>也就是说，target这一个或多个的目标文件依赖于prerequisites中的文件，其生成规则定义在command中。</p>
+<p>大多数的make都支持“makefile”和“Makefile”这两种默认文件名。如果要指定特定的Makefile，你可以使用make的<code>-f</code>和<code>--file</code>参数，如：<code>make -f Make.Linux</code>或<code>make --file Make.AIX</code>。</p>
+<h3 id="_2">示例</h3>
+<p><img alt="" src="../attachments/Pasted%20image%2020220506172034.png" /></p>
+<p>上述示例中，定义了<strong>2个参数</strong>，<strong>3个target</strong>。makefile可以有多个target，target之间可以独立，也可以相互依赖或关联，但只能从某一个开始执行，默认情况下从第一个target执行。上例中，target0由2个子target组成。类似于C语言，<code>变量</code>类似于宏参数的定义，<code>找target并执行</code>类似于找main函数并执行命令。在Makefile中的命令，必须要以<code>Tab</code>键开始。</p>
+<blockquote>
+<p><a href="https://zhuanlan.zhihu.com/p/350297509">快速的理解MakeFile+读懂一个MakeFile</a>
+<a href="https://seisman.github.io/how-to-write-makefile">how-to-write-makefile</a></p>
+</blockquote>
+<h2 id="cmake">CMake</h2>
+<p>一个利用CMake构建项目的典型流程：</p>
+<ol>
+<li>编写CMake的配置文件<code>CMakeLists.txt</code>。</li>
+<li>执行命令<code>cmake &lt;PATH&gt;</code>或者<code>ccmake &lt;PATH&gt;</code>，其中<code>&lt;PATH&gt;</code>为<code>CMakeLists.txt</code>所在的目录。相比<code>cmake</code>，<code>ccmake</code>提供了一个交互式界面。</li>
+<li>使用<code>make</code>命令进行构建。</li>
+</ol>
+<p>在开发过程中经常需要使用外部项目，<code>*.cmake</code>文件是外部包的配置文件，内容与<code>CMakeLists.txt</code>类似，以提供关于包最基本的信息，便于利用CMake构建项目。</p>
+<blockquote>
+<p><a href="https://stackoverflow.com/questions/62875805/what-is-the-use-of-cmake-files-in-install-function-of-cmakelists-txt">What is the use of .cmake files in install function of CMakeLists.txt?</a>
+<a href="https://gitlab.kitware.com/cmake/community/-/wikis/doc/tutorials/How-to-create-a-ProjectConfig.cmake-file">How to create a ProjectConfig.cmake file</a>
+<a href="https://www.youtube.com/watch?v=m0DwB4OvDXk&amp;t=919s">youtube/Deep CMake for Library Authors - Craig Scott - CppCon 2019</a>
+set执行详解</p>
+</blockquote>
+<h3 id="_3">语法速查</h3>
+<h4 id="cmake_1">指定cmake最小版本</h4>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1"></a>cmake_minimum_required<span class="o">(</span>VERSION <span class="m">3</span>.4.1<span class="o">)</span>
+</code></pre></div></td></tr></table></div>
+<p>在有些情况下，如果<code>CMakeLists.txt</code>文件中使用了一些高版本<code>cmake</code>特有的一些命令的时候，就需要加上这样一行，提醒用户升级到该版本之后再执行<code>cmake</code>。</p>
+<h4 id="_4">设置项目名称</h4>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-3-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1"></a>project<span class="o">(</span>demo<span class="o">)</span>
+</code></pre></div></td></tr></table></div>
+<p>上例中，引入两个变量<code>demo_BINARY_DIR</code>和<code>demo_SOURCE_DIR</code>，同时，cmake自动定义了两个等价的变量<code>PROJECT_BINARY_DIR</code>和<code>PROJECT_SOURCE_DIR</code>。</p>
+<h4 id="_5">设置编译类型</h4>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-4-1">1</a></span>
+<span class="normal"><a href="#__codelineno-4-2">2</a></span>
+<span class="normal"><a href="#__codelineno-4-3">3</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1"></a>add_executable<span class="o">(</span>demo demo.cpp<span class="o">)</span> <span class="c1"># 生成可执行文件</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2"></a>add_library<span class="o">(</span>common STATIC util.cpp<span class="o">)</span> <span class="c1"># 生成静态库</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3"></a>add_library<span class="o">(</span>common SHARED util.cpp<span class="o">)</span> <span class="c1"># 生成动态库或共享库</span>
+</code></pre></div></td></tr></table></div>
+<p>上例中，<code>demo</code>为自定义项目名称。<code>add_library</code>默认生成静态库，通过上例中命令生成的文件名字如下：</p>
+<ul>
+<li>在Linux下分别是：<code>demo/libcommon.a/libcommon.so</code></li>
+<li>在Windows下分别是：<code>demo.exe/common.lib/common.dll</code></li>
+</ul>
+<h4 id="_6">指定编译包含的源文件</h4>
+<ol>
+<li>明确指出包含哪些源文件</li>
+</ol>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-5-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1"></a>add_library<span class="o">(</span>demo demo.cpp test.cpp util.cpp<span class="o">)</span>
+</code></pre></div></td></tr></table></div>
+<ol>
+<li>搜索所有cpp文件</li>
+</ol>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-6-1">1</a></span>
+<span class="normal"><a href="#__codelineno-6-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1"></a>aux_source_directory<span class="o">(</span>. SRC_LIST<span class="o">)</span> <span class="c1"># 搜索当前目录下的所有.cpp文件</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2"></a>add_library<span class="o">(</span>demo <span class="si">${</span><span class="nv">SRC_LIST</span><span class="si">}</span><span class="o">)</span>
+</code></pre></div></td></tr></table></div>
+<p>上例中，<code>aux_source_directory(&lt;dir&gt; &lt;VAR&gt;)</code>表示搜索目录<code>&lt;dir&gt;</code>下所有的源代码文件，并将文件列表存储到变量<code>&lt;VAR&gt;</code>中。</p>
+<ol>
+<li>自定义搜索规则</li>
+</ol>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-7-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-7-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-7-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-7-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-7-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-7-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-7-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-7-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-7-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-7-10">10</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1"></a>file<span class="o">(</span>GLOB SRC_LIST <span class="s2">&quot;*.cpp&quot;</span> <span class="s2">&quot;protocol/*.cpp&quot;</span><span class="o">)</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2"></a>add_library<span class="o">(</span>demo <span class="si">${</span><span class="nv">SRC_LIST</span><span class="si">}</span><span class="o">)</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3"></a><span class="c1"># 或者</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4"></a>file<span class="o">(</span>GLOB SRC_LIST <span class="s2">&quot;*.cpp&quot;</span><span class="o">)</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5"></a>file<span class="o">(</span>GLOB SRC_PROTOCOL_LIST <span class="s2">&quot;protocol/*.cpp&quot;</span><span class="o">)</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6"></a>add_library<span class="o">(</span>demo <span class="si">${</span><span class="nv">SRC_LIST</span><span class="si">}</span> <span class="si">${</span><span class="nv">SRC_PROTOCOL_LIST</span><span class="si">}</span><span class="o">)</span>
+<a id="__codelineno-7-7" name="__codelineno-7-7"></a><span class="c1"># 或者</span>
+<a id="__codelineno-7-8" name="__codelineno-7-8"></a>aux_source_directory<span class="o">(</span>. SRC_LIST<span class="o">)</span>
+<a id="__codelineno-7-9" name="__codelineno-7-9"></a>aux_source_directory<span class="o">(</span>protocol SRC_PROTOCOL_LIST<span class="o">)</span>
+<a id="__codelineno-7-10" name="__codelineno-7-10"></a>add_library<span class="o">(</span>demo <span class="si">${</span><span class="nv">SRC_LIST</span><span class="si">}</span> <span class="si">${</span><span class="nv">SRC_PROTOCOL_LIST</span><span class="si">}</span><span class="o">)</span>
+</code></pre></div></td></tr></table></div>
+<h4 id="_7">查找指定的包</h4>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-8-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1"></a>find_package <span class="o">(</span>glog <span class="m">0</span>.3.5 REQUIRED<span class="o">)</span>
+</code></pre></div></td></tr></table></div>
+<p>在实际开发中，经常需要用到第三方开源库，这些开源库有可能通过<code>apt-get install</code>方式安装到系统目录下，也有可能自己下载源码并编译安装到指定目录下。在使用时，需要根据实际需求寻找到指定版本库的<em>头文件包含路径、链接库路径</em>等。CMake提供了<code>find_package()</code>命令查找这些依赖包。<code>find_package()</code>有两种工作模式，分别是：</p>
+<ul>
+<li>Module模式。默认搜索模式。</li>
+<li>Config模式。当Module模式失败，或者<code>find_package()</code>中指定了<code>CONFIG/NO_MODULE</code>等关键字时启用。</li>
+</ul>
+<p>当执行<code>find_package(XXX)</code>时，CMake搜索流程图为：</p>
+<p><img alt="" src="../attachments/Pasted%20image%2020220507234506.png" /></p>
+<ol>
+<li>命令签名</li>
+</ol>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-9-1">1</a></span>
+<span class="normal"><a href="#__codelineno-9-2">2</a></span>
+<span class="normal"><a href="#__codelineno-9-3">3</a></span>
+<span class="normal"><a href="#__codelineno-9-4">4</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1"></a>find_package<span class="o">(</span>&lt;package&gt; <span class="o">[</span>version<span class="o">]</span> <span class="o">[</span>EXACT<span class="o">]</span> <span class="o">[</span>QUIET<span class="o">]</span> <span class="o">[</span>MODULE<span class="o">]</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2"></a>             <span class="o">[</span>REQUIRED<span class="o">]</span> <span class="o">[[</span>COMPONENTS<span class="o">]</span> <span class="o">[</span>components...<span class="o">]]</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3"></a>             <span class="o">[</span>OPTIONAL_COMPONENTS components...<span class="o">]</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4"></a>             <span class="o">[</span>NO_POLICY_SCOPE<span class="o">])</span>
+</code></pre></div></td></tr></table></div>
+<ul>
+<li><code>package</code>：必填参数。需要查找的包名，注意大小写。</li>
+<li><code>version</code>和<code>EXACT</code>：可选参数。<code>version</code>指定版本，如果设置就必须找到该包与<code>version</code>指定版本号的兼容版本；如果同时指定了<code>EXACT</code>，则表示必须完全匹配而不是兼容版本就可以。</li>
+<li><code>QUIET</code>：可选参数。查找失败则输出报错信息，但如果指定<code>REQUIRED</code>则总是输出。</li>
+<li><code>MODULE</code>：可选参数。必须MODULE模式查找。</li>
+<li><code>REQUIRED</code>：可选参数。表示一定要找到包，找不到立即停止。</li>
+<li>
+<p><code>COMPONENTS components</code>：可选参数。查找的包中必须包含组件（components），否则立即停止。</p>
+</li>
+<li>
+<p>两种搜索模式的搜索原理</p>
+</li>
+<li>
+<p>Module模式查找<code>Find&lt;PackageName&gt;.cmake</code>配置文件。查找路径有2个：</p>
+<ul>
+<li><code>CMAKE_MODULE_PATH</code>。该变量默认为空，可通过<code>set</code>命令赋值。</li>
+<li><code>CMAKE_ROOT</code>下的Modules目录，<code>CMAKE_ROOT</code>为CMake安装目录。比如<code>/usr/share/cmake-3.10/Modules</code>。</li>
+</ul>
+</li>
+<li>
+<p>Config模式查找<code>PackageName&gt;Config.cmake</code>或<code>&lt;lower-case-package-name&gt;-config.cmake</code>配置文件。查找路径有3个：</p>
+<ul>
+<li><code>&lt;PackageName&gt;_DIR</code>。该变量默认为空，可通过<code>set</code>命令赋值，该路径为<code>&lt;PackageName&gt;Config.cmake</code>或<code>&lt;lower-case-package-name&gt;-config.cmake</code>文件<strong>所在目录</strong>。</li>
+<li><code>CMAKE_PREFIX_PATH/CMAKE_FRAMEWORK_PATH/CMAKE_APPBUNDLE_PATH</code>的CMake变量或<em>环境变量</em>。默认为空。</li>
+<li><code>PATH</code>环境变量。CMake会遍历<code>PATH</code>环境变量中的每个路径，如果路径以bin或者sbin结尾，则自动回退到上一级，以便得到根目录。在根目录中，CMake查找是否存在<code>&lt;PackageName&gt;Config.cmake</code>或<code>&lt;lower-case-package-name&gt;-config.cmake</code>配置文件，如果没有，则会继续检查或者匹配一些路径，参见<a href="https://blog.csdn.net/zhanghm1995/article/details/105466372">“轻松搞定CMake”系列之find_package用法详解</a>。</li>
+</ul>
+</li>
+<li>
+<p>查找失败的解决方法</p>
+</li>
+<li>
+<p>如果明确知道要查找的库<code>&lt;PackageName&gt;Config.cmake</code>或<code>&lt;lower-case-package-name&gt;-config.cmake</code>文件所在路径，直接<code>set</code>设置变量<code>&lt;PackageName&gt;_DIR</code>。比如：
+    <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-10-1">1</a></span>
+<span class="normal"><a href="#__codelineno-10-2">2</a></span>
+<span class="normal"><a href="#__codelineno-10-3">3</a></span>
+<span class="normal"><a href="#__codelineno-10-4">4</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1"></a># OpenCV
+<a id="__codelineno-10-2" name="__codelineno-10-2"></a>set(OpenCV_DIR &quot;~/opencv3_4_4/opencv/build&quot;)
+<a id="__codelineno-10-3" name="__codelineno-10-3"></a># Caffe
+<a id="__codelineno-10-4" name="__codelineno-10-4"></a>set(Caffe_DIR ~/caffe/build)
+</code></pre></div></td></tr></table></div></p>
+</li>
+<li>
+<p>如果有多个包的配置文件需要查找，可以将配置文件统一存放到如<code>cmake</code>的目录下，然后利用<code>set</code>设置变量<code>CMAKE_PREFIX_PATH</code>指向这个<code>cmake</code>目录路径。注意：每个包的配置文件需要单独放置到命名为包名的目录下（文件夹名不区分大小写），否则会找不到。</p>
+</li>
+</ul>
+<p>补充动态库<code>*.so</code>和静态库<code>*.a</code>的区别，动态库即使编译完成，也是和其它动态库是分离的，因此每次用都要把所有涉及的动态库全部添加进来；静态库在编译时就和程序结合在一起了。</p>
+<blockquote>
+<p><a href="https://blog.csdn.net/zhanghm1995/article/details/105466372">“轻松搞定CMake”系列之find_package用法详解</a>
+<a href="https://www.jianshu.com/p/46e9b8a6cb6a">CMake之find_package</a></p>
+</blockquote>
+<h4 id="_8">查找指定的库文件</h4>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-11-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1"></a>find_library<span class="o">(</span>log-lib log<span class="o">)</span>
+</code></pre></div></td></tr></table></div>
+<p><code>find_library(&lt;VAR&gt; &lt;name&gt; &lt;path&gt;)</code>查找到指定的预编译库，并将该路径存储在变量中。类似的命令还有<code>find_file()、find_path()、find_program()、find_package()</code>。</p>
+<h4 id="cmake_2">载入CMake预定义模块</h4>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-12-1">1</a></span>
+<span class="normal"><a href="#__codelineno-12-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1"></a>include<span class="o">(</span>FetchContent<span class="o">)</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2"></a>include<span class="o">(</span>ExternalProject<span class="o">)</span>
+</code></pre></div></td></tr></table></div>
+<p><code>include</code>用来载入<code>CMakeLists.txt</code>文件，也用于载入预定义的CMake模块。</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-13-1">1</a></span>
+<span class="normal"><a href="#__codelineno-13-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1"></a>include<span class="o">(</span>file1 <span class="o">[</span>OPTIONAL<span class="o">])</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2"></a>include<span class="o">(</span>module <span class="o">[</span>OPTIONAL<span class="o">])</span>
+</code></pre></div></td></tr></table></div>
+<p>上述<code>OPTIONAL</code>参数的作用是文件不存在也不会产生错误。可以指定载入一个文件或模块，如果载入模块，那么将在<code>CMAKE_MODULE_PATH</code>中搜索这个模块并载入。载入的内容将在处理到 <code>include</code>语句时直接执行。</p>
+<h4 id="_9">设置包含的目录</h4>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-14-1">1</a></span>
+<span class="normal"><a href="#__codelineno-14-2">2</a></span>
+<span class="normal"><a href="#__codelineno-14-3">3</a></span>
+<span class="normal"><a href="#__codelineno-14-4">4</a></span>
+<span class="normal"><a href="#__codelineno-14-5">5</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1"></a>include_directories<span class="o">(</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2"></a>    <span class="si">${</span><span class="nv">CMAKE_CURRENT_SOURCE_DIR</span><span class="si">}</span>
+<a id="__codelineno-14-3" name="__codelineno-14-3"></a>    <span class="si">${</span><span class="nv">CMAKE_CURRENT_BINARY_DIR</span><span class="si">}</span>
+<a id="__codelineno-14-4" name="__codelineno-14-4"></a>    <span class="si">${</span><span class="nv">CMAKE_CURRENT_SOURCE_DIR</span><span class="si">}</span>/include
+<a id="__codelineno-14-5" name="__codelineno-14-5"></a><span class="o">)</span>
+</code></pre></div></td></tr></table></div>
+<h4 id="_10">设置需要链接的库</h4>
+<p>下例中，<code>demo</code>均为自定义项目名。</p>
+<ol>
+<li>指定链接动态库或静态库</li>
+</ol>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-15-1">1</a></span>
+<span class="normal"><a href="#__codelineno-15-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1"></a>target_link_libraries<span class="o">(</span>demo libface.a<span class="o">)</span> <span class="c1"># 链接libface.a</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2"></a>target_link_libraries<span class="o">(</span>demo libface.so<span class="o">)</span> <span class="c1"># 链接libface.so</span>
+</code></pre></div></td></tr></table></div>
+<ol>
+<li>指定全路径</li>
+</ol>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-16-1">1</a></span>
+<span class="normal"><a href="#__codelineno-16-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1"></a>target_link_libraries<span class="o">(</span>demo <span class="si">${</span><span class="nv">CMAKE_CURRENT_SOURCE_DIR</span><span class="si">}</span>/libs/libface.a<span class="o">)</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2"></a>target_link_libraries<span class="o">(</span>demo <span class="si">${</span><span class="nv">CMAKE_CURRENT_SOURCE_DIR</span><span class="si">}</span>/libs/libface.so<span class="o">)</span>
+</code></pre></div></td></tr></table></div>
+<ol>
+<li>指定链接多个库</li>
+</ol>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-17-1">1</a></span>
+<span class="normal"><a href="#__codelineno-17-2">2</a></span>
+<span class="normal"><a href="#__codelineno-17-3">3</a></span>
+<span class="normal"><a href="#__codelineno-17-4">4</a></span>
+<span class="normal"><a href="#__codelineno-17-5">5</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1"></a>target_link_libraries<span class="o">(</span>demo
+<a id="__codelineno-17-2" name="__codelineno-17-2"></a>    <span class="si">${</span><span class="nv">CMAKE_CURRENT_SOURCE_DIR</span><span class="si">}</span>/libs/libface.a
+<a id="__codelineno-17-3" name="__codelineno-17-3"></a>    boost_system.a
+<a id="__codelineno-17-4" name="__codelineno-17-4"></a>    boost_thread
+<a id="__codelineno-17-5" name="__codelineno-17-5"></a>    pthread<span class="o">)</span>
+</code></pre></div></td></tr></table></div>
+<p>也就是，cmake链接库的方法为：</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-18-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1"></a>target_link_libraries<span class="o">(</span>&lt;目标库&gt; &lt;目标库需要链接的库路径&gt;<span class="o">)</span>
+</code></pre></div></td></tr></table></div>
+<p>在Windows下，CMake会根据链接库目录，搜索<code>*.lib</code>文件。在Linux下会搜索<code>*.so</code>或<code>*.a</code>文件，如果两者都存在，则优先连接动态库<code>*.so</code>文件。</p>
+<h4 id="cmake_3">cmake中的变量</h4>
+<ol>
+<li>一般变量</li>
+</ol>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-19-1">1</a></span>
+<span class="normal"><a href="#__codelineno-19-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1"></a>set<span class="o">(</span>TEST <span class="s2">&quot;Local Var&quot;</span> ON<span class="o">)</span>
+<a id="__codelineno-19-2" name="__codelineno-19-2"></a>set<span class="o">(</span>TEST <span class="s2">&quot;Parent scope Var&quot;</span> ON PARENT_SCOPE<span class="o">)</span>
+</code></pre></div></td></tr></table></div>
+<p>类似于C++局部变量，仅在所在作用域（当前CMakeLists.txt）有效，除非后面使用<code>PARENT_SCOPE</code>。</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-20-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1"></a>set<span class="o">(</span>&lt;variable&gt; &lt;value&gt;... <span class="o">[</span>PARENT_SCOPE<span class="o">])</span> <span class="c1">#设置普通变量</span>
+</code></pre></div></td></tr></table></div>
+<ol>
+<li>缓存变量</li>
+</ol>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-21-1">1</a></span>
+<span class="normal"><a href="#__codelineno-21-2">2</a></span>
+<span class="normal"><a href="#__codelineno-21-3">3</a></span>
+<span class="normal"><a href="#__codelineno-21-4">4</a></span>
+<span class="normal"><a href="#__codelineno-21-5">5</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1"></a><span class="c1"># 若是第一次运行，将给TEST赋值为ON</span>
+<a id="__codelineno-21-2" name="__codelineno-21-2"></a><span class="c1"># 若不是，则不会修改。注意，这里即使手动改成ON-&gt;OFF，也不会修改Cache里面的值，除非手动删除CMakeCache.txt</span>
+<a id="__codelineno-21-3" name="__codelineno-21-3"></a>set<span class="o">(</span>TEST <span class="s2">&quot;Cache Var&quot;</span> ON CACHE BOOL<span class="o">)</span> 
+<a id="__codelineno-21-4" name="__codelineno-21-4"></a><span class="c1"># 通过添加FORCE，可以强制刷新Cache的值，避免上述”奇怪“的现象</span>
+<a id="__codelineno-21-5" name="__codelineno-21-5"></a>set<span class="o">(</span>TEST <span class="s2">&quot;Local Var&quot;</span> ON CACHE BOOL FORCE<span class="o">)</span>
+</code></pre></div></td></tr></table></div>
+<p>类似于C++全局变量，在cmake整个运行期间有效。</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-22-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1"></a>set<span class="o">(</span>&lt;variable&gt; &lt;value&gt;... CACHE &lt;type&gt; &lt;docstring&gt; <span class="o">[</span>FORCE<span class="o">])</span> <span class="c1">#设置缓存变量</span>
+</code></pre></div></td></tr></table></div>
+<ol>
+<li>环境变量</li>
+</ol>
+<p>使用<code>$ENV{NAME}</code>可以调用系统的环境变量。</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-23-1">1</a></span>
+<span class="normal"><a href="#__codelineno-23-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1"></a>set<span class="o">(</span>ENV<span class="o">{</span>name<span class="o">}</span> value<span class="o">)</span>
+<a id="__codelineno-23-2" name="__codelineno-23-2"></a>set<span class="o">(</span>ENV<span class="o">{</span>&lt;variable&gt;<span class="o">}</span> <span class="o">[</span>&lt;value&gt;<span class="o">])</span> <span class="c1">#设置环境变量</span>
+</code></pre></div></td></tr></table></div>
+<blockquote>
+<p><a href="https://www.jianshu.com/p/c2c71d5a09e9">Cmake命令之set介绍</a></p>
+</blockquote>
+<h4 id="_11">设置变量</h4>
+<p>下例中，<code>SRC_LIST</code>均为自定义变量名，<code>demo</code>均为自定义项目名。</p>
+<ol>
+<li><code>set</code>直接设置变量的值</li>
+</ol>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-24-1">1</a></span>
+<span class="normal"><a href="#__codelineno-24-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1"></a>set<span class="o">(</span>SRC_LIST main.cpp test.cpp<span class="o">)</span>
+<a id="__codelineno-24-2" name="__codelineno-24-2"></a>add_executable<span class="o">(</span>demo <span class="si">${</span><span class="nv">SRC_LIST</span><span class="si">}</span><span class="o">)</span>
+</code></pre></div></td></tr></table></div>
+<ol>
+<li><code>set</code>追加变量的值</li>
+</ol>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-25-1">1</a></span>
+<span class="normal"><a href="#__codelineno-25-2">2</a></span>
+<span class="normal"><a href="#__codelineno-25-3">3</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1"></a>set<span class="o">(</span>SRC_LIST main.cpp<span class="o">)</span>
+<a id="__codelineno-25-2" name="__codelineno-25-2"></a>set<span class="o">(</span>SRC_LIST <span class="si">${</span><span class="nv">SRC_LIST</span><span class="si">}</span> test.cpp<span class="o">)</span>
+<a id="__codelineno-25-3" name="__codelineno-25-3"></a>add_executable<span class="o">(</span>demo <span class="si">${</span><span class="nv">SRC_LIST</span><span class="si">}</span><span class="o">)</span>
+</code></pre></div></td></tr></table></div>
+<h4 id="_12">用户传参控制变量的值</h4>
+<p><code>option()</code>指令。如：</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-26-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1"></a>option<span class="o">(</span>USE_LIB <span class="s2">&quot;Whether use lib to link matrix_test&quot;</span> ON<span class="o">)</span>
+</code></pre></div></td></tr></table></div>
+<p>使用时，通过命令行传入值：</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-27-1">1</a></span>
+<span class="normal"><a href="#__codelineno-27-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1"></a><span class="c1"># 可以使用set()进行赋值；也可以通过命令行传参方式使用，-D显式声明</span>
+<a id="__codelineno-27-2" name="__codelineno-27-2"></a>&gt;&gt;&gt; cmake .. -D <span class="nv">USE_LIB</span><span class="o">=</span>OFF 
+</code></pre></div></td></tr></table></div>
+<h4 id="_13">常见内置变量</h4>
+<table>
+<thead>
+<tr>
+<th>变量</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CMAKE_INSTALL_PREFIX</td>
+<td>指定安装目录，一般作为<code>cmake</code>命令行参数</td>
+</tr>
+<tr>
+<td>CMAKE_SOURCE_DIR</td>
+<td><code>CMakeLists.txt</code>所在目录</td>
+</tr>
+<tr>
+<td>CMAKE_CURRENT_SOURCE_DIR</td>
+<td>当前正在处理<code>CMakeLists.txt</code>所在目录</td>
+</tr>
+<tr>
+<td>PROJECT_SOURCE_DIR</td>
+<td>代码根目录</td>
+</tr>
+<tr>
+<td>PROJECT_BINARY_DIR</td>
+<td>执行<code>cmake</code>命令所在目录，一般是创建build目录并且进入该目录，执行<code>cmake</code>命令</td>
+</tr>
+<tr>
+<td>CMAKE_INCLUDE_PATH</td>
+<td>头文件所在目录</td>
+</tr>
+<tr>
+<td>CMAKE_LIBRARY_PATH</td>
+<td>lib库所在目录</td>
+</tr>
+<tr>
+<td>CMAKE_BUIlD_TYPE</td>
+<td>编译类型，例如Debug、Release。例如<code>-DCMAKE_BUIlD_TYPE=Debug</code></td>
+</tr>
+<tr>
+<td>CMAKE_C_COMPILER / CMAKE_CXX_COMPILER</td>
+<td>指定C/C++编译器路径，例如：<code>set(CMAKE_C_COMPILER "/usr/local/gcc")</code>或<code>-DCMAKE_C_COMPILER=/usr/local/gcc</code></td>
+</tr>
+<tr>
+<td>CMAKE_C_FLAGS / CMAKE_CXX_FLAGS</td>
+<td>传递FLAGS给C/C++编译器，两个变量分别指定C/C++编译的选项，例如：<code>set(CMAKE_CXX_FLAGS "-g")</code></td>
+</tr>
+<tr>
+<td>CMAKE_CXX_FLAGS_DEBUG</td>
+<td>除了CMAKE_CXX_FLAGS外，在Debug配置下，额外的参数</td>
+</tr>
+<tr>
+<td>CMAKE_CXX_FLAGS_RELEASE</td>
+<td>除了CMAKE_CXX_FLAGS外，在Release配置下，额外的参数默认参数，参数默认值为<code>-O3 -NDEBUG</code></td>
+</tr>
+<tr>
+<td>CMAKE_VERBOSE_MAKEFILE</td>
+<td><code>set(CMAKE_VERBOSE_MAKEFILE ON)</code>：开启详情打印</td>
+</tr>
+</tbody>
+</table>
+<p>上述变量均为<code>CMakeLists.txt</code>文件中可通过<code>set</code>配置的内置变量，如果通过<code>cmake</code>执行时临时加上的变量设置，则需要加上<code>-D</code>前缀。比如，指定目标文件的安装路径时，可以在<code>CMakeLists.txt</code>内设置<code>CMAKE_INSTALL_PREFIX</code>变量：</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-28-1">1</a></span>
+<span class="normal"><a href="#__codelineno-28-2">2</a></span>
+<span class="normal"><a href="#__codelineno-28-3">3</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1"></a><span class="c1"># CMakeLists.txt</span>
+<a id="__codelineno-28-2" name="__codelineno-28-2"></a><span class="c1"># 该语句需要放在project()语句后面</span>
+<a id="__codelineno-28-3" name="__codelineno-28-3"></a>set<span class="o">(</span>CMAKE_INSTALL_PREFIX &lt;your install path&gt;<span class="o">)</span>
+</code></pre></div></td></tr></table></div>
+<p>同样可以在执行<code>cmake</code>时临时设置：</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-29-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1"></a>cmake -DCMAKE_INSTALL_PREFIX<span class="o">=</span>/your install path ..
+</code></pre></div></td></tr></table></div>
+<p>在指定目标文件安装位置的场景下，执行<code>cmake</code>时临时设置则是推荐方式。</p>
+<p>此外，补充常见的C++编译选项：</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-30-1">1</a></span>
+<span class="normal"><a href="#__codelineno-30-2">2</a></span>
+<span class="normal"><a href="#__codelineno-30-3">3</a></span>
+<span class="normal"><a href="#__codelineno-30-4">4</a></span>
+<span class="normal"><a href="#__codelineno-30-5">5</a></span>
+<span class="normal"><a href="#__codelineno-30-6">6</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1"></a>set<span class="o">(</span>CMAKE_CXX_COMPILER <span class="s2">&quot;clang++&quot;</span> <span class="o">)</span>              <span class="c1"># 显示指定使用的C++编译器</span>
+<a id="__codelineno-30-2" name="__codelineno-30-2"></a>set<span class="o">(</span>CMAKE_CXX_FLAGS <span class="s2">&quot;-std=c++11&quot;</span><span class="o">)</span>               <span class="c1"># c++11</span>
+<a id="__codelineno-30-3" name="__codelineno-30-3"></a>set<span class="o">(</span>CMAKE_CXX_FLAGS <span class="s2">&quot;-g&quot;</span><span class="o">)</span>                       <span class="c1"># 调试信息</span>
+<a id="__codelineno-30-4" name="__codelineno-30-4"></a>set<span class="o">(</span>CMAKE_CXX_FLAGS <span class="s2">&quot;-Wall&quot;</span><span class="o">)</span>                    <span class="c1"># 开启所有警告</span>
+<a id="__codelineno-30-5" name="__codelineno-30-5"></a>set<span class="o">(</span>CMAKE_CXX_FLAGS_DEBUG <span class="s2">&quot;-O0&quot;</span> <span class="o">)</span>               <span class="c1"># 调试包不优化</span>
+<a id="__codelineno-30-6" name="__codelineno-30-6"></a>set<span class="o">(</span>CMAKE_CXX_FLAGS_RELEASE <span class="s2">&quot;-O2 -DNDEBUG &quot;</span> <span class="o">)</span>   <span class="c1"># release包优化</span>
+</code></pre></div></td></tr></table></div>
+<h4 id="_14">打印</h4>
+<p>可以通过<code>message()</code>指令打印出变量的值，类似<code>print()</code>函数。</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-31-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1"></a>message<span class="o">(</span><span class="s2">&quot;Configuration: </span><span class="si">${</span><span class="nv">USE_LIB</span><span class="si">}</span><span class="s2">&quot;</span><span class="o">)</span>
+</code></pre></div></td></tr></table></div>
+<blockquote>
+<p><a href="https://zhuanlan.zhihu.com/p/267803605">Cmake 语法与实战入门</a>
+<a href="https://blog.csdn.net/xxb249/article/details/90697855">CMake基本常识</a>
+<a href="https://cmake.org/cmake/help/latest/">CMake-official_help</a>
+<a href="https://zhuanlan.zhihu.com/p/337586453">cmake：指定目标文件的安装位置</a>
+<a href="https://blog.csdn.net/weixin_39289876/article/details/123182385">WeNet CmakeList.txt实战解读</a></p>
+</blockquote>
+
+  <hr>
+<div class="md-source-file">
+  <small>
+    
+      最后更新:
+      2022-06-08
+    
+  </small>
+</div>
+
+              
+
+  <!-- Giscus -->
+  <h2 id="__comments">评论</h2>
+  <!-- Replace with generated snippet -->
+  <script src="https://giscus.app/client.js"
+        data-repo="cnlinxi/blog"
+        data-repo-id="R_kgDOHLI9Jw"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOHLI9J84COkTs"
+        data-mapping="pathname"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="bottom"
+        data-theme="light"
+        data-lang="zh-CN"
+        crossorigin="anonymous"
+        async>
+  </script>
+
+  <!-- Reload on palette change -->
+  <script>
+    var palette = __md_get("__palette")
+    if (palette && typeof palette.color === "object")
+      if (palette.color.scheme === "slate") {
+        var giscus = document.querySelector("script[src*=giscus]")
+        giscus.setAttribute("data-theme", "dark") 
+      }
+
+    /* Register event handlers after documented loaded */
+    document.addEventListener("DOMContentLoaded", function() {
+      var ref = document.querySelector("[data-md-component=palette]")
+      ref.addEventListener("change", function() {
+        var palette = __md_get("__palette")
+        if (palette && typeof palette.color === "object") {
+          var theme = palette.color.scheme === "slate" ? "dark" : "light"
+
+          /* Instruct Giscus to change theme */
+          var frame = document.querySelector(".giscus-frame")
+          frame.contentWindow.postMessage(
+            { giscus: { setConfig: { theme } } },
+            "https://giscus.app"
+          )
+        }
+      })
+    })
+  </script>
+
+            </article>
+            
+          </div>
+        </div>
+        
+          <a href="#" class="md-top md-icon" data-md-component="top" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            回到页面顶部
+          </a>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+    <nav class="md-footer__inner md-grid" aria-label="页脚" >
+      
+        
+        <a href="../gcc%E7%9A%84%E5%B8%B8%E7%94%A8%E7%BC%96%E8%AF%91%E9%80%89%E9%A1%B9/" class="md-footer__link md-footer__link--prev" aria-label="上一页: GCC的常用编译选项" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                上一页
+              </span>
+              GCC的常用编译选项
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../stl%E7%9A%84vector/" class="md-footer__link md-footer__link--next" aria-label="下一页: STL的vector" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                下一页
+              </span>
+              STL的vector
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.expand", "toc.follow", "toc.integrate", "navigation.top", "search.suggest", "search.highlight", "search.share"], "search": "../../../assets/javascripts/workers/search.b028fd86.min.js", "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.config.lang": "ja", "search.config.pipeline": "trimmer, stemmer", "search.config.separator": "[\\s\\-\uff0c\u3002]+", "search.placeholder": "\u641c\u7d22", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version.title": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.f758a944.min.js"></script>
+      
+        <script src="../../../javascripts/mathjax.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
